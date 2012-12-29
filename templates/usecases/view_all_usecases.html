@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Use Cases
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if usecase_list %}
+<ul>
+{% for usecase in usecase_list %}
+<li><a href="/usecases/{{ usecase.id }}/">{{ usecase.title }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No usecases are available.</p>
+{% endif %}
+{% endblock %}
+

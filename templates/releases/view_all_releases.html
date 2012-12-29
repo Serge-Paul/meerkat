@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Releases
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if release_list %}
+<ul>
+{% for release in release_list %}
+<li><a href="/releases/{{ release.id }}/">{{ release.name }}</a>: {{ release.release_date }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No releases are available.</p>
+{% endif %}
+{% endblock %}
+

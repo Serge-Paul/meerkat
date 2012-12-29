@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Milestones
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if milestone_list %}
+<ul>
+{% for milestone in milestone_list %}
+<li><a href="/milestones/{{ milestone.id }}/">{{ milestone.title }}</a>: {{ milestone.start_date }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No milestones are available.</p>
+{% endif %}
+{% endblock %}
+

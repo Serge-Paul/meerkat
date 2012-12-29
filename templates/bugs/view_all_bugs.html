@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Bugs
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if bug_list %}
+<ul>
+{% for bug in bug_list %}
+<li><a href="/bugs/{{ bug.id }}/">{{ bug.title }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No bugs are available.</p>
+{% endif %}
+{% endblock %}
+

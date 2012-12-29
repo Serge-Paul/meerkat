@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Design Features
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if feature_list %}
+<ul>
+{% for feature in feature_list %}
+<li><a href="/features/{{ feature.id }}/">{{ feature.title }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No features are available.</p>
+{% endif %}
+{% endblock %}
+

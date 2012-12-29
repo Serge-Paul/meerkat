@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+Team Members
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if member_list %}
+<ul>
+
+{{ team.name }} Team Members
+
+{% for member in member_list %}
+<li><a href="/members/{{ member.id }}/">{{ member.first_name }}  {{ member.last_name}}</a>, {{ member.title }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No members are available.</p>
+{% endif %}
+{% endblock %}
+

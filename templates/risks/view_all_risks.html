@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Risks
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if risk_list %}
+<ul>
+{% for risk in risk_list %}
+<li><a href="/risks/{{ risk.id }}/">{{ risk.title }}</a>: {{ risk.status }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No risks are available.</p>
+{% endif %}
+{% endblock %}
+

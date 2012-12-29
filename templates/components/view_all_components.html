@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Components
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if component_list %}
+<ul>
+{% for component in component_list %}
+<li><a href="/components/{{ component.id }}/">{{ component.title }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No design component are available.</p>
+{% endif %}
+{% endblock %}
+
