@@ -1,8 +1,13 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
 def view_all_features(request):
-   return HttpResponse("Hello, world. You're viewing all features")
+   feature_list = Feature.objects.all().order_by('-id')
+   return render_to_response('features/view_all_features.html', {'feature_list': feature_list})
+
+
 
 def create_feature(request):
    return HttpResponse("You're adding new feature")

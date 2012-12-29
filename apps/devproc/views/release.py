@@ -1,8 +1,12 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
 def view_all_releases(request):
-   return HttpResponse("Hello, world. You're viewing all release")
+   release_list = Release.objects.all().order_by('-id')
+   return render_to_response('releases/view_all_releases.html', {'release_list': release_list})
+
 
 def create_release(request):
    return HttpResponse("You're adding new release")

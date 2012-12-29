@@ -1,8 +1,12 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
 def view_all_bugs(request):
-   return HttpResponse("Hello, world. You're viewing all bugs")
+   bug_list = Bug.objects.all().order_by('-id')
+   return render_to_response('bugs/view_all_bugs.html', {'bug_list': bug_list})
+
 
 def create_bug(request):
    return HttpResponse("You're adding new bug")

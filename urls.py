@@ -20,7 +20,7 @@ urlpatterns += patterns('apps.devproc.views.requirement',
 )
 
 urlpatterns += patterns('apps.devproc.views.attribute',
-   url(r'^attributes/$', 'view_all_attributes'),
+   url(r'^attributes/(?P<component_id>\d+)/$', 'view_all_attributes'),
    url(r'^attributes/add/$', 'create_attribute'),
    url(r'^attributes/(?P<attribute_id>\d+)/$', 'view_attribute'),
    url(r'^attributes/(?P<attribute_id>\d+)/edit/$', 'edit_attribute'),
@@ -62,8 +62,8 @@ urlpatterns += patterns('apps.devproc.views.feature',
 )
 
 urlpatterns += patterns('apps.devproc.views.member',
-   url(r'^members/$', 'view_all_members'),
-   url(r'^members/add/$', 'create_member'),
+   url(r'^members/(?P<team_id>\d+)/$', 'view_all_members'),
+   url(r'^members/(?P<team_id>\d+)/add/$', 'create_member'),
    url(r'^members/(?P<member_id>\d+)/$', 'view_member'),
    url(r'^members/(?P<member_id>\d+)/edit/$', 'edit_member'),
 )

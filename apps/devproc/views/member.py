@@ -1,10 +1,19 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
-def view_all_members(request):
-   return HttpResponse("Hello, world. You're viewing all members")
+def view_all_members(request, team_id):
+   # view all members for a specific team
+   member_list = Member.objects.all().order_by('-id')
 
-def create_member(request):
+   team = Team.objects.get(id = team_id)   
+
+   return render_to_response('members/view_all_members.html', {'member_list': member_list, 'team': team})
+
+
+def create_member(request, team_id):
+   # create a new member and add them to a specific team
    return HttpResponse("You're adding new member")
 
 def view_member(request, member_id):

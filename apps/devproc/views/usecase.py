@@ -1,8 +1,12 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
 def view_all_usecases(request):
-   return HttpResponse("Hello, world. You're viewing all usecases")
+   usecase_list = UseCase.objects.all().order_by('-id')
+   return render_to_response('usecases/view_all_usecases.html', {'usecase_list': usecase_list})
+
 
 def create_usecase(request):
    return HttpResponse("You're adding new usecase")

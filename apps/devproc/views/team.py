@@ -1,8 +1,12 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
 def view_all_teams(request):
-   return HttpResponse("Hello, world. You're viewing all teams")
+   team_list = Team.objects.all().order_by('-id')
+   return render_to_response('teams/view_all_teams.html', {'team_list': team_list})
+
 
 def create_team(request):
    return HttpResponse("You're adding new team")

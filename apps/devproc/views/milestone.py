@@ -1,8 +1,12 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
 def view_all_milestones(request):
-   return HttpResponse("Hello, world. You're viewing all milestones")
+   milestone_list = Milestone.objects.all().order_by('-id')
+   return render_to_response('milestones/view_all_milestones.html', {'milestone_list': milestone_list})
+
 
 def create_milestone(request):
    return HttpResponse("You're adding new milestone")

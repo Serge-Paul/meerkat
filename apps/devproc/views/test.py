@@ -1,8 +1,12 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
 def view_all_tests(request):
-   return HttpResponse("Hello, world. You're viewing all tests")
+   test_list = Test.objects.all().order_by('-id')
+   return render_to_response('tests/view_all_tests.html', {'test_list': test_list})
+
 
 def create_test(request):
    return HttpResponse("You're adding new test")

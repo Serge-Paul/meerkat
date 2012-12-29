@@ -1,8 +1,12 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
 def view_all_betatests(request):
-   return HttpResponse("Hello, world. You're viewing all betatests")
+   betatest_list = BetaTest.objects.all().order_by('-id')
+   return render_to_response('betatests/view_all_betatests.html', {'betatest_list': betatest_list})
+
 
 def create_betatest(request):
    return HttpResponse("You're adding new betatest")

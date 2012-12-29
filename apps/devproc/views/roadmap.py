@@ -1,8 +1,12 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from apps.devproc.models import *
 
 
 def view_all_roadmaps(request):
-   return HttpResponse("Hello, world. You're viewing all roadmaps")
+   roadmap_list = Roadmap.objects.all().order_by('-id')
+   return render_to_response('roadmaps/view_all_roadmaps.html', {'roadmap_list': roadmap_list})
+
 
 def create_roadmap(request):
    return HttpResponse("You're adding new roadmap")
