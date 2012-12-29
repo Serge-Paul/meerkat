@@ -1,0 +1,130 @@
+{% if reqmt %}
+
+
+<p>
+Requirement ID: {{ reqmt.id }}
+</p>
+
+<p>
+Title: {{ reqmt.title }}
+</p>
+
+
+<p>
+Release: 
+{% if reqmt.release %}
+
+   {{ reqmt.release }}
+
+{% else %}
+
+   None
+
+{% endif %}
+</p>
+
+<p>
+Description: {{ reqmt.description }}
+</p>
+
+<p>
+Categories: 
+
+{% if reqmt.category.all.0 %}
+
+   {% for category in reqmt.category.all %}
+
+      {{ category.category }} / 
+
+   {% endfor %}
+
+{% else %}
+
+   None
+
+{% endif %}
+
+</p>
+
+<p>
+Priority: {{ reqmt.priority }}
+</p>
+
+<p>
+Approval Status: {{ reqmt.approval_status }}
+</p>
+
+
+<p>
+Parent Requirement:
+{% if reqmt.parent %}
+
+   <a href="/requirements/{{ reqmt.parent.id }}/">{{ reqmt.parent }}</a>
+
+{% else %}
+
+   None
+
+{% endif %}
+</p>
+
+
+<p>
+Features: 
+{% if reqmt.features.all.0 %}
+
+   {% for feature in reqmt.features.all %}
+
+      <br/>
+      <a href="/requirements/{{ feature.id }}/">{{ feature.title }}</a>
+
+   {% endfor %}
+{% else %}
+   
+   None
+
+{% endif %}
+</p>
+
+
+<p>
+Use Case: 
+{% if reqmt.use_case %}
+
+   <a href="/usecases/{{ reqmt.use_case.id }}/">{{ reqmt.use_case }}</a>
+
+{% else %}
+
+   None
+
+{% endif %}
+
+</p>
+
+
+<p>
+Related Tests:           
+{% if reqmt.tests.all.0 %}
+
+   {% for test in reqmt.tests.all %}
+
+      <br/>
+      <a href="/tests/{{ test.id }}/">{{ test.title }}</a>
+
+   {% endfor %}
+{% else %}
+
+   None
+
+{% endif %}
+</p>
+
+
+<!-- *** IF NO REQMTS *** -->
+
+{% else %}
+
+<p>No requirements are available.</p>
+
+{% endif %}
+

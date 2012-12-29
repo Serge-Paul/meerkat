@@ -1,0 +1,17 @@
+{% if reqmt_list %} 
+
+<ul>
+
+{% for reqmt in reqmt_list %} 
+
+<li><a href="/requirements/{{ reqmt.id }}/">{{ reqmt.title }}</a></li>
+
+{% endfor %}
+
+</ul>
+
+{% else %} 
+
+<p>No requirements are available.</p>
+
+{% endif %}
