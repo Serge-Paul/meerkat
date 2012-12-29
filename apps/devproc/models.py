@@ -41,6 +41,10 @@ RISK_CHOICES = (
 
 class Category(models.Model):
    category = models.CharField(max_length=200)
+   
+   def __unicode__(self):
+      return self.category
+
 
 class Requirement(models.Model): 
    title = models.CharField(max_length=200)
@@ -54,6 +58,10 @@ class Requirement(models.Model):
    release = models.ForeignKey('Release', blank=True, null=True) 
    approval_status = models.CharField(max_length=128, choices=APPROVAL_STATUS_CHOICES) 
 
+   def __unicode__(self):
+      return self.title
+
+
 class UseCase(models.Model):
    title = models.CharField(max_length=200)
    description = models.CharField(max_length=1028)
@@ -63,9 +71,17 @@ class UseCase(models.Model):
    target_user = models.CharField(max_length=200, blank=True, null=True)
    release = models.ForeignKey('Release', blank=True, null=True)
 
+   def __unicode__(self):
+      return self.title
+
+
 class Attribute(models.Model):
    title = models.CharField(max_length=200)
    description = models.CharField(max_length=1028)
+
+   def __unicode__(self):
+      return self.title
+  
 
 class Component(models.Model):
    title = models.CharField(max_length=200)
@@ -78,6 +94,10 @@ class Component(models.Model):
    release = models.ForeignKey('Release', blank=True, null=True)
    approval_status = models.CharField(max_length=128, choices=APPROVAL_STATUS_CHOICES)
 
+   def __unicode__(self):
+      return self.title
+
+
 class Feature(models.Model):
    title = models.CharField(max_length=200)
    description = models.CharField(max_length=1028)
@@ -87,6 +107,10 @@ class Feature(models.Model):
    #implementation
    release = models.ForeignKey('Release', blank=True, null=True)
    approval_status = models.CharField(max_length=128, choices=APPROVAL_STATUS_CHOICES)
+ 
+   def __unicode__(self):
+      return self.title
+
 
 class Test(models.Model):
    title = models.CharField(max_length=200)
@@ -98,6 +122,10 @@ class Test(models.Model):
    equipment = models.CharField(max_length=1028, blank=True, null=True)
    status = models.CharField(max_length=128, choices=TEST_STATUS_CHOICES)
 
+   def __unicode__(self):
+      return self.title
+
+
 class Bug(models.Model):
    title = models.CharField(max_length=200)
    description = models.CharField(max_length=1028)
@@ -107,11 +135,20 @@ class Bug(models.Model):
    release = models.ForeignKey('Release', blank=True, null=True)
    test = models.ForeignKey('Test', blank=True, null=True)
 
+   def __unicode__(self):
+      return self.title
+
+
 class BetaTest(models.Model):
+   name = models.CharField(max_length=200)
    customer = models.ManyToManyField('Customer')
    release = models.OneToOneField('Release')
    features = models.ManyToManyField('Feature', blank=True, null=True)
    feedback = models.CharField(max_length=1028)
+
+   def __unicode__(self):
+      return self.name
+
 
 class Customer(models.Model):
    first_name = models.CharField(max_length=200)
@@ -119,7 +156,12 @@ class Customer(models.Model):
    organization = models.CharField(max_length=200, blank=True, null=True)
    #location = 
 
+   def __unicode__(self):
+      return self.first_name
+
+
 class Release(models.Model):
+   name = models.CharField(max_length=200)
    release_date = models.DateTimeField()
    pass_fail_criteria = models.CharField(max_length=1028, blank=True, null=True)
    market = models.CharField(max_length=200, blank=True, null=True) #maybe define class for market
@@ -127,6 +169,10 @@ class Release(models.Model):
    #marketing_documents
    #press_release_documents
    roadmap = models.ForeignKey('Roadmap', blank=True, null=True)
+
+   def __unicode__(self):
+      return self.name
+
 
 class Risk(models.Model):
    title = models.CharField(max_length=200)
@@ -138,9 +184,17 @@ class Risk(models.Model):
    severity = models.CharField(max_length=128, choices=PRIORITY_CHOICES)
    status = models.CharField(max_length=128, choices=RISK_CHOICES)
 
+   def __unicode__(self):
+      return self.title
+
+
 class Team(models.Model):
    #manager = models.ForeignKey('Member')
    name = models.CharField(max_length=200)
+
+   def __unicode__(self):
+      return self.name
+
 
 class Member(models.Model):
    first_name = models.CharField(max_length=200)
@@ -150,6 +204,10 @@ class Member(models.Model):
    is_manager = models.BooleanField(default=False)
    #photo
    #permissions
+
+   def __unicode__(self):
+      return self.first_name
+
 
 class Milestone(models.Model):
    title = models.CharField(max_length=200)
@@ -162,6 +220,10 @@ class Milestone(models.Model):
    successors = models.ManyToManyField('Milestone', blank=True, null=True)
    percent_complete = models.IntegerField()
    roadmap = models.ForeignKey('Roadmap', blank=True, null=True)
+ 
+   def __unicode__(self):
+      return self.title
+
 
 class Roadmap(models.Model):
    title = models.CharField(max_length=200)
@@ -171,3 +233,8 @@ class Roadmap(models.Model):
    features = models.ManyToManyField('Feature', blank=True, null=True)
    market = models.CharField(max_length=200, blank=True, null=True) #maybe define class for market
    customers  = models.ManyToManyField('Customer', blank=True, null=True)
+
+   def __unicode__(self):
+      return self.title
+
+
