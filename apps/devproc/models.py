@@ -89,7 +89,7 @@ class Component(models.Model):
    responsible_engineer = models.ManyToManyField('Member', blank=True, null=True)
    category = models.ManyToManyField('Category', blank=True, null=True)
    #documents
-   attributes = models.ForeignKey('Attribute', blank=True, null=True)
+   attributes = models.ManyToManyField('Attribute', blank=True, null=True)
    parent = models.ForeignKey('Component', blank=True, null=True)
    release = models.ForeignKey('Release', blank=True, null=True)
    approval_status = models.CharField(max_length=128, choices=APPROVAL_STATUS_CHOICES)

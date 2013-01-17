@@ -12,7 +12,9 @@ def create_release(request):
    return HttpResponse("You're adding new release")
 
 def view_release(request, release_id):
-   return HttpResponse("You're looking at release %s." % release_id)
+   release = Release.objects.get(id = release_id)
+   return render_to_response('releases/view_release.html', {'release': release})
+
 
 def edit_release(request, release_id):
    return HttpResponse("You're editing release %s." % release_id)

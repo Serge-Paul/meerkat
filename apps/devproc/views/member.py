@@ -17,7 +17,9 @@ def create_member(request, team_id):
    return HttpResponse("You're adding new member")
 
 def view_member(request, member_id):
-   return HttpResponse("You're looking at member %s." % member_id)
+   member = Member.objects.get(id = member_id)
+   return render_to_response('members/view_member.html', {'member': member})
+
 
 def edit_member(request, member_id):
    return HttpResponse("You're editing member %s." % member_id)                                                              

@@ -12,7 +12,9 @@ def create_betatest(request):
    return HttpResponse("You're adding new betatest")
 
 def view_betatest(request, betatest_id):
-   return HttpResponse("You're looking at betatest %s." % betatest_id)
+   betatest = BetaTest.objects.get(id = betatest_id)
+   return render_to_response('betatests/view_betatest.html', {'betatest': betatest})
+
 
 def edit_betatest(request, betatest_id):
    return HttpResponse("You're editing betatest %s." % betatest_id)

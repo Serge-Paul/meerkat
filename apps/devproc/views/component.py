@@ -12,7 +12,9 @@ def create_component(request):
    return HttpResponse("You're adding new component")
 
 def view_component(request, component_id):
-   return HttpResponse("You're looking at component %s." % component_id)
+  component = Component.objects.get(id = component_id)
+  return render_to_response('components/view_component.html', {'component': component})
+
 
 def edit_component(request, component_id):
    return HttpResponse("You're editing component %s." % component_id)

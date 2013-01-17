@@ -12,7 +12,9 @@ def create_bug(request):
    return HttpResponse("You're adding new bug")
 
 def view_bug(request, bug_id):
-   return HttpResponse("You're looking at bug %s." % bug_id)
+   bug = Bug.objects.get(id = bug_id)
+   return render_to_response('bugs/view_bug.html', {'bug': bug})
+
 
 def edit_bug(request, bug_id):
    return HttpResponse("You're editing bug %s." % bug_id)                                                           

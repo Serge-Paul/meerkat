@@ -12,7 +12,9 @@ def create_roadmap(request):
    return HttpResponse("You're adding new roadmap")
 
 def view_roadmap(request, roadmap_id):
-   return HttpResponse("You're looking at roadmap %s." % roadmap_id)
+   roadmap = Roadmap.objects.get(id = roadmap_id)
+   return render_to_response('roadmaps/view_roadmap.html', {'roadmap': roadmap})
+
 
 def edit_roadmap(request, roadmap_id):
    return HttpResponse("You're editing roadmap %s." % roadmap_id)

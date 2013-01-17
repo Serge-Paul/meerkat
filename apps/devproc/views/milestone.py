@@ -12,7 +12,9 @@ def create_milestone(request):
    return HttpResponse("You're adding new milestone")
 
 def view_milestone(request, milestone_id):
-   return HttpResponse("You're looking at milestone %s." % milestone_id)
+   milestone = Milestone.objects.get(id = milestone_id)
+   return render_to_response('milestones/view_milestone.html', {'milestone': milestone})
+
 
 def edit_milestone(request, milestone_id):
    return HttpResponse("You're editing milestone %s." % milestone_id)

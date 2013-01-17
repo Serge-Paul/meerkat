@@ -12,7 +12,9 @@ def create_usecase(request):
    return HttpResponse("You're adding new usecase")
 
 def view_usecase(request, usecase_id):
-   return HttpResponse("You're looking at usecase %s." % usecase_id)
+   usecase = UseCase.objects.get(id = usecase_id)
+   return render_to_response('usecases/view_usecase.html', {'usecase': usecase})
+
 
 def edit_usecase(request, usecase_id):
    return HttpResponse("You're editing usecase %s." % usecase_id)

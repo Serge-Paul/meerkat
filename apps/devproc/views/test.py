@@ -12,7 +12,9 @@ def create_test(request):
    return HttpResponse("You're adding new test")
 
 def view_test(request, test_id):
-   return HttpResponse("You're looking at test %s." % test_id)
+   test = Test.objects.get(id = test_id)
+   return render_to_response('tests/view_test.html', {'test': test})
+
 
 def edit_test(request, test_id):
    return HttpResponse("You're editing test %s." % test_id)

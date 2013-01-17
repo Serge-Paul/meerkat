@@ -13,7 +13,9 @@ def create_feature(request):
    return HttpResponse("You're adding new feature")
 
 def view_feature(request, feature_id):
-   return HttpResponse("You're looking at feature %s." % feature_id)
+   feature = Feature.objects.get(id = feature_id)
+   return render_to_response('features/view_feature.html', {'feature': feature})
+
 
 def edit_feature(request, feature_id):
    return HttpResponse("You're editing feature %s." % feature_id)
