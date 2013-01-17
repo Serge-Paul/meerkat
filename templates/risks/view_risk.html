@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}
+Risk
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if risk %}
+
+<p>
+Risk title: {{ risk.title }}
+</p>
+
+<p>
+Status: {{ risk.status }}
+</p>
+
+<p>
+Description: {{ risk.description }}
+</p>
+
+<p>
+Probability: {{ risk.probability }}
+</p>
+
+<p>
+Severity: {{ risk.severity }}
+</p>
+
+
+<p>
+Release:
+{% if risk.release %} <!-- this is foreign key field -->
+   <a href="/releases/{{ risk.release.id }}/">{{ risk.release }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Features:
+{% if risk.features.all.0 %}   <!-- this is manyToMany field -->
+   {% for feature in risk.features.all %}
+      <br/>
+      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Categories:
+{% if risk.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in risk.category.all %}
+    
+      {{ category.category }} / 
+    
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<!-- *** IF NO risks *** -->
+{% else %}
+<p>No risks are available.</p>
+{% endif %}
+{% endblock %}
+
+
+
+

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Attributes
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if attribute %}
+
+
+<p>
+Attribute Title: {{ attribute.title }}
+</p>
+
+<p>
+Component: {{ component.title }}
+</p>
+
+<p>
+Description: 
+<br/>{{ attribute.description }}
+</p>
+
+
+
+<!-- *** IF NO ATTRIBUTES *** -->
+{% else %}
+<p>No attributes are available.</p>
+{% endif %}
+{% endblock %}
+
+

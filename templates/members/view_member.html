@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+Members
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if member %}
+
+<p>
+{{ member.first_name }} {{ member.last_name }}
+</p>
+
+<p>
+Position title: 
+{% if member.title %}
+{{ member.title }}
+{% else %}
+None
+{% endif %}
+</p>
+
+<p>
+Team: 
+<a href="/teams/{{ member.team.id }}/">{{ member.team }}</a>
+</p>
+
+
+<!-- *** IF NO member *** -->
+{% else %}
+<p>No members are available.</p>
+{% endif %}
+{% endblock %}
+

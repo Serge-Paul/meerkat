@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+Milestones
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if milestone %}
+
+<p>
+Milestone title: {{ milestone.title }}
+</p>
+
+<p>
+Description: 
+<br/>{{ milestone.description }}
+</p>
+
+<p>
+Duration: {{ milestone.start_date }} to {{ milestone.end_date }}
+</p>
+
+<p>
+Percent complete: {{ milestone.percent_complete }}%
+</p>
+
+<p>
+Release: 
+<a href="/releases/{{ milestone.release.id }}/">{{ milestone.release }}</a>
+</p>
+
+<p>
+Categories:
+{% if milestone.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in milestone.category.all %}
+      
+      {{ category.category }} /      
+
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Roadmap:
+{% if milestone.roadmap %} <!-- this is foreign key field -->
+   <a href="/roadmaps/{{ milestone.roadmap.id }}/">{{ milestone.roadmap }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Successor milestones:
+{% if milestone.successors.all.0 %}   <!-- this is manyToMany field -->
+   {% for successor in milestone.successors.all %}
+      <br/>
+      <a href="/milestones/{{ successor.id }}/">{{ successor.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+<!-- *** IF NO milestones *** -->
+{% else %}
+<p>No milestones are available.</p>
+{% endif %}
+{% endblock %}
+

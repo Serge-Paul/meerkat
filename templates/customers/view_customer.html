@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+Customers
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if customer %}
+
+<p>
+First name: {{ customer.first_name }}
+</p>
+
+<p>
+Last name: {{ customer.last_name }}
+</p>
+
+<p>
+Organization: {{ customer.organization }}
+</p>
+
+
+<!-- *** IF NO customer *** -->
+{% else %}
+<p>No customers are available.</p>
+{% endif %}
+{% endblock %}
+
+

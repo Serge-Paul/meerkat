@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+Features
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if feature %}
+
+<p>
+Feature title: {{ feature.title }}
+</p>
+
+<p>
+Description: {{ feature.description }}
+</p>
+
+<p>
+Approval status: {{ feature.approval_status }}
+</p>
+
+<p>
+Release:
+{% if feature.release %} <!-- this is foreign key field -->
+   <a href="/releases/{{ feature.release.id }}/">{{ feature.release }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Categories:
+{% if feature.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in feature.category.all %}
+     
+      {{ category.category }} /  
+     
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Responsible Engineers:
+{% if feature.responsible_engineer.all.0 %}   <!-- this is manyToMany field -->
+   {% for member in feature.responsible_engineer.all %}
+      <br/>
+      <a href="/members/{{ member.id }}/">{{ member.first_name }}  {{ member.last_name }}</a>, {{ member.title }}
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+
+<!-- *** IF NO features *** -->
+{% else %}
+<p>No features are available.</p>
+{% endif %}
+{% endblock %}
+

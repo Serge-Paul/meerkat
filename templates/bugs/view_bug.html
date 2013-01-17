@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+Bugs
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if bug %}
+
+<p>
+Bug title: {{ bug.title }}
+</p>
+
+<p>
+Description: 
+<br/>{{ bug.description }}
+</p>
+
+<p>
+Severity: {{ bug.severity }}
+</p>
+
+<p>
+Bug status: {{ bug.status }}
+</p>
+
+<p>
+Release:
+{% if bug.release %} <!-- this is foreign key field -->
+   <a href="/releases/{{ bug.release.id }}/">{{ bug.release }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Features:
+{% if bug.features.all.0 %}   <!-- this is manyToMany field -->
+   {% for feature in bug.features.all %}
+      <br/>
+      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Test:
+{% if bug.test %} <!-- this is foreign key field -->
+   <a href="/tests/{{ bug.test.id }}/">{{ bug.test }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+
+<!-- *** IF NO REQMTS *** -->
+{% else %}
+<p>No requirements are available.</p>
+{% endif %}
+{% endblock %}
+

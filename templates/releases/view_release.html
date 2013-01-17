@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+Releases
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if release %}
+
+<p>
+Release name: {{ release.name }}
+</p>
+
+<p>
+Release date: {{ release.release_date }}
+</p>
+
+<p>
+Roadmap:
+{% if release.roadmap %} <!-- this is foreign key field -->
+   <a href="/roadmaps/{{ release.roadmap.id }}/">{{ release.roadmap }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Pass/fail criteria: {{ release.pass_fail_criteria }}
+</p>
+
+<p>
+Market: {{ release.market }}
+</p>
+
+
+<!-- *** IF NO release *** -->
+{% else %}
+<p>No releases are available.</p>
+{% endif %}
+{% endblock %}
+
+

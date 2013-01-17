@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}
+Design Components
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if component %}
+
+<p>
+Component name: {{ component.title }}
+</p>
+
+<p>
+Description:
+<br/>{{ component.description }}
+</p>
+
+<p>
+Approval status: {{ component.approval_status }}
+</p>
+
+<p>
+Release:
+{% if component.release %} <!-- this is foreign key field -->
+   <a href="/releases/{{ component.release.id }}/">{{ component.release }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Categories:
+{% if component.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in component.category.all %}
+     
+    {{ category.category }} / 
+     
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Responsible Engineers:
+{% if component.responsible_engineer.all.0 %}   <!-- this is manyToMany field -->
+   {% for member in component.responsible_engineer.all %}
+      <br/>
+      <a href="/members/{{ member.id }}/">{{ member.first_name }}  {{ member.last_name }}</a>, {{ member.title }}
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Parent Component:
+{% if component.parent %} <!-- this is foreign key field -->
+   <a href="/components/{{ component.parent.id }}/">{{ component.parent }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Attributes:
+{% if component.attributes.all.0 %}   <!-- this is manyToMany field -->
+   {% for attribute in component.attributes.all %}
+      <br/>
+      <a href="/attributes/{{ component.id }}/{{ attribute.id }}/">{{ attribute.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+<!-- *** IF NO components *** -->
+{% else %}
+<p>No components are available.</p>
+{% endif %}
+{% endblock %}
+
+

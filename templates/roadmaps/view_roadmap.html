@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}
+Roadmaps
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if roadmap %}
+
+<p>
+Roadmap Title: {{ roadmap.title }}
+</p>
+
+<p>
+Description: {{ roadmap.description }}
+</p>
+
+<p>
+End date: {{ roadmap.end_date }}
+</p>
+
+<p>
+Market: {{ roadmap.market }}
+</p>
+
+<p>
+Features:
+{% if roadmap.features.all.0 %}   <!-- this is manyToMany field -->
+   {% for feature in roadmap.features.all %}
+      <br/>
+      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Categories:
+{% if roadmap.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in roadmap.category.all %}
+     
+      {{ category.category }} /     
+
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+<p>
+Customers:
+{% if roadmap.customers.all.0 %}   <!-- this is manyToMany field -->
+   {% for customer in roadmap.customers.all %}
+      <br/>
+      <a href="/customers/{{ customer.id }}/">{{ customer.first_name }} {{ customer.last_name }}</a>, {{ customer.organization }}
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<!-- *** IF NO roadmap *** -->
+{% else %}
+<p>No roadmaps are available.</p>
+{% endif %}
+{% endblock %}
+
+
