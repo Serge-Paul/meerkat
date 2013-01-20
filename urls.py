@@ -17,27 +17,34 @@ urlpatterns += patterns('apps.devproc.views.requirement',
    url(r'^requirements/add/$', 'create_reqmt'),
    url(r'^requirements/(?P<reqmt_id>\d+)/$', 'view_reqmt'),
    url(r'^requirements/(?P<reqmt_id>\d+)/edit/$', 'edit_reqmt'),
+   url(r'^requirements/(?P<reqmt_id>\d+)/delete/$', 'delete_reqmt'),
 )
+
 
 urlpatterns += patterns('apps.devproc.views.attribute',
    url(r'^attributes/(?P<component_id>\d+)/$', 'view_all_attributes'),
    url(r'^attributes/add/$', 'create_attribute'),
    url(r'^attributes/(?P<component_id>\d+)/(?P<attribute_id>\d+)/$', 'view_attribute'),
    url(r'^attributes/(?P<attribute_id>\d+)/edit/$', 'edit_attribute'),
+   url(r'^attributes/(?P<attribute_id>\d+)/delete/$', 'delete_attribute'),
 )
+
 
 urlpatterns += patterns('apps.devproc.views.betatest',
    url(r'^betatests/$', 'view_all_betatests'),
    url(r'^betatests/add/$', 'create_betatest'),
    url(r'^betatests/(?P<betatest_id>\d+)/$', 'view_betatest'),
    url(r'^betatests/(?P<betatest_id>\d+)/edit/$', 'edit_betatest'),
+   url(r'^betatests/(?P<betatest_id>\d+)/delete/$', 'delete_betatest'),
 )
+
 
 urlpatterns += patterns('apps.devproc.views.bug',
    url(r'^bugs/$', 'view_all_bugs'),
    url(r'^bugs/add/$', 'create_bug'),
    url(r'^bugs/(?P<bug_id>\d+)/$', 'view_bug'),
    url(r'^bugs/(?P<bug_id>\d+)/edit/$', 'edit_bug'),
+   url(r'^bugs/(?P<bug_id>\d+)/delete/$', 'delete_bug'),
 )
 
 urlpatterns += patterns('apps.devproc.views.component',
@@ -45,6 +52,7 @@ urlpatterns += patterns('apps.devproc.views.component',
    url(r'^components/add/$', 'create_component'),
    url(r'^components/(?P<component_id>\d+)/$', 'view_component'),
    url(r'^components/(?P<component_id>\d+)/edit/$', 'edit_component'),
+   url(r'^components/(?P<component_id>\d+)/delete/$', 'delete_component'),
 )
 
 urlpatterns += patterns('apps.devproc.views.customer',
@@ -52,6 +60,7 @@ urlpatterns += patterns('apps.devproc.views.customer',
    url(r'^customers/add/$', 'create_customer'),
    url(r'^customers/(?P<customer_id>\d+)/$', 'view_customer'),
    url(r'^customers/(?P<customer_id>\d+)/edit/$', 'edit_customer'),
+   url(r'^customers/(?P<customer_id>\d+)/delete/$', 'delete_customer'),
 )
 
 urlpatterns += patterns('apps.devproc.views.feature',
@@ -59,6 +68,7 @@ urlpatterns += patterns('apps.devproc.views.feature',
    url(r'^features/add/$', 'create_feature'),
    url(r'^features/(?P<feature_id>\d+)/$', 'view_feature'),
    url(r'^features/(?P<feature_id>\d+)/edit/$', 'edit_feature'),
+   url(r'^features/(?P<feature_id>\d+)/delete/$', 'delete_feature'),
 )
 
 urlpatterns += patterns('apps.devproc.views.member',
@@ -66,6 +76,7 @@ urlpatterns += patterns('apps.devproc.views.member',
    url(r'^members/(?P<team_id>\d+)/add/$', 'create_member'),
    url(r'^members/(?P<member_id>\d+)/$', 'view_member'),
    url(r'^members/(?P<member_id>\d+)/edit/$', 'edit_member'),
+   url(r'^members/(?P<member_id>\d+)/delete/$', 'delete_member'),
 )
 
 urlpatterns += patterns('apps.devproc.views.milestone',
@@ -73,6 +84,7 @@ urlpatterns += patterns('apps.devproc.views.milestone',
    url(r'^milestones/add/$', 'create_milestone'),
    url(r'^milestones/(?P<milestone_id>\d+)/$', 'view_milestone'),
    url(r'^milestones/(?P<milestone_id>\d+)/edit/$', 'edit_milestone'),
+   url(r'^milestones/(?P<milestone_id>\d+)/delete/$', 'delete_milestone'),
 )
 
 urlpatterns += patterns('apps.devproc.views.release',
@@ -80,20 +92,25 @@ urlpatterns += patterns('apps.devproc.views.release',
    url(r'^releases/add/$', 'create_release'),
    url(r'^releases/(?P<release_id>\d+)/$', 'view_release'),
    url(r'^releases/(?P<release_id>\d+)/edit/$', 'edit_release'),
+   url(r'^releases/(?P<release_id>\d+)/delete/$', 'delete_release'),
 )
+
 
 urlpatterns += patterns('apps.devproc.views.risk',
    url(r'^risks/$', 'view_all_risks'),
    url(r'^risks/add/$', 'create_risk'),
    url(r'^risks/(?P<risk_id>\d+)/$', 'view_risk'),
    url(r'^risks/(?P<risk_id>\d+)/edit/$', 'edit_risk'),
+   url(r'^risks/(?P<risk_id>\d+)/delete/$', 'delete_risk'),
 )
+
 
 urlpatterns += patterns('apps.devproc.views.roadmap',
    url(r'^roadmaps/$', 'view_all_roadmaps'),
    url(r'^roadmaps/add/$', 'create_roadmap'),
    url(r'^roadmaps/(?P<roadmap_id>\d+)/$', 'view_roadmap'),
    url(r'^roadmaps/(?P<roadmap_id>\d+)/edit/$', 'edit_roadmap'),
+   url(r'^roadmaps/(?P<roadmap_id>\d+)/delete/$', 'delete_roadmap'),
 )
 
 urlpatterns += patterns('apps.devproc.views.team',
@@ -101,6 +118,7 @@ urlpatterns += patterns('apps.devproc.views.team',
    url(r'^teams/add/$', 'create_team'),
    url(r'^teams/(?P<team_id>\d+)/$', 'view_team'),
    url(r'^teams/(?P<team_id>\d+)/edit/$', 'edit_team'),
+   url(r'^teams/(?P<team_id>\d+)/delete/$', 'delete_team'),
 )
 
 urlpatterns += patterns('apps.devproc.views.test',
@@ -108,13 +126,16 @@ urlpatterns += patterns('apps.devproc.views.test',
    url(r'^tests/add/$', 'create_test'),
    url(r'^tests/(?P<test_id>\d+)/$', 'view_test'),
    url(r'^tests/(?P<test_id>\d+)/edit/$', 'edit_test'),
+   url(r'^tests/(?P<test_id>\d+)/delete/$', 'delete_test'),
 )
+
 
 urlpatterns += patterns('apps.devproc.views.usecase',
    url(r'^usecases/$', 'view_all_usecases'),
    url(r'^usecases/add/$', 'create_usecase'),
    url(r'^usecases/(?P<usecase_id>\d+)/$', 'view_usecase'),
    url(r'^usecases/(?P<usecase_id>\d+)/edit/$', 'edit_usecase'),
+   url(r'^usecases/(?P<usecase_id>\d+)/delete/$', 'delete_usecase'),
 )
 
 

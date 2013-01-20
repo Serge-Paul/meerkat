@@ -10,9 +10,19 @@
 {% block content %}
 {% if team %}
 
+<p>
+<a href="/teams/add/">Create new team</a>
+</p>
+
 <h1>
 {{ team.name }}
 </h1>
+
+<p>
+<a href="/teams/{{ team.id }}/edit/">Edit</a> | 
+<a href="/teams/{{ team.id }}/delete/">Delete</a>
+
+</p>
 
 <p>
 Team Members:
