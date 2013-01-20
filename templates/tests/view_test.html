@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Tests
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if test %}
+
+<p>
+Title: {{ test.title }}
+</p>
+
+<p>
+Status: {{ test.status }}
+</p>
+
+<p>
+Description: 
+<br/>
+{{ test.description }}
+</p>
+
+<p>
+Categories:
+{% if test.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in test.category.all %}
+      
+       {{ category }} / 
+
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Features:
+{% if test.features.all.0 %}   <!-- this is manyToMany field -->
+   {% for feature in test.features.all %}
+      <br/>
+      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Pass/Fail Criteria: {{ test.pass_fail_criteria }}
+</p>
+
+<p>
+Equipment: {{ test.equipment }}
+</p>
+
+<p>
+Responsible Engineers:
+{% if test.responsible_engineer.all.0 %}   <!-- this is manyToMany field -->
+   {% for member in test.responsible_engineer.all %}
+      <br/>
+      <a href="/members/{{ member.id }}/">{{ member.first_name }}  {{ member.last_name }}</a>, {{ member.title }}
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+<!-- *** IF NO TESTS *** -->
+{% else %}
+<p>No tests are available.</p>
+{% endif %}
+{% endblock %}
+

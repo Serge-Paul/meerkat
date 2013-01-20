@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Use Case
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+{% if usecase %}
+
+<p>
+Title: {{ usecase.title }}
+</p>
+
+<p>
+Description: {{ usecase.description }}
+</p>
+
+<p>
+Categories:
+{% if usecase.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in usecase.category.all %}
+    
+   {{ category }} /  
+    
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Features:
+{% if usecase.features.all.0 %}   <!-- this is manyToMany field -->
+   {% for feature in usecase.features.all %}
+      <br/>
+      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+<p>
+Target Market: {{ usecase.target_market }}
+</p>
+
+
+<p>
+Target User: {{ usecase.target_user }}
+</p>
+
+
+<p>
+Release: {{ usecase.release }}
+</p>
+
+
+<!-- *** IF NO USECASES *** -->
+{% else %}
+<p>No usecases are available.</p>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Edit Team
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+
+
+<form id="edit-team-form" action="/teams/{{ team.id }}/edit/" method="post" enctype="multipart/form-data">
+
+
+  <ul>
+    <li>
+      <label for="team_name">{{ form.team_name.label }}</label>
+      <div>{{ form.team_name }}</div>
+      <div class="errors">{{ form.team_name.errors.0 }}</div>
+    </li>
+</ul>
+
+
+
+<br/>
+<input type="submit" value="Save">
+
+
+ {% csrf_token %}
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}`
+
+
+
