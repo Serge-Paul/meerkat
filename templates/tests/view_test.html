@@ -54,10 +54,6 @@ Pass/Fail Criteria: {{ test.pass_fail_criteria }}
 </p>
 
 <p>
-Equipment: {{ test.equipment }}
-</p>
-
-<p>
 Responsible Engineers:
 {% if test.responsible_engineer.all.0 %}   <!-- this is manyToMany field -->
    {% for member in test.responsible_engineer.all %}

@@ -12,8 +12,8 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 
 class UseCaseAdmin(admin.ModelAdmin):
-  list_display = ('id', 'title', 'description', 'target_market', 'target_user')
-  search_fields = ['id', 'title', 'description','category','target_market', 'target_user']
+  list_display = ('id', 'title', 'description', 'target_market')
+  search_fields = ['id', 'title', 'description','category','target_market', 'notes']
 admin.site.register(UseCase, UseCaseAdmin)
 
 class AttributeAdmin(admin.ModelAdmin):
@@ -22,18 +22,18 @@ class AttributeAdmin(admin.ModelAdmin):
 admin.site.register(Attribute, AttributeAdmin)
 
 class ComponentAdmin(admin.ModelAdmin):
-  list_display = ('id', 'title', 'description', 'approval_status')
-  search_fields = ['id', 'title', 'description', 'category', 'approval_status']
+  list_display = ('id', 'title', 'design_description', 'approval_status')
+  search_fields = ['id', 'title', 'design_description', 'category', 'approval_status', 'notes', 'implementation_description']
 admin.site.register(Component, ComponentAdmin)
 
 class FeatureAdmin(admin.ModelAdmin):
-  list_display = ('id', 'title', 'description', 'approval_status')
-  search_fields = ['id', 'title', 'description', 'category', 'approval_status']
+  list_display = ('id', 'title', 'design_description', 'approval_status')
+  search_fields = ['id', 'title', 'design_description', 'category', 'approval_status', 'implementation_description', 'notes']
 admin.site.register(Feature, FeatureAdmin)
 
 class TestAdmin(admin.ModelAdmin):
-  list_display = ('id', 'title', 'description', 'status')
-  search_fields = ['id', 'title', 'description', 'category', 'status']
+  list_display = ('id', 'title', 'test_description', 'status')
+  search_fields = ['id', 'title', 'test_description', 'category', 'status', 'implementation_description']
 admin.site.register(Test, TestAdmin)
 
 class BugAdmin(admin.ModelAdmin):
@@ -42,8 +42,8 @@ class BugAdmin(admin.ModelAdmin):
 admin.site.register(Bug, BugAdmin)
 
 class BetaTestAdmin(admin.ModelAdmin):
-  list_display = ('id', 'feedback')
-  search_fields = ['id', 'customer', 'feedback', 'features']
+  list_display = ('id', 'release')
+  search_fields = ['id', 'release', 'responsible_engineer']
 admin.site.register(BetaTest, BetaTestAdmin)
 
 class CustomerAdmin(admin.ModelAdmin):

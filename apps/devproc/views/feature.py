@@ -19,4 +19,12 @@ def view_feature(request, feature_id):
 
 def edit_feature(request, feature_id):
    return HttpResponse("You're editing feature %s." % feature_id)
+
+
+def delete_feature(request, feature_id):
+
+   feature = Feature.objects.get(id = feature_id)
+   feature.delete()
+
+   return redirect('apps.devproc.views.feature.view_all_features')   
                                                               

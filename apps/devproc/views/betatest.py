@@ -18,3 +18,12 @@ def view_betatest(request, betatest_id):
 
 def edit_betatest(request, betatest_id):
    return HttpResponse("You're editing betatest %s." % betatest_id)
+
+def delete_betatest(request, betatest_id):
+
+   betatest = BetaTest.objects.get(id = betatest_id)
+   betatest.delete()
+
+   return redirect('apps.devproc.views.betatest.view_all_betatests')   
+
+

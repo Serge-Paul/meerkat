@@ -19,3 +19,11 @@ def view_release(request, release_id):
 def edit_release(request, release_id):
    return HttpResponse("You're editing release %s." % release_id)
 
+
+def delete_release(request, release_id):
+
+   release = Release.objects.get(id = release_id)
+   release.delete()
+
+   return redirect('apps.devproc.views.release.view_all_releases')   
+

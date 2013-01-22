@@ -22,4 +22,14 @@ def view_member(request, member_id):
 
 
 def edit_member(request, member_id):
-   return HttpResponse("You're editing member %s." % member_id)                                                              
+   return HttpResponse("You're editing member %s." % member_id)   
+
+
+def delete_member(request, member_id):
+
+   member = Member.objects.get(id = member_id)
+   member.delete()
+
+   return redirect('apps.devproc.views.member.view_all_members')   
+
+                                                           

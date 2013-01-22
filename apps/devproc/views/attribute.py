@@ -21,3 +21,11 @@ def view_attribute(request, component_id, attribute_id):
 
 def edit_attribute(request, attribute_id):
    return HttpResponse("You're editing attribute %s." % attribute_id)
+
+def delete_attribute(request, attribute_id):
+
+   attribute = Attribute.objects.get(id = attribute_id)
+   attribute.delete()
+
+   return redirect('apps.devproc.views.attribute.view_all_attributes')   
+

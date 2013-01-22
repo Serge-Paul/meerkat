@@ -16,4 +16,12 @@ def view_customer(request, customer_id):
 
 def edit_customer(request, customer_id):
    return HttpResponse("You're editing customer %s." % customer_id)
+
+
+def delete_customer(request, customer_id):
+
+   customer = Customer.objects.get(id = customer_id)
+   customer.delete()
+
+   return redirect('apps.devproc.views.customer.view_all_customers')   
                                                               

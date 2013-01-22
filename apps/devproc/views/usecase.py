@@ -19,3 +19,11 @@ def view_usecase(request, usecase_id):
 def edit_usecase(request, usecase_id):
    return HttpResponse("You're editing usecase %s." % usecase_id)
 
+def delete_usecase(request, usecase_id):
+
+   usecase = UseCase.objects.get(id = usecase_id)
+   usecase.delete()
+
+   return redirect('apps.devproc.views.usecase.view_all_usecases')   
+
+

@@ -17,4 +17,12 @@ def view_bug(request, bug_id):
 
 
 def edit_bug(request, bug_id):
-   return HttpResponse("You're editing bug %s." % bug_id)                                                           
+   return HttpResponse("You're editing bug %s." % bug_id)
+
+def delete_bug(request, bug_id):
+
+   bug = Bug.objects.get(id = bug_id)
+   bug.delete()
+
+   return redirect('apps.devproc.views.bug.view_all_bugs')   
+                                                         

@@ -18,4 +18,12 @@ def view_milestone(request, milestone_id):
 
 def edit_milestone(request, milestone_id):
    return HttpResponse("You're editing milestone %s." % milestone_id)
+
+
+def delete_milestone(request, milestone_id):
+
+   milestone = Milestone.objects.get(id = milestone_id)
+   milestone.delete()
+
+   return redirect('apps.devproc.views.milestone.view_all_milestones')   
                                                               

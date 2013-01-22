@@ -18,4 +18,12 @@ def view_component(request, component_id):
 
 def edit_component(request, component_id):
    return HttpResponse("You're editing component %s." % component_id)
+
+
+def delete_component(request, component_id):
+
+   component = Component.objects.get(id = component_id)
+   component.delete()
+
+   return redirect('apps.devproc.views.component.view_all_components')   
                                                              

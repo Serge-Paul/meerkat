@@ -13,7 +13,14 @@ def view_reqmt(request, reqmt_id):
    reqmt = Requirement.objects.get(id = reqmt_id)
    return render_to_response('requirements/view_reqmt.html', {'reqmt': reqmt})
 
-  
-
 def edit_reqmt(request, reqmt_id):
    return HttpResponse("You're editing reqmt %s." % reqmt_id)
+
+
+def delete_reqmt(request, reqmt_id):
+
+   reqmt = Requirement.objects.get(id = reqmt_id)
+   reqmt.delete()
+
+   return redirect('apps.devproc.views.requirements.view_all_reqmts')   
+
