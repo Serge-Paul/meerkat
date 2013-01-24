@@ -12,7 +12,8 @@ def create_test(request):
 
 def view_test(request, test_id):
    test = Test.objects.get(id = test_id)
-   return render_to_response('tests/view_test.html', {'test': test})
+   bugs = Bug.objects.filter(test = test_id)
+   return render_to_response('tests/view_test.html', {'test': test, 'bugs': bugs})
 
 def edit_test(request, test_id):
    return HttpResponse("You're editing test %s." % test_id)

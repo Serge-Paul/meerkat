@@ -10,12 +10,23 @@
 {% block content %}
 {% if usecase %}
 
+<h1>Use Case</h1>
+
 <p>
 Title: {{ usecase.title }}
 </p>
 
 <p>
+Use Case ID: {{ usecase.identifier }}
+</p>
+
+<p>
 Description: {{ usecase.description }}
+</p>
+
+<p>
+Source:
+{{ usecase.source }}
 </p>
 
 <p>
@@ -32,30 +43,12 @@ Categories:
 </p>
 
 <p>
-Features:
-{% if usecase.features.all.0 %}   <!-- this is manyToMany field -->
-   {% for feature in usecase.features.all %}
-      <br/>
-      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
-   {% endfor %}
-{% else %}
-   None
-{% endif %}
+Target Market/User: {{ usecase.target_market }}
 </p>
 
-
 <p>
-Target Market: {{ usecase.target_market }}
-</p>
-
-
-<p>
-Target User: {{ usecase.target_user }}
-</p>
-
-
-<p>
-Release: {{ usecase.release }}
+Notes: <br/>
+{{ usecase.notes }}
 </p>
 
 

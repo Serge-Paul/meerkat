@@ -131,7 +131,7 @@ class Feature(models.Model):
    responsible_engineer = models.ManyToManyField('Member', blank=True, null=True)
    #attachments
    #implementation
-   release = models.ForeignKey('Release', blank=True, null=True)
+   release = models.ForeignKey('Release')
    approval_status = models.CharField(max_length=128, choices=APPROVAL_STATUS_CHOICES)
    usecases = models.ManyToManyField('UseCase', blank=True, null=True)
    requirements = models.ManyToManyField('Requirement', blank=True, null=True)
@@ -184,7 +184,7 @@ class BetaTest(models.Model):
    responsible_engineer = models.ManyToManyField('Member', blank=True, null=True)
 
    def __unicode__(self):
-      return self.name
+      return self.release.name  #might want to change this
 
 
 class Customer(models.Model):
@@ -215,10 +215,9 @@ class Release(models.Model):
    #documents
    #marketing_documents
    #press_release_documents
-   roadmap = models.ForeignKey('Roadmap', blank=True, null=True)
    notes = models.TextField(max_length=1028, blank=True, null=True)
    responsible_engineer = models.ManyToManyField('Member', blank=True, null=True)
-   goal = models.CharField(max_length=1028, blank=True, null=True)
+   goals = models.CharField(max_length=1028, blank=True, null=True)
 
    def __unicode__(self):
       return self.name
@@ -275,19 +274,6 @@ class Milestone(models.Model):
    predecessors = models.ManyToManyField('Milestone', blank=True, null=True)
    percent_complete = models.IntegerField()
    notes = models.TextField(max_length=1028, blank=True, null=True) 
-
-   def __unicode__(self):
-      return self.title
-
-
-class Roadmap(models.Model):
-   title = models.CharField(max_length=200)
-   description = models.CharField(max_length=200)
-   category = models.ManyToManyField('Category', blank=True, null=True)
-   end_date = models.DateTimeField(blank=True)
-   features = models.ManyToManyField('Feature', blank=True, null=True)
-   market = models.CharField(max_length=200, blank=True, null=True) #maybe define class for market
-   customers  = models.ManyToManyField('Customer', blank=True, null=True)
 
    def __unicode__(self):
       return self.title

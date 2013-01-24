@@ -76,10 +76,4 @@ class MilestoneAdmin(admin.ModelAdmin):
   search_fields = ['id', 'title', 'description', 'category', 'start_date', 'percent_complete']
 admin.site.register(Milestone, MilestoneAdmin)
 
-class RoadmapAdmin(admin.ModelAdmin):
-  list_display = ('id', 'title', 'description', 'end_date', 'market')
-  search_fields = ['id', 'title', 'description', 'category', 'end_date', 'market']
-admin.site.register(Roadmap, RoadmapAdmin)
-
-
 

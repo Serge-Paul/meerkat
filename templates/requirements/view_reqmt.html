@@ -9,11 +9,13 @@
 
 {% block content %}
 
+<h1>Requirement</h1>
+
 {% if reqmt %}
 
 
 <p>
-Requirement ID: {{ reqmt.id }}
+Requirement ID: {{ reqmt.identifier }}
 </p>
 
 <p>
@@ -25,13 +27,17 @@ Title: {{ reqmt.title }}
 Release: 
 {% if reqmt.release %}
 
-   {{ reqmt.release }}
+<a href="/releases/{{ reqmt.release.id }}/">{{ reqmt.release }}</a>
 
 {% else %}
 
    None
 
 {% endif %}
+</p>
+
+<p>
+Source: {{ reqmt.source }}
 </p>
 
 <p>
@@ -79,25 +85,6 @@ Parent Requirement:
 {% endif %}
 </p>
 
-
-<p>
-Features: 
-{% if reqmt.features.all.0 %}
-
-   {% for feature in reqmt.features.all %}
-
-      <br/>
-      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
-
-   {% endfor %}
-{% else %}
-   
-   None
-
-{% endif %}
-</p>
-
-
 <p>
 Use Case: 
 {% if reqmt.use_case %}
@@ -112,24 +99,9 @@ Use Case:
 
 </p>
 
-
-<p>
-Related Tests:           
-{% if reqmt.tests.all.0 %}
-
-   {% for test in reqmt.tests.all %}
-
-      <br/>
-      <a href="/tests/{{ test.id }}/">{{ test.title }}</a>
-
-   {% endfor %}
-{% else %}
-
-   None
-
-{% endif %}
+<p>Notes:<br/>
+{{ reqmt.notes }}
 </p>
-
 
 <!-- *** IF NO REQMTS *** -->
 

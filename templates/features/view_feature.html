@@ -8,14 +8,27 @@ Features
 {% endblock %}
 
 {% block content %}
+
+<h1>Feature</h1>
+
 {% if feature %}
 
 <p>
 Feature title: {{ feature.title }}
 </p>
 
+<p>Feature ID: {{ feature.identifier }}
+</p>
+
+
 <p>
-Description: {{ feature.description }}
+Design description:<br/>
+{{ feature.design_description }}
+</p>
+
+<p>
+Implementation description:<br/>
+{{ feature.implementation_description }}
 </p>
 
 <p>
@@ -45,6 +58,51 @@ Categories:
 </p>
 
 <p>
+Use Cases:
+{% if feature.usecases.all.0 %}   <!-- this is manyToMany field -->
+   {% for usecase in feature.usecases.all %}
+      <br/>
+      <a href="/usecases/{{ usecase.id }}/">{{ usecase.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+<p>
+Requirements:
+{% if feature.requirements.all.0 %}   <!-- this is manyToMany field -->
+   {% for reqmt in feature.requirements.all %}
+      <br/>
+      <a href="/requirements/{{ reqmt.id }}/">{{ reqmt.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Design Components:
+{% if feature.component.all.0 %}   <!-- this is manyToMany field -->
+   {% for component in feature.component.all %}
+      <br/>
+      <a href="/components/{{ component.id }}/">{{ component.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>Risk: 
+{% if feature.risk %}
+<a href="/risks/{{ feature.risk.id }}/">{{ feature.risk.title }}</a>
+{% else %}
+None
+{% endif %}
+</p>
+
+<p>
 Responsible Engineers:
 {% if feature.responsible_engineer.all.0 %}   <!-- this is manyToMany field -->
    {% for member in feature.responsible_engineer.all %}
@@ -56,7 +114,9 @@ Responsible Engineers:
 {% endif %}
 </p>
 
-
+<p>Notes:<br/>
+{{ feature.notes }}
+</p>
 
 <!-- *** IF NO features *** -->
 {% else %}

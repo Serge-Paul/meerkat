@@ -10,9 +10,9 @@ Members
 {% block content %}
 {% if member %}
 
-<p>
+<h1>
 {{ member.first_name }} {{ member.last_name }}
-</p>
+</h1>
 
 <p>
 Position title: 
@@ -23,10 +23,20 @@ None
 {% endif %}
 </p>
 
-<p>
-Team: 
-<a href="/teams/{{ member.team.id }}/">{{ member.team }}</a>
+
+<p>Team:
+{% if member.team.all.0 %}   <!-- this is manyToMany field -->
+   {% for team in member.team.all %}
+      <br/>
+      <a href="/teams/{{ team.id }}/">{{ team.name }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+
 </p>
+
+
 
 
 <!-- *** IF NO member *** -->

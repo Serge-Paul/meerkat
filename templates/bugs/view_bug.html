@@ -8,10 +8,19 @@ Bugs
 {% endblock %}
 
 {% block content %}
+
+<h1>Bug</h1>
+
 {% if bug %}
+
+<a href="/risks/add/">Add Risk</a>
 
 <p>
 Bug title: {{ bug.title }}
+</p>
+
+
+<p>Bug ID: {{ bug.identifier }}
 </p>
 
 <p>
@@ -36,6 +45,21 @@ Release:
 {% endif %}
 </p>
 
+
+<p>
+Categories:
+{% if bug.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in bug.category.all %}
+
+       {{ category }} /
+
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
 <p>
 Features:
 {% if bug.features.all.0 %}   <!-- this is manyToMany field -->
@@ -57,6 +81,19 @@ Test:
 {% endif %}
 </p>
 
+<p>
+Beta Test:
+{% if bug.betatest %} <!-- this is foreign key field -->
+   <a href="/betatests/{{ bug.betatest.id }}/">Beta {{ bug.betatest }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Resolution:
+<br/>{{ bug.resolution }}
+</p>
 
 
 <!-- *** IF NO REQMTS *** -->

@@ -106,11 +106,7 @@ urlpatterns += patterns('apps.devproc.views.risk',
 
 
 urlpatterns += patterns('apps.devproc.views.roadmap',
-   url(r'^roadmaps/$', 'view_all_roadmaps'),
-   url(r'^roadmaps/add/$', 'create_roadmap'),
-   url(r'^roadmaps/(?P<roadmap_id>\d+)/$', 'view_roadmap'),
-   url(r'^roadmaps/(?P<roadmap_id>\d+)/edit/$', 'edit_roadmap'),
-   url(r'^roadmaps/(?P<roadmap_id>\d+)/delete/$', 'delete_roadmap'),
+   url(r'^roadmap/$', 'view_roadmap')
 )
 
 urlpatterns += patterns('apps.devproc.views.team',

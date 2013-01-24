@@ -8,10 +8,16 @@
 {% endblock %}
 
 {% block content %}
+
+<h1>Test</h1>
+
 {% if test %}
 
 <p>
 Title: {{ test.title }}
+</p>
+
+<p>Test ID: {{ test.identifier }}
 </p>
 
 <p>
@@ -19,9 +25,16 @@ Status: {{ test.status }}
 </p>
 
 <p>
-Description: 
+Test description: 
 <br/>
-{{ test.description }}
+{{ test.test_description }}
+</p>
+
+
+<p>
+Implementation description:
+<br/>
+{{ test.implementation_description }}
 </p>
 
 <p>
@@ -51,6 +64,17 @@ Features:
 
 <p>
 Pass/Fail Criteria: {{ test.pass_fail_criteria }}
+</p>
+
+<p>Bugs:
+{% if bugs %}
+   {% for bug in bugs %}
+      <br/>
+      <a href="/bugs/{{ bug.id }}/">{{ bug.title }}</a>
+   {% endfor %}
+{% else %}
+None
+{% endif %}
 </p>
 
 <p>

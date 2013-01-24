@@ -8,15 +8,25 @@ Design Components
 {% endblock %}
 
 {% block content %}
+
+<h1>Design Component</h1>
+
 {% if component %}
 
 <p>
 Component name: {{ component.title }}
 </p>
 
+<p>Component ID: {{ component.identifier }}
+
 <p>
-Description:
-<br/>{{ component.description }}
+Design description:
+<br/>{{ component.design_description }}
+</p>
+
+<p>
+Implementation description:<br/>
+{{ component.implementation_description }}
 </p>
 
 <p>
@@ -76,6 +86,42 @@ Attributes:
 {% else %}
    None
 {% endif %}
+</p>
+
+<p>
+Use Cases:
+{% if component.usecases.all.0 %}   <!-- this is manyToMany field -->
+   {% for usecase in component.usecases.all %}
+      <br/>
+      <a href="/usecases/{{ usecase.id }}/">{{ usecase.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+<p>
+
+<p>
+Requirements:
+{% if component.requirements.all.0 %}   <!-- this is manyToMany field -->
+   {% for reqmt in component.requirements.all %}
+      <br/>
+      <a href="/requirements/{{ reqmt.id }}/">{{ reqmt.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>Risk: 
+{% if component.risk %}
+<a href="/risks/{{ component.risk.id }}/">{{ component.risk.title }}</a>
+{% else %}
+None
+{% endif %}
+</p>
+
+<p>Notes:<br/>
+{{ component.notes }}
 </p>
 
 
