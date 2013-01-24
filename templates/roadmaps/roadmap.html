@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Roadmap
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Roadmap</h1>
+
+{% if releases %}
+
+{% for release in releases %}
+<p>
+Release: <a href="/releases/{{ release.id }}/"> {{ release.name }}</a>
+<br/>
+Date: {{ release.release_date }}
+<br/>
+Goals/Themes: {{ release.goals }}
+<br/>
+Target Market/Customer/User: {{ release.market }}
+<br/>
+
+Features:
+<br/>
+  {% for feature in features %}
+     {% if feature.release.id = release.id %}
+        <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+        <br/>
+      {% endif %}
+
+   {% endfor %}
+
+{% endfor %}
+
+{% else %}
+<p>There are no releases.</p>
+{% endif %}
+{% endblock %}
+
