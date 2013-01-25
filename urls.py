@@ -12,6 +12,16 @@ urlpatterns = patterns('',
    url(r'^admin/', include(admin.site.urls)),
 )
 
+
+urlpatterns += patterns('apps.devproc.views.feedback',
+   url(r'^feedback/$', 'view_all_feedback'),
+   url(r'^feedback/add/$', 'create_feedback'),
+   url(r'^feedback/(?P<betatest_id>\d+)/(?P<customer_id>\d+)/$', 'view_feedback'),
+   url(r'^feedback/(?P<feedback_id>\d+)/edit/$', 'edit_feedback'),
+   url(r'^feedback/(?P<feedback_id>\d+)/delete/$', 'delete_feedback'),
+)
+
+
 urlpatterns += patterns('apps.devproc.views.requirement',
    url(r'^requirements/$', 'view_all_reqmts'),
    url(r'^requirements/add/$', 'create_reqmt'),

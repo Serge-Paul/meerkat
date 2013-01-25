@@ -13,7 +13,12 @@ def create_release(request):
 
 def view_release(request, release_id):
    release = Release.objects.get(id = release_id)
-   return render_to_response('releases/view_release.html', {'release': release})
+   features = Feature.objects.filter(release = release_id)
+   risks = Risk.objects.filter(release = release_id)
+   bugs = Bug.objects.filter(release = release_id)
+   milestones = Milestone.objects.filter(release = release_id)
+
+   return render_to_response('releases/view_release.html', {'release': release,'features':features , 'risks':risks, 'bugs': bugs, 'milestones': milestones })
 
 
 def edit_release(request, release_id):

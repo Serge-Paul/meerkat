@@ -190,8 +190,8 @@ class BetaTest(models.Model):
 class Customer(models.Model):
    first_name = models.CharField(max_length=200)
    last_name = models.CharField(max_length=200) 
-   organization = models.CharField(max_length=200, blank=True, null=True)
-   location = models.CharField(max_length=200) 
+   organization = models.CharField(max_length=200)
+   location = models.CharField(max_length=200, blank=True, null=True) 
 
    def __unicode__(self):
       return self.first_name

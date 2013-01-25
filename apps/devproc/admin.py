@@ -1,6 +1,11 @@
 from meerkat.apps.devproc.models import *
 from django.contrib import admin
 
+class FeedbackAdmin(admin.ModelAdmin):
+  list_display = ('feedback',)
+  search_fields = ['feedback',]
+admin.site.register(Feedback, FeedbackAdmin)
+
 class RequirementAdmin(admin.ModelAdmin):
   list_display = ('id','title', 'priority', 'approval_status')
   search_fields = ['id', 'title','description', 'category']

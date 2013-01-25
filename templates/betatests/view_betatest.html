@@ -10,50 +10,50 @@ Beta Test
 {% block content %}
 {% if betatest %}
 
-<p>
-Beta Test Name: {{ betatest.name }}
-</p>
+<h1>Beta Test</h1>
+
+
+<a href="#">view all bugs</a>
 
 <p>
-Features:
-{% if betatest.features.all.0 %}   <!-- this is manyToMany field -->
-   {% for feature in betatest.features.all %}
+Release:  <a href="/releases/{{ betatest.release.id }}/">{{ betatest.release }}</a>
+</p>
+
+<p>Beta Test Engineers:
+{% for engineer in betatest.responsible_engineer.all %}
       <br/>
-      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+      <a href="/members/{{ engineer.id }}/">{{ engineer.title }}</a>
    {% endfor %}
-{% else %}
-   None
-{% endif %}
-</p>
-
-<p>
-Release:
-{% if betatest.release %} <!-- this is foreign key field -->
-   <a href="/releases/{{ betatest.release.id }}/">{{ betatest.release }}</a>
-{% else %}
-   None
-{% endif %}
 </p>
 
 <p>
 Customers:
-{% if betatest.customer.all.0 %}   <!-- this is manyToMany field -->
-   {% for customer in betatest.customer.all %}
+{% if feedback_list %} 
+   {% for feedback in feedback_list.all %}
       <br/>
-      <a href="/customers/{{ customer.id }}/">{{ customer.first_name }} {{ customer.last_name }}</a>
+
+<!-- Need to fix this so show only list of unique customers with no repeats -->
+
+      {{ feedback.customer.first_name }} {{ feedback.customer.last_name }}, {{ feedback.customer.organization }} / {{ feedback.customer.location }} <a href="/feedback/{{ betatest.id }}/{{ feedback.customer.id }}">view feedback</a>
+
+      
    {% endfor %}
 {% else %}
    None
 {% endif %}
+
+
+
+
+
+
+
+
+
 </p>
 
-<p>
-Feedback: {{ betatest.feedback }}
-</p>
 
-
-
-<!-- *** IF NO REQMTS *** -->
+<!-- *** IF NO BETA TESTS *** -->
 {% else %}
 <p>No beta tests are available.</p>
 {% endif %}

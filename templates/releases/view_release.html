@@ -8,6 +8,9 @@ Releases
 {% endblock %}
 
 {% block content %}
+
+<h1>Release</h1>
+
 {% if release %}
 
 <p>
@@ -15,24 +18,95 @@ Release name: {{ release.name }}
 </p>
 
 <p>
+Targe Market: {{ release.market }}
+</p>
+
+
+<p>
 Release date: {{ release.release_date }}
 </p>
 
 <p>
-Roadmap:
-{% if release.roadmap %} <!-- this is foreign key field -->
-   <a href="/roadmaps/{{ release.roadmap.id }}/">{{ release.roadmap }}</a>
+Goals/Theme: 
+{% if release.goals %}
+   {{ release.goals }}
 {% else %}
    None
 {% endif %}
 </p>
 
 <p>
-Pass/fail criteria: {{ release.pass_fail_criteria }}
+Features:
+{% if features %}  
+   {% for feature in features.all %}
+      <br/>
+      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
 </p>
 
 <p>
-Market: {{ release.market }}
+Risks:
+{% if risks %}               
+   {% for risk in risks.all %}
+      <br/>
+      <a href="/risks/{{ risk.id }}/">{{ risk.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Bugs:
+{% if bugs %}   
+   {% for bug in bugs.all %}
+      <br/>
+      <a href="/bugs/{{ bug.id }}/">{{ bug.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Milestones:
+{% if milestones %}   
+   {% for milestone in milestones.all %}
+      <br/>
+      <a href="/milestones/{{ milestone.id }}/">{{ milestone.title }}</a>
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+<p>
+Product Manager:
+{% if release.responsible_engineer %}
+   {% for member in release.responsible_engineer.all %}
+      <br/>
+      <a href="/members/{{ member.id }}/">{{ member.first_name }} {{ member.last_name }}</a>, {{ member.title }}
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+
+
+</p>
+
+
+<p>
+Pass/fail criteria: {{ release.pass_fail_criteria }}
+</p>
+
+
+
+<p>Notes:<br/>
+{{ release.notes }}
 </p>
 
 

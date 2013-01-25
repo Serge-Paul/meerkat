@@ -11,7 +11,7 @@ Beta Tests
 {% if betatest_list %}
 <ul>
 {% for betatest in betatest_list %}
-<li><a href="/betatests/{{ betatest.id }}/">{{ betatest.name }}</a></li>
+<li><a href="/betatests/{{ betatest.id }}/">Beta {{ betatest.release.name }}</a></li>
 {% endfor %}
 </ul>
 {% else %}
