@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Customer Feedback
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Customer Feedback</h1>
+<p>
+Customer: <a href="/customers/{{ feedback_list.all.0.customer.id }}/">{{ feedback_list.all.0.customer.first_name }} {{ feedback_list.all.0.customer.last_name }}</a>
+</p>
+
+<p>
+Release: <a href="/releases/{{ feedback_list.all.0.betatest.release.id }}/">{{ feedback_list.all.0.betatest.release }}</a>
+</p>
+
+{% if feedback_list %}
+<p>
+   {% for feedback in feedback_list.all %}
+      Feature:  <a href="/features/{{ feedback.feature.id }}/">{{ feedback.feature.title }}</a>
+      <br/><br/>
+      Feedback: {{ feedback.feedback }}
+      <br/><br/>
+      <hr/>
+   {% endfor %}
+</p>
+
+
+
+<!-- *** IF NO REQMTS *** -->
+{% else %}
+<p>No requirements are available.</p>
+{% endif %}
+{% endblock %}
+	
+
