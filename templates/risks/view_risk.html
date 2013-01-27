@@ -8,15 +8,32 @@ Risk
 {% endblock %}
 
 {% block content %}
+
+<h1>Risk</h1>
+
+<a href="/risks/add/">Add new risk</a> |
+<a href="/risks/">View all risks</a> |
+
 {% if risk %}
 
+<a href="/risks/{{ risk.id }}/edit/">Edit</a> |
+<a href="/risks/{{ risk.id }}/delete/">Delete</a>
+
 <p>
-Risk title: {{ risk.title }}
+Title: {{ risk.title }}
 </p>
+
+<p>
+Risk ID: {{ risk.identifier }}
+<p>
 
 <p>
 Status: {{ risk.status }}
 </p>
+
+<p>
+Approval Status: {{ risk.approval_status}}
+<p>
 
 <p>
 Description: {{ risk.description }}
@@ -41,12 +58,27 @@ Release:
 </p>
 
 <p>
-Features:
-{% if risk.features.all.0 %}   <!-- this is manyToMany field -->
-   {% for feature in risk.features.all %}
-      <br/>
-      <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
-   {% endfor %}
+Related Feature:
+{% if feature %}
+      <a href="/features/{{ feature.0.id }}/">{{ feature.0.title }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Related Design Component:
+{% if component %}
+      <a href="/components/{{ component.0.id }}/">{{ component.0.title }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Related Bug:
+{% if bug %}
+      <a href="/bugs/{{ bug.0.id }}/">{{ bug.0.title }}</a>
 {% else %}
    None
 {% endif %}

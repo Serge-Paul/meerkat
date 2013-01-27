@@ -12,7 +12,11 @@ def create_risk(request):
 
 def view_risk(request, risk_id):
    risk = Risk.objects.get(id = risk_id)
-   return render_to_response('risks/view_risk.html', {'risk': risk})
+   component = Component.objects.filter(risk = risk_id)
+   bug = Bug.objects.filter(risk = risk_id)
+   feature = Feature.objects.filter(risk = risk_id)
+
+   return render_to_response('risks/view_risk.html', {'risk': risk, 'bug': bug, 'component': component, 'feature': feature})
 
 def edit_risk(request, risk_id):
    return HttpResponse("You're editing risk %s." % risk_id)

@@ -8,9 +8,16 @@
 {% endblock %}
 
 {% block content %}
-{% if usecase %}
 
 <h1>Use Case</h1>
+
+<a href="/usecases/add/">Add new use case</a> |
+<a href="/usecases/">View all use cases</a> |
+
+{% if usecase %}
+
+<a href="/usecases/{{ usecase.id }}/edit/">Edit</a> |
+<a href="/usecases/{{ usecase.id }}/delete/">Delete</a>
 
 <p>
 Title: {{ usecase.title }}

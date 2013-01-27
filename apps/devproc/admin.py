@@ -1,6 +1,12 @@
 from meerkat.apps.devproc.models import *
 from django.contrib import admin
 
+
+class ResponsibilityAdmin(admin.ModelAdmin):
+  list_display = ('responsibility',)
+  search_fields = ['responsibility',]
+admin.site.register(Responsibility, ResponsibilityAdmin)
+
 class FeedbackAdmin(admin.ModelAdmin):
   list_display = ('feedback',)
   search_fields = ['feedback',]

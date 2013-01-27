@@ -36,7 +36,9 @@ def create_team(request):
 def view_team(request, team_id):
    team = Team.objects.get(id = team_id)
    members = Member.objects.filter(team = team_id)
-   return render_to_response('teams/view_team.html', {'team': team, 'members': members})
+   responsibilities = Responsibility.objects.filter(team = team_id)
+
+   return render_to_response('teams/view_team.html', {'team': team, 'members': members, 'responsibilities': responsibilities})
 
 
 def edit_team(request, team_id):

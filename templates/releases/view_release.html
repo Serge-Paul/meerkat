@@ -11,7 +11,13 @@ Releases
 
 <h1>Release</h1>
 
+<a href="/releases/add/">Add new release</a> |
+<a href="/releases/">View all releases</a> |
+
 {% if release %}
+
+<a href="/releases/{{ release.id }}/edit/">Edit</a> |
+<a href="/releases/{{ release.id }}/delete/">Delete</a>
 
 <p>
 Release name: {{ release.name }}

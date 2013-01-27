@@ -11,9 +11,15 @@ Bugs
 
 <h1>Bug</h1>
 
+<a href="/bugs/add/">Add new bug</a> |
+<a href="/bugs/">View all bugs</a> |
+
 {% if bug %}
 
-<a href="/risks/add/">Add Risk</a>
+<a href="/bugs/{{ bug.id }}/edit/">Edit</a> |
+<a href="/bugs/{{ bug.id }}/delete/">Delete</a>
+
+ | <a href="/risks/add/">Add Risk</a>
 
 <p>
 Bug title: {{ bug.title }}

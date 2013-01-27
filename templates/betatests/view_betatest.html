@@ -8,12 +8,16 @@ Beta Test
 {% endblock %}
 
 {% block content %}
-{% if betatest %}
 
 <h1>Beta Test</h1>
 
+<a href="/betatests/">View all Beta Tests</a> |
 
-<a href="#">view all bugs</a>
+{% if betatest %}
+
+<a href="/betatests/{{ betatest.id }}/edit/">Edit</a> |
+
+ <a href="#">view all bugs related to this beta test</a>
 
 <p>
 Release:  <a href="/releases/{{ betatest.release.id }}/">{{ betatest.release }}</a>
@@ -34,7 +38,7 @@ Customers:
 
 <!-- Need to fix this so show only list of unique customers with no repeats -->
 
-      {{ feedback.customer.first_name }} {{ feedback.customer.last_name }}, {{ feedback.customer.organization }} / {{ feedback.customer.location }} <a href="/feedback/{{ betatest.id }}/{{ feedback.customer.id }}">view feedback</a>
+      <a href="/customers/{{ feedback.customer.id }}/">{{ feedback.customer.first_name }} {{ feedback.customer.last_name }}</a>, {{ feedback.customer.organization }} / {{ feedback.customer.location }} <a href="/feedback/{{ betatest.id }}/{{ feedback.customer.id }}">view feedback</a>
 
       
    {% endfor %}

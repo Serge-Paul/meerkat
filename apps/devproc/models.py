@@ -1,57 +1,59 @@
 from django.db import models
 from datetime import datetime
 
+# CHOICES = (('display_text', 'database_text'), )
+
 APPROVAL_STATUS_CHOICES = (
-   ('approved', 'Approved'),
-   ('rejected', 'Rejected'),
-   ('pending', 'Pending'),
+   ('Approved', 'approved'),
+   ('Rejected', 'rejected'),
+   ('Pending', 'pending'),
 )
 
 PRIORITY_CHOICES = (
-   ('low', 'Low'),
-   ('medium', 'Medium'),
-   ('high', 'High'),
-   ('critical', 'Critical'),
+   ('Low', 'low'),
+   ('Medium', 'medium'),
+   ('High', 'high'),
+   ('Critical', 'critical'),
 )
 
 TEST_STATUS_CHOICES = (
-   ('pass', 'Pass'),
-   ('fail', 'Fail'),
-   ('pending', 'Pending'),
+   ('Pass', 'pass'),
+   ('Fail', 'fail'),
+   ('Pending', 'pending'),
 )
 
 BUG_STATUS_CHOICES = (
-   ('open', 'Open'),
-   ('closed', 'Closed'),
-   ('deferred', 'deferred'),
+   ('Open', 'open'),
+   ('Closed', 'closed'),
+   ('Deferred', 'deferred'),
 )
 
 PROBABILITY_CHOICES = (
-   ('very_low', 'Very Low'),
-   ('low', 'Low'),
-   ('medium', 'Medium'),
-   ('high', 'High'),
-   ('very_high', 'Very High'),
+   ('Very Low', 'very_low'),
+   ('Low', 'low'),
+   ('Medium', 'medium'),
+   ('High', 'high'),
+   ('Very High', 'very_high'),
 )
 
 RISK_CHOICES = (
-   ('open', 'Open'),
-   ('resolved', 'Resolved'),
+   ('Open', 'open'),
+   ('Resolved', 'resolved'),
 )
 
 SOURCE_CHOICES = (
-   ('customer', 'Customer'),
-   ('internal', 'Internal'),
+   ('Customer', 'customer'),
+   ('Internal', 'internal'),
 ) 
 
 RESPONSIBILITY_CHOICES = (
-   ('usecase','Use Cases'),
-   ('reqmt','Requirements'),
-   ('component','Design'),
-   ('feature','Features'),
-   ('test','Tests'),
-   ('bug','Bugs'),
-   ('betatest','Beta Tests'),
+   ('Use Cases','usecase'),
+   ('Requirements','reqmt'),
+   ('Design','component'),
+   ('Features','feature'),
+   ('Tests','test'),
+   ('Bugs','bug'),
+   ('Beta Tests','betatest'),
 )
 
 
@@ -239,12 +241,20 @@ class Risk(models.Model):
       return self.title
 
 
+class Responsibility(models.Model):
+   responsibility = models.CharField(max_length=128, choices=RESPONSIBILITY_CHOICES)
+   team = models.ForeignKey('Team')
+   release = models.ForeignKey('Release')
+
+   def __unicode__(self):
+      return self.responsibility
+
+
 class Team(models.Model):
    #manager = models.ForeignKey('Member')
    name = models.CharField(max_length=200)
    #logo
    description = models.TextField(max_length=1028, blank=True, null=True)
-   responsibilities = models.CharField(max_length=128, choices=RESPONSIBILITY_CHOICES)
 
    def __unicode__(self):
       return self.name

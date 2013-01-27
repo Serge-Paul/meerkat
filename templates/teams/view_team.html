@@ -8,20 +8,37 @@
 {% endblock %}
 
 {% block content %}
+
+<h1>Team</h1>
+
+<a href="/teams/add/">Add new team</a> |
+<a href="/teams/">View all teams</a> | 
+
 {% if team %}
+<a href="/teams/{{ team.id }}/edit/">Edit</a> |
+<a href="/teams/{{ team.id }}/delete/">Delete</a>
 
 <p>
-<a href="/teams/add/">Create new team</a> | 
-<a href="/teams/">View all teams</a>
+Name: {{ team.name }}
 </p>
 
-<h1>
-{{ team.name }}
-</h1>
+<p>
+Description:<br/> {{ team.description }}
+</p>
 
 <p>
-<a href="/teams/{{ team.id }}/edit/">Edit</a> | 
-<a href="/teams/{{ team.id }}/delete/">Delete</a>
+Responsibilities:
+ {% if responsibilities %}
+
+  {% for responsibility  in responsibilities.all %}
+      <br/>
+      {{ responsibility }} / Release <a href="/releases/{{ responsibility.release.id }}/">{{ responsibility.release.name }}</a>
+  {% endfor %}
+
+{% else %}
+   <br/>
+   None
+{% endif %}
 </p>
 
 <p>

@@ -11,8 +11,13 @@
 
 <h1>Requirement</h1>
 
+<a href="/requirements/add/">Add new requirements</a> |
+<a href="/requirements/">View all requirements</a> |
+
 {% if reqmt %}
 
+<a href="/requirements/{{ reqmt.id }}/edit/">Edit</a> |
+<a href="/requirements/{{ reqmt.id }}/delete/">Delete</a>
 
 <p>
 Requirement ID: {{ reqmt.identifier }}

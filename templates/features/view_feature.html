@@ -11,7 +11,15 @@ Features
 
 <h1>Feature</h1>
 
+<a href="/features/add/">Add new feature</a> |
+<a href="/features/">View all features</a> |
+
 {% if feature %}
+
+<a href="/features/{{ feature.id }}/edit/">Edit</a> |
+<a href="/features/{{ feature.id }}/delete/">Delete</a>
+
+ | <a href="/risks/add/">Add Risk</a>
 
 <p>
 Feature title: {{ feature.title }}

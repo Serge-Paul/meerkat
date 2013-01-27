@@ -8,20 +8,22 @@ Customers
 {% endblock %}
 
 {% block content %}
+
+<h1>Customer</h1>
+
 {% if customer %}
 
 <p>
-First name: {{ customer.first_name }}
-</p>
-
-<p>
-Last name: {{ customer.last_name }}
+Name: {{ customer.first_name }} {{ customer.last_name }}
 </p>
 
 <p>
 Organization: {{ customer.organization }}
 </p>
 
+<p>
+Location: {{ customer.location }}
+</p>
 
 <!-- *** IF NO customer *** -->
 {% else %}

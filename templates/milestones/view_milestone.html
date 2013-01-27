@@ -8,10 +8,19 @@ Milestones
 {% endblock %}
 
 {% block content %}
+
+<h1>Milestone</h1>
+
+<a href="/milestones/add/">Add new milestone</a> |
+<a href="/milestones/">View all milestone</a> |
+
 {% if milestone %}
 
+<a href="/milestones/{{ milestone.id }}/edit/">Edit</a> |
+<a href="/milestones/{{ milestone.id }}/delete/">Delete</a>
+
 <p>
-Milestone title: {{ milestone.title }}
+Title: {{ milestone.title }}
 </p>
 
 <p>
@@ -46,24 +55,19 @@ Categories:
 </p>
 
 <p>
-Roadmap:
-{% if milestone.roadmap %} <!-- this is foreign key field -->
-   <a href="/roadmaps/{{ milestone.roadmap.id }}/">{{ milestone.roadmap }}</a>
+Predecessor milestones:
+{% if milestone.predecessors.all.0 %}   <!-- this is manyToMany field -->
+   {% for predecessor in milestone.predecessors.all %}
+      <br/>
+      <a href="/milestones/{{ predecessor.id }}/">{{ predecessor.title }}</a>
+   {% endfor %}
 {% else %}
    None
 {% endif %}
 </p>
 
-<p>
-Successor milestones:
-{% if milestone.successors.all.0 %}   <!-- this is manyToMany field -->
-   {% for successor in milestone.successors.all %}
-      <br/>
-      <a href="/milestones/{{ successor.id }}/">{{ successor.title }}</a>
-   {% endfor %}
-{% else %}
-   None
-{% endif %}
+<p>Notes:<br/>
+{{ milestone.notes }}
 </p>
 
 
