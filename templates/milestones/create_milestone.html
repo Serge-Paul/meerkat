@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Milestone
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+<h1>Add Milestone</h1>
+
+{% if message %}
+  <div class="errors"> {{ message }}</div>
+{% endif %}
+<br/>
+
+<form id="add-milestone-form" action="/milestones/add/" method="post" enctype="multipart/form-data">
+
+      <label for="title">{{ form.title.label }}</label>
+      <div class="field">{{ form.title }}</div>
+      <div class="errors">{{ form.title.errors.0 }}</div>
+      <br/>
+
+      <label for="description">{{ form.description.label }}</label>
+      <div class="field">{{ form.description }}</div>
+      <div class="errors">{{ form.description.errors.0 }}</div>
+      <br/>
+
+      <label for="category">{{ form.category.label }}</label>
+      <div class="field">{{ form.category }}</div>
+      <div class="errors">{{ form.category.errors.0 }}</div>
+      <br/>
+
+      <label for="start_date">{{ form.start_date.label }}</label>
+      <div class="field">{{ form.start_date }}</div>
+      <div class="errors">{{ form.start_date.errors.0 }}</div>
+      <br/>
+
+      <label for="end_date">{{ form.end_date.label }}</label>
+      <div class="field">{{ form.end_date }}</div>
+      <div class="errors">{{ form.end_date.errors.0 }}</div>
+      <br/>
+
+      <label for="release">{{ form.release.label }}</label>
+      <div class="field">{{ form.release }}</div>
+      <div class="errors">{{ form.release.errors.0 }}</div>
+      <br/>
+
+      <label for="predecessors">{{ form.predecessors.label }}</label>
+      <div class="field">{{ form.predecessors }}</div>
+      <div class="errors">{{ form.predecessors.errors.0 }}</div>
+      <br/>
+
+      <label for="percent_complete">{{ form.percent_complete.label }}</label>
+      <div class="field">{{ form.percent_complete }}</div>
+      <div class="errors">{{ form.percent_complete.errors.0 }}</div>
+      <br/>
+
+      <label for="notes">{{ form.notes.label }}</label>
+      <div class="field">{{ form.notes }}</div>
+      <div class="errors">{{ form.notes.errors.0 }}</div>
+      <br/>
+
+<input type="submit" value="Add">
+
+{% csrf_token %}
+
+</form>
+
+{% endblock %}
