@@ -1,7 +1,17 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
+from django import forms
+from django.template import Context, RequestContext
 
+class UseCaseForm(forms.Form):
+   title = forms.CharField(max_length=200)
+   description = forms.CharField(max_length=1028)
+   category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
+   target_market = forms.CharField(max_length=200, required=False)
+   identifier = forms.CharField(max_length=200)
+   source = forms.ChoiceField(choices=SOURCE_CHOICES)
+   notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
 
 def view_all_usecases(request):
    usecase_list = UseCase.objects.all().order_by('-id')

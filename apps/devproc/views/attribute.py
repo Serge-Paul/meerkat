@@ -1,6 +1,12 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
+from django import forms
+from django.template import Context, RequestContext
+
+class AttributeForm(forms.Form):
+   title = forms.CharField(max_length=200)
+   description = forms.CharField(max_length=1028)
 
 
 def view_all_attributes(request, component_id):
@@ -11,7 +17,29 @@ def view_all_attributes(request, component_id):
  
 
 def create_attribute(request):
-   return HttpResponse("You're adding new attribute")
+   if request.method == 'POST':
+
+      form = AttributeForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         attribute = Attribute()
+         attribute.title = form.cleaned_data['title']
+         attribute.description = form.cleaned_data['description']         
+        
+         attribute.save()
+
+         return redirect('apps.devproc.views.attribute.view_attribute', attribute_id = attribute.id)
+
+      else: #if form is not valid
+         return render_to_response('attributes/create_attribute.html', {'form':form, 'message': 'Error creating attribute. Please try again.'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+      form = AttributeForm()
+      return render_to_response('attributes/create_attribute.html', {'form': form},  context_instance=RequestContext(request))
+
 
 def view_attribute(request, component_id, attribute_id):
    attribute = Attribute.objects.get(id = attribute_id)

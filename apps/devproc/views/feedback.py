@@ -1,6 +1,14 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
+from django import forms
+from django.template import Context, RequestContext
+
+class FeedbackForm(forms.Form):
+   betatest = forms.ModelChoiceField(queryset=BetaTest.objects.all(), required=True) 
+   customer = forms.ModelChoiceField(queryset=Customer.objects.all(), required=True) 
+   feature = forms.ModelChoiceField(queryset=Feature.objects.all(), required=True) 
+   feedback = forms.CharField(max_length=1028, widget=forms.Textarea)
 
 
 def view_all_feedback(request):

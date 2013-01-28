@@ -1,6 +1,17 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
+from django import forms
+from django.template import Context, RequestContext
+
+class ReleaseForm(forms.Form):
+   name = forms.CharField(max_length=200)
+   release_date = forms.DateField()
+   pass_fail_criteria = forms.CharField(max_length=1028, required=False)
+   market = forms.CharField(max_length=200, required=False)
+   notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
+   responsible_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False) 
+   goals = forms.CharField(max_length=1028, required=False)
 
 
 def view_all_releases(request):

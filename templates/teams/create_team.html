@@ -12,19 +12,19 @@
 
 
 <form id="add-team-form" action="/teams/add/" method="post" enctype="multipart/form-data">
-
-  <ul>
-    <li>
+ 
       <label for="team_name">{{ form.team_name.label }}</label>
       <div class="field">{{ form.team_name }}</div>
       <div class="errors">{{ form.team_name.errors.0 }}</div>
-    </li>
-</ul>
-{% csrf_token %}
 
+     <label for="description">{{ form.description.label }}</label>
+      <div class="field">{{ form.description }}</div>
+      <div class="errors">{{ form.description.errors.0 }}</div>
 
 <br/>
-<input type="submit" value="Create Team">
+<input type="submit" value="Add Team">
+
+{% csrf_token %}
 
 </form>
 

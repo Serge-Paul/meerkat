@@ -1,7 +1,9 @@
 import os, sys
+import django
 
 # Django settings for meerkat project.
 
+DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -24,6 +26,13 @@ DATABASES = {
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'apps/devproc/static')
+STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'apps/devproc/site_media')
+MEDIA_URL = '/site_media/'
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -50,28 +59,32 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+#MEDIA_ROOT =  os.path.join(SITE_ROOT, 'site_media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+#MEDIA_URL = '/site_media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+#STATIC_ROOT =  os.path.join(SITE_ROOT, 'site_media')
+
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+#STATIC_URL = '/site_media/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+   
+    os.path.join(SITE_ROOT, 'site_media'),
+
 )
 
 # List of finder classes that know how to find static files in

@@ -6,6 +6,8 @@ from django.template import Context, RequestContext
 
 class TeamForm(forms.Form):
    team_name = forms.CharField(max_length=250) 
+   description= forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
+
 
 def view_all_teams(request):
    team_list = Team.objects.all().order_by('-id')
@@ -22,6 +24,7 @@ def create_team(request):
 
          team = Team()
          team.name = form.cleaned_data['team_name']
+         team.description = form.cleaned_data['description']
          team.save()
 
          return redirect('apps.devproc.views.team.view_team', team_id = team.id)
@@ -53,6 +56,7 @@ def edit_team(request, team_id):
       if form.is_valid():
 
          team.name = form.cleaned_data['team_name']
+         team.description = form.cleaned_data['description']
          team.save()
 
          return redirect('apps.devproc.views.team.view_team', team_id = team.id)
@@ -61,7 +65,7 @@ def edit_team(request, team_id):
 
    else: #code for just initially displaying form
       
-      defaults = { 'team_name' : team.name }
+      defaults = { 'team_name' : team.name, 'description': team.description }
       form = TeamForm(initial=defaults)   
  
       return render_to_response('teams/edit_team.html', {'form': form, 'team': team },  context_instance=RequestContext(request))

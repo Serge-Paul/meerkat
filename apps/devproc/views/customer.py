@@ -1,6 +1,14 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
+from django import forms
+from django.template import Context, RequestContext
+
+class CustomerForm(forms.Form):
+   first_name = forms.CharField(max_length=200)
+   last_name = forms.CharField(max_length=200)
+   organization = forms.CharField(max_length=200)
+   location = forms.CharField(max_length=200, required=False)
 
 
 def view_all_customers(request):
