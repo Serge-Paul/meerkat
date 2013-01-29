@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Customer
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+<h1>Add Customer</h1>
+
+{% if message %}
+  <div class="errors"> {{ message }}</div>
+{% endif %}
+<br/>
+
+<form id="add-customer-form" action="/customers/add/" method="post" enctype="multipart/form-data">
+
+      <label for="first_name">{{ form.first_name.label }}</label>
+      <div class="field">{{ form.first_name }}</div>
+      <div class="errors">{{ form.first_name.errors.0 }}</div>
+      <br/>
+
+      <label for="last_name">{{ form.last_name.label }}</label>
+      <div class="field">{{ form.last_name }}</div>
+      <div class="errors">{{ form.last_name.errors.0 }}</div>
+      <br/>
+
+      <label for="organization">{{ form.organization.label }}</label>
+      <div class="field">{{ form.organization }}</div>
+      <div class="errors">{{ form.organization.errors.0 }}</div>
+      <br/>
+
+      <label for="location">{{ form.location.label }}</label>
+      <div class="field">{{ form.location }}</div>
+      <div class="errors">{{ form.location.errors.0 }}</div>
+      <br/>
+
+<input type="submit" value="Add">
+
+{% csrf_token %}
+
+</form>
+
+{% endblock %}
+

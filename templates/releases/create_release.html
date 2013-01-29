@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Release
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+<h1>Add Release</h1>
+
+{% if message %}
+  <div class="errors"> {{ message }}</div>
+{% endif %}
+<br/>
+
+<form id="add-release-form" action="/releases/add/" method="post" enctype="multipart/form-data">
+
+      <label for="name">{{ form.name.label }}</label>
+      <div class="field">{{ form.name }}</div>
+      <div class="errors">{{ form.name.errors.0 }}</div>
+      <br/>
+
+      <label for="release_date">{{ form.release_date.label }}</label>
+      <div class="field">{{ form.release_date }}</div>
+      <div class="errors">{{ form.release_date.errors.0 }}</div>
+      <br/>
+
+      <label for="pass_fail_criteria">{{ form.pass_fail_criteria.label }}</label>
+      <div class="field">{{ form.pass_fail_criteria }}</div>
+      <div class="errors">{{ form.pass_fail_criteria.errors.0 }}</div>
+      <br/>
+
+      <label for="market">{{ form.market.label }}</label>
+      <div class="field">{{ form.market }}</div>
+      <div class="errors">{{ form.market.errors.0 }}</div>
+      <br/>
+
+      <label for="notes">{{ form.notes.label }}</label>
+      <div class="field">{{ form.notes }}</div>
+      <div class="errors">{{ form.notes.errors.0 }}</div>
+      <br/>
+
+      <label for="release_engineer">{{ form.release_engineer.label }}</label>
+      <div class="field">{{ form.release_engineer }}</div>
+      <div class="errors">{{ form.release_engineer.errors.0 }}</div>
+      <br/>
+
+      <label for="goals">{{ form.goals.label }}</label>
+      <div class="field">{{ form.goals }}</div>
+      <div class="errors">{{ form.goals.errors.0 }}</div>
+      <br/>
+
+      <label for="betatest_engineer">{{ form.betatest_engineer.label }}</label>
+      <div class="field">{{ form.betatest_engineer }}</div>
+      <div class="errors">{{ form.betatest_engineer.errors.0 }}</div>
+      <br/>
+
+<input type="submit" value="Add">
+
+*Note: Adding a new release will automatically generate a beta test for that release.
+
+{% csrf_token %}
+
+</form>
+
+{% endblock %}
+

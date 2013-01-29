@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Submit Feedback
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+<h1>Submit Feedback</h1>
+
+{% if message %}
+  <div class="errors"> {{ message }}</div>
+{% endif %}
+<br/>
+
+<p> Feature: <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+</p>
+
+<form id="add-feedback-form" action="/feedback/add/{{ feature.id }}/" method="post" enctype="multipart/form-data">
+
+      <label for="betatest">{{ form.betatest.label }}</label>
+      <div class="field">{{ form.betatest }}</div>
+      <div class="errors">{{ form.betatest.errors.0 }}</div>
+      <br/>
+       
+       <p>NEED TO change this so that customer field is auto-linked to currently logged in user. Also, shouldn't ANYONE be able
+       to submit feedback, not just customer?</p>
+
+      <label for="customer">{{ form.customer.label }}</label>
+      <div class="field">{{ form.customer }}</div>
+      <div class="errors">{{ form.customer.errors.0 }}</div>
+      <br/>
+
+      <label for="feedback">{{ form.feedback.label }}</label>
+      <div class="field">{{ form.feedback }}</div>
+      <div class="errors">{{ form.feedback.errors.0 }}</div>
+      <br/>
+
+
+<input type="submit" value="Add">
+
+{% csrf_token %}
+
+</form>
+
+{% endblock %}
+

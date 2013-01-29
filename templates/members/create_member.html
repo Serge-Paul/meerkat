@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Team Member
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+<h1>Add Team Member</h1>
+
+{% if message %}
+  <div class="errors"> {{ message }}</div>
+{% endif %}
+<br/>
+
+<p>Team: <a href="/teams/{{ team.id }}/">{{ team.name }}</a>
+
+<form id="add-member-form" action="/members/{{ team.id }}/add/" method="post" enctype="multipart/form-data">
+
+<p>*Need to implement allowing user to choose existing member</p>
+
+      <label for="existing_member">{{ form.existing_member.label }}</label>
+      <div class="field">{{ form.existing_member }}</div>
+      <div class="errors">{{ form.existing_member.errors.0 }}</div>
+      <br/>
+
+      <label for="first_name">{{ form.first_name.label }}</label>
+      <div class="field">{{ form.first_name }}</div>
+      <div class="errors">{{ form.first_name.errors.0 }}</div>
+      <br/>
+
+      <label for="last_name">{{ form.last_name.label }}</label>
+      <div class="field">{{ form.last_name }}</div>
+      <div class="errors">{{ form.last_name.errors.0 }}</div>
+      <br/>
+
+      <label for="title">{{ form.title.label }}</label>
+      <div class="field">{{ form.title }}</div>
+      <div class="errors">{{ form.title.errors.0 }}</div>
+      <br/>
+
+      <label for="is_manager">{{ form.is_manager.label }}</label>
+      <div class="field">{{ form.is_manager }}</div>
+      <div class="errors">{{ form.is_manager.errors.0 }}</div>
+      <br/>
+
+
+<input type="submit" value="Add">
+
+{% csrf_token %}
+
+</form>
+
+{% endblock %}
+

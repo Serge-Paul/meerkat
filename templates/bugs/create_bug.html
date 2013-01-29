@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Bug
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+<h1>Add Bug</h1>
+
+{% if message %}
+  <div class="errors"> {{ message }}</div>
+  <br/>
+{% endif %}
+
+
+{% if test %}
+
+<p>Test: <a href="/tests/{{ test.id }}">{{ test.title }}</a>
+
+<form id="add-bug-form" action="/bugs/add/test/{{ test.id }}/" method="post" enctype="multipart/form-data">
+
+{% endif %}
+
+{% if betatest %}
+
+<p>Beta Test: <a href="/betatests/{{ betatest.id }}">Beta {{ betatest.release.name }}</a>
+
+<form id="add-bug-form" action="/bugs/add/betatest/{{ betatest.id }}/" method="post" enctype="multipart/form-data">
+
+{% else %}
+
+<div class="errors>Error: This bug is not associated with a test or beta test.</div>
+
+<form id="add-bug-form" action="/bugs/add/betatest/{{ betatest.id }}/" method="post" enctype="multipart/form-data">
+
+{% endif %}
+
+      <label for="title">{{ form.title.label }}</label>
+      <div class="field">{{ form.title }}</div>
+      <div class="errors">{{ form.title.errors.0 }}</div>
+      <br/>
+
+      <label for="description">{{ form.description.label }}</label>
+      <div class="field">{{ form.description }}</div>
+      <div class="errors">{{ form.description.errors.0 }}</div>
+      <br/>
+
+      <label for="features">{{ form.features.label }}</label>
+      <div class="field">{{ form.features }}</div>
+      <div class="errors">{{ form.features.errors.0 }}</div>
+      <br/>
+
+      <label for="severity">{{ form.severity.label }}</label>
+      <div class="field">{{ form.severity }}</div>
+      <div class="errors">{{ form.severity.errors.0 }}</div>
+      <br/>
+
+      <label for="status">{{ form.status.label }}</label>
+      <div class="field">{{ form.status }}</div>
+      <div class="errors">{{ form.status.errors.0 }}</div>
+      <br/>
+<p>Don't really need to select release for betatest bug, because it's automatically associated with that specific betatest</p>
+      <label for="release">{{ form.release.label }}</label>
+      <div class="field">{{ form.release }}</div>
+      <div class="errors">{{ form.release.errors.0 }}</div>
+      <br/>
+
+      <label for="test">{{ form.test.label }}</label>
+      <div class="field">{{ form.test }}</div>
+      <div class="errors">{{ form.test.errors.0 }}</div>
+      <br/>
+
+      <label for="identifier">{{ form.identifier.label }}</label>
+      <div class="field">{{ form.identifier }}</div>
+      <div class="errors">{{ form.identifier.errors.0 }}</div>
+      <br/>
+
+      <label for="category">{{ form.category.label }}</label>
+      <div class="field">{{ form.category }}</div>
+      <div class="errors">{{ form.category.errors.0 }}</div>
+      <br/>
+
+      <label for="resolution">{{ form.resolution.label }}</label>
+      <div class="field">{{ form.resolution }}</div>
+      <div class="errors">{{ form.resolution.errors.0 }}</div>
+      <br/>
+  
+      <br/> 
+      <label for="betatest">{{ form.betatest.label }}</label>
+      <div class="field">{{ form.betatest }}</div>
+      <div class="errors">{{ form.betatest.errors.0 }}</div>
+
+      <a href="/risks/add/">Add a new risk for this bug</a>
+      <br/><br/>
+
+<input type="submit" value="Add">
+
+{% csrf_token %}
+
+</form>
+
+{% endblock %}
+

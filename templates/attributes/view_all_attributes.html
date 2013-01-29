@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Attributes
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ component.title }} Attributes</h1>
+
+<a href="/attributes/add/{{ component.id }}/">Add new attribute</a>
+<br/>
+
+{% if attribute_list %}
+<ul>
+{% for attribute in attribute_list %}
+<li><a href="/attributes/{{ component.id }}/{{ attribute.id }}/">{{ attribute.title }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No attributes are available.</p>
+{% endif %}
+{% endblock %}
+
