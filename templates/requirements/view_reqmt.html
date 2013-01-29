@@ -19,6 +19,9 @@
 <a href="/requirements/{{ reqmt.id }}/edit/">Edit</a> |
 <a href="/requirements/{{ reqmt.id }}/delete/">Delete</a>
 
+<p>*Warning: Deleting a parent requirement, automatically deletes all children requirements. But deleting a child does NOT automatically
+delete the parent.</p>
+
 <p>
 Requirement ID: {{ reqmt.identifier }}
 </p>

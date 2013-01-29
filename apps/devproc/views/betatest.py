@@ -46,7 +46,9 @@ def create_betatest(request):
 def view_betatest(request, betatest_id):
    betatest = BetaTest.objects.get(id = betatest_id)
    feedback_list = Feedback.objects.filter(betatest = betatest_id)
-   return render_to_response('betatests/view_betatest.html', {'betatest': betatest, 'feedback_list': feedback_list})
+   bugs = Bug.objects.filter(betatest = betatest_id)
+
+   return render_to_response('betatests/view_betatest.html', {'betatest': betatest, 'feedback_list': feedback_list, 'bugs': bugs})
 
 
 def edit_betatest(request, betatest_id):

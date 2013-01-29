@@ -10,7 +10,6 @@ class ComponentForm(forms.Form):
    implementation_description = forms.CharField(max_length=1028, widget=forms.Textarea) 
    responsible_engineer= forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False) 
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
-   attributes= forms.ModelMultipleChoiceField(queryset=Attribute.objects.all(), required=False) 
    parent = forms.ModelChoiceField(queryset=Component.objects.all(), required=False) 
    release = forms.ModelChoiceField(queryset=Release.objects.all(), required=False) 
    approval_status = forms.ChoiceField(choices=APPROVAL_STATUS_CHOICES)
@@ -18,7 +17,6 @@ class ComponentForm(forms.Form):
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
    requirements = forms.ModelMultipleChoiceField(queryset=Requirement.objects.all(), required=False)
    usecases = forms.ModelMultipleChoiceField(queryset=UseCase.objects.all(), required=False)
-   risk = forms.ModelChoiceField(queryset=Risk.objects.all(), required=False)
 
 
 def view_all_components(request):
@@ -27,7 +25,46 @@ def view_all_components(request):
 
 
 def create_component(request):
-   return HttpResponse("You're adding new component")
+   if request.method == 'POST':
+
+      form = ComponentForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         component = Component()
+         component.title = form.cleaned_data['title']
+ 	 component.design_description = form.cleaned_data['design_description']
+	 component.implementation_description = form.cleaned_data['implementation_description']
+	 component.parent = form.cleaned_data['parent']
+	 component.release = form.cleaned_data['release']
+	 component.approval_status = form.cleaned_data['approval_status']
+	 component.identifier = form.cleaned_data['identifier']
+	 component.notes = form.cleaned_data['notes']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         component.save()
+
+	 component.responsible_engineer = form.cleaned_data['responsible_engineer'].all()
+
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            component.category = form.cleaned_data['category'].all() # ManyToMany
+
+	 component.requirements = form.cleaned_data['requirements'].all()
+	 component.usecases = form.cleaned_data['usecases'].all()
+
+         component.save()
+
+         return redirect('apps.devproc.views.component.view_component', component_id = component.id)
+
+      else: #if form is not valid
+         return render_to_response('components/create_component.html', {'form':form, 'message': 'Error creating component. Please try again.'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+      form = ComponentForm()
+      return render_to_response('components/create_component.html', {'form': form},  context_instance=RequestContext(request))
+
 
 def view_component(request, component_id):
   component = Component.objects.get(id = component_id)

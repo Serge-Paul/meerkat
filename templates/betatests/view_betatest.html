@@ -15,9 +15,9 @@ Beta Test
 
 {% if betatest %}
 
-<a href="/betatests/{{ betatest.id }}/edit/">Edit</a> |
-
- <a href="#">view all bugs related to this beta test</a>
+<a href="/betatests/{{ betatest.id }}/edit/">Edit</a>
+ | <a href="/customers/add/">Add a new customer</a>
+ | <a href="/bugs/add/betatest/{{ betatest.id }}">Add a new bug for this beta test</a> 
 
 <p>
 Release:  <a href="/releases/{{ betatest.release.id }}/">{{ betatest.release }}</a>
@@ -26,9 +26,21 @@ Release:  <a href="/releases/{{ betatest.release.id }}/">{{ betatest.release }}<
 <p>Beta Test Engineers:
 {% for engineer in betatest.responsible_engineer.all %}
       <br/>
-      <a href="/members/{{ engineer.id }}/">{{ engineer.title }}</a>
+      <a href="/members/{{ engineer.id }}/">{{ engineer.first_name }} {{ engineer.last_name }}</a>, {{ engineer.title }}
    {% endfor %}
 </p>
+
+<p>Bugs:
+{% if bugs %}
+   {% for bug in bugs %}
+      <br/>
+      <a href="/bugs/{{ bug.id }}/">{{ bug.title }}</a>
+   {% endfor %}
+{% else %}
+None
+{% endif %}
+</p>
+
 
 <p>
 Customers:

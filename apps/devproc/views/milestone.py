@@ -41,7 +41,9 @@ def create_milestone(request):
          # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          milestone.save()         
 
-         milestone.category = form.cleaned_data['category'].all() # ManyToMany
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            milestone.category = form.cleaned_data['category'].all() # ManyToMany
+
 	 milestone.predecessors  = form.cleaned_data['predecessors'].all() # ManyToMany
 
 	 milestone.save()

@@ -41,7 +41,8 @@ def create_risk(request):
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          risk.save()
 
-         risk.category = form.cleaned_data['category'].all() # ManyToMany
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            risk.category = form.cleaned_data['category'].all() # ManyToMany
         
          risk.save()
 

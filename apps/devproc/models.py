@@ -99,6 +99,7 @@ class UseCase(models.Model):
 class Attribute(models.Model):
    title = models.CharField(max_length=200)
    description = models.CharField(max_length=1028)
+   component = models.ForeignKey('Component')
 
    def __unicode__(self):
       return self.title
@@ -111,7 +112,6 @@ class Component(models.Model):
    responsible_engineer = models.ManyToManyField('Member', blank=True, null=True)
    category = models.ManyToManyField('Category', blank=True, null=True)
    #attachments
-   attributes = models.ManyToManyField('Attribute', blank=True, null=True)
    parent = models.ForeignKey('Component', blank=True, null=True)
    release = models.ForeignKey('Release', blank=True, null=True)
    approval_status = models.CharField(max_length=128, choices=APPROVAL_STATUS_CHOICES)

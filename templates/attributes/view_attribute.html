@@ -8,15 +8,22 @@ Attributes
 {% endblock %}
 
 {% block content %}
-{% if attribute %}
 
+<h1>{{ component.title }} Attributes</h1>
+
+<a href="/attributes/add/{{ component.id }}/">Add new attribute</a> |
+<a href="/attributes/{{ component.id }}/">View all attributes</a> |
+
+{% if attribute %}
+<a href="/attributes/{{ attribute.id }}/edit/">Edit</a> |
+<a href="/attributes/{{ attribute.id }}/delete/">Delete</a>
 
 <p>
 Attribute Title: {{ attribute.title }}
 </p>
 
 <p>
-Component: {{ component.title }}
+Component: <a href="/components/{{ component.id }}/">{{ component.title }}</a>
 </p>
 
 <p>

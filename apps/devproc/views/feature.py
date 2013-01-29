@@ -27,7 +27,46 @@ def view_all_features(request):
 
 
 def create_feature(request):
-   return HttpResponse("You're adding new feature")
+   if request.method == 'POST':
+
+      form = FeatureForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         feature = Feature()
+         feature.title = form.cleaned_data['title']
+         feature.design_description = form.cleaned_data['design_description']
+	 feature.implementation_description = form.cleaned_data['implementation_description']
+	 feature.release = form.cleaned_data['release']
+	 feature.approval_status = form.cleaned_data['approval_status']
+	 feature.identifier = form.cleaned_data['identifier']
+	 feature.notes = form.cleaned_data['notes']
+	 feature.risk = form.cleaned_data['risk']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         feature.save()
+
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            feature.category = form.cleaned_data['category'].all() # ManyToMany
+
+	 feature.responsible_engineer = form.cleaned_data['responsible_engineer'].all()        
+	 feature.usecases = form.cleaned_data['usecases'].all()
+	 feature.requirements = form.cleaned_data['requirements'].all()
+	 feature.component = form.cleaned_data['component'].all()
+
+         feature.save()
+
+         return redirect('apps.devproc.views.feature.view_feature', feature_id = feature.id)
+
+      else: #if form is not valid
+         return render_to_response('features/create_feature.html', {'form':form, 'message': 'Error creating feature. Please try again.'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+      form = FeatureForm()
+      return render_to_response('features/create_feature.html', {'form': form},  context_instance=RequestContext(request))
+
 
 def view_feature(request, feature_id):
    feature = Feature.objects.get(id = feature_id)

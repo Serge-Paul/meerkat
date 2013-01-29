@@ -12,14 +12,16 @@ Design Components
 <h1>Design Component</h1>
 
 <a href="/components/add/">Add new design component</a> |
-<a href="/components/">View all design components</a> |
+<a href="/components/">View all design components</a>
 
 {% if component %}
-
+<br/><br/>
 <a href="/components/{{ component.id }}/edit/">Edit</a> |
 <a href="/components/{{ component.id }}/delete/">Delete</a>
 
-  | <a href="/risks/add/">Add Risk</a>
+  | <a href="/risks/add/">Add Risk</a> 
+  | <a href="/attributes/add/{{ component.id }}/">Add Attribute</a>
+  | <a href="/attributes/{{ component.id }}/">View all attributes</a>
 
 <p>
 Component name: {{ component.title }}

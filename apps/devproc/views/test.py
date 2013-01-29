@@ -21,7 +21,42 @@ def view_all_tests(request):
    return render_to_response('tests/view_all_tests.html', {'test_list': test_list})
 
 def create_test(request):
-   return HttpResponse("You're adding new test")
+   if request.method == 'POST':
+
+      form = TestForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         test = Test()
+         test.title = form.cleaned_data['title']
+         test.test_description = form.cleaned_data['test_description']
+	 test.implementation_description = form.cleaned_data['implementation_description']
+	 test.pass_fail_criteria = form.cleaned_data['pass_fail_criteria']
+	 test.status = form.cleaned_data['status']
+	 test.identifier = form.cleaned_data['identifier']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         test.save()
+
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            test.category = form.cleaned_data['category'].all() # ManyToMany
+
+	 test.features = form.cleaned_data['features'].all()        
+	 test.responsible_engineer = form.cleaned_data['responsible_engineer'].all()
+
+         test.save()
+
+         return redirect('apps.devproc.views.test.view_test', test_id = test.id)
+
+      else: #if form is not valid
+         return render_to_response('tests/create_test.html', {'form':form, 'message': 'Error creating test. Please try again.'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+      form = TestForm()
+      return render_to_response('tests/create_test.html', {'form': form},  context_instance=RequestContext(request))
+
 
 def view_test(request, test_id):
    test = Test.objects.get(id = test_id)
