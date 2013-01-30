@@ -17,7 +17,6 @@ class FeatureForm(forms.Form):
    identifier = forms.CharField(max_length=200)
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False) 
    component = forms.ModelMultipleChoiceField(queryset=Component.objects.all(), required=False) 
-   risk = forms.ModelChoiceField(queryset=Risk.objects.all(), required=False) 
 
 
 def view_all_features(request):
@@ -42,7 +41,7 @@ def create_feature(request):
 	 feature.approval_status = form.cleaned_data['approval_status']
 	 feature.identifier = form.cleaned_data['identifier']
 	 feature.notes = form.cleaned_data['notes']
-	 feature.risk = form.cleaned_data['risk']
+
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          feature.save()
@@ -70,7 +69,9 @@ def create_feature(request):
 
 def view_feature(request, feature_id):
    feature = Feature.objects.get(id = feature_id)
-   return render_to_response('features/view_feature.html', {'feature': feature})
+   risks = Risk.objects.filter(feature = feature)
+
+   return render_to_response('features/view_feature.html', {'feature': feature, 'risks': risks})
 
 
 def edit_feature(request, feature_id):

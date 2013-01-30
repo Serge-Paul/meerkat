@@ -10,11 +10,12 @@ class AttributeForm(forms.Form):
   
 
 def view_all_attributes(request, component_id):
-   # View all attributes associates with a specific component
- 
-   component = Component.objects.get(id = component_id)
 
-   attribute_list = Attribute.objects.all().order_by('-id')
+#View all attributes associated with a specific component
+
+   component = Component.objects.get(id = component_id)
+   attribute_list = Attribute.objects.filter(component = component)
+
    return render_to_response('attributes/view_all_attributes.html', {'attribute_list': attribute_list, 'component': component})
  
 

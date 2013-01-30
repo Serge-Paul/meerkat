@@ -12,8 +12,9 @@
 
 {% if message %}
   <div class="errors"> {{ message }}</div>
+  <br/>
 {% endif %}
-<br/>
+
 
 <form id="add-component-form" action="/components/add/" method="post" enctype="multipart/form-data">
 
@@ -76,10 +77,6 @@
       <div class="field">{{ form.usecases }}</div>
       <div class="errors">{{ form.usecases.errors.0 }}</div>
       <br/>
-
-      <br/>
-      <a href="/risks/add/">Add a risk for this design component</a>
-      <br/><br/>
 
 <input type="submit" value="Add">
 

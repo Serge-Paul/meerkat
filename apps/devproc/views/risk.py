@@ -20,7 +20,18 @@ def view_all_risks(request):
    risk_list = Risk.objects.all().order_by('-id')
    return render_to_response('risks/view_all_risks.html', {'risk_list': risk_list})
 
-def create_risk(request):
+def create_risk(request, obj_id, type):
+
+   if type == "component":
+      obj = Component.objects.get(id = obj_id)
+
+   if type == "feature":
+      obj = Feature.objects.get(id = obj_id)
+
+   if type == "bug":
+      obj = Bug.objects.get(id = obj_id)
+
+
    if request.method == 'POST':
 
       form = RiskForm(request.POST)
@@ -41,6 +52,16 @@ def create_risk(request):
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          risk.save()
 
+         # Add the risk to the (feature, bug, or component) object
+         if type == "component":
+            risk.component = obj
+
+         if type == "feature":
+            risk.feature = obj
+
+         if type == "bug":
+            risk.bug = obj
+
          if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
             risk.category = form.cleaned_data['category'].all() # ManyToMany
         
@@ -49,21 +70,31 @@ def create_risk(request):
          return redirect('apps.devproc.views.risk.view_risk', risk_id = risk.id)
 
       else: #if form is not valid
-         return render_to_response('risks/create_risk.html', {'form':form, 'message': 'Error creating risk. Please try again.'}, context_instance=RequestContext(request))
+         return render_to_response('risks/create_risk.html', {'form':form, 'message': 'Error creating risk. Please try again.', 'obj': obj, 'type': type}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = RiskForm()
-      return render_to_response('risks/create_risk.html', {'form': form},  context_instance=RequestContext(request))
+      return render_to_response('risks/create_risk.html', {'form': form, 'obj': obj, 'type': type},  context_instance=RequestContext(request))
 
 
 def view_risk(request, risk_id):
    risk = Risk.objects.get(id = risk_id)
-   component = Component.objects.filter(risk = risk_id)
-   bug = Bug.objects.filter(risk = risk_id)
-   feature = Feature.objects.filter(risk = risk_id)
+   
+   feature = None
+   component = None
+   bug = None
 
-   return render_to_response('risks/view_risk.html', {'risk': risk, 'bug': bug, 'component': component, 'feature': feature})
+   if risk.feature:
+	feature = Feature.objects.get(id = risk.feature.id)
+
+   if risk.component:
+        component = Component.objects.get(id = risk.component.id)
+
+   if risk.bug:
+        bug = Bug.objects.get(id = risk.bug.id)
+
+   return render_to_response('risks/view_risk.html', {'risk': risk, 'feature': feature, 'component': component, 'bug': bug})
 
 def edit_risk(request, risk_id):
    return HttpResponse("You're editing risk %s." % risk_id)

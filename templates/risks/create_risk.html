@@ -9,15 +9,40 @@
 
 {% block content %}
 <h1>Add Risk</h1>
-* Make this auto-associate with the bug, feature, or component on whose page the "Add Risk" link was clicked.
-<br/><br/>
 
 {% if message %}
   <div class="errors"> {{ message }}</div>
+  <br/>
 {% endif %}
-<br/>
 
-<form id="add-risk-form" action="/risks/add/" method="post" enctype="multipart/form-data">
+{% if type == 'feature' %}
+
+Feature: <a href="/features/{{ obj.id }}/">{{ obj.title }}</a>
+<br/><br/>
+
+<form id="add-risk-form" action="/risks/add/feature/{{ obj.id }}/" method="post" enctype="multipart/form-data">
+
+{% endif %}
+
+{% if type == 'component' %}
+
+Design Component: <a href="/components/{{ obj.id }}/">{{ obj.title }}</a>
+<br/><br/>
+
+<form id="add-risk-form" action="/risks/add/component/{{ obj.id }}/" method="post" enctype="multipart/form-data">
+
+{% endif %}
+
+
+{% if type == 'bug' %}
+
+Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
+<br/><br/>
+
+<form id="add-risk-form" action="/risks/add/bug/{{ obj.id }}/" method="post" enctype="multipart/form-data">
+
+{% endif %}
+
 
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>

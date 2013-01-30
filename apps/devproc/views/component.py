@@ -67,8 +67,11 @@ def create_component(request):
 
 
 def view_component(request, component_id):
-  component = Component.objects.get(id = component_id)
-  return render_to_response('components/view_component.html', {'component': component})
+   component = Component.objects.get(id = component_id)
+   risks = Risk.objects.filter(component = component)
+   attributes = Attribute.objects.filter(component = component)   
+
+   return render_to_response('components/view_component.html', {'component': component, 'risks': risks, 'attributes': attributes})
 
 
 def edit_component(request, component_id):

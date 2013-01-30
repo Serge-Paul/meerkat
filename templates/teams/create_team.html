@@ -2,27 +2,77 @@
 {% extends "base.html" %}
 
 {% block title %}
+{% if mode == 'create' %}
     Add Team
+{% endif %}
+
+{% if mode == 'edit' %}
+    Edit Team
+{% endif %}
+
+
 {% endblock %}
 
 {% block headtags %}
 {% endblock %}
 
 {% block content %}
-<h1>Add team</h1>
 
+{% if mode == 'create' %}
+<h1>Add team</h1>
+{% endif %}
+
+{% if mode == 'edit' %}
+<h1>Edit team</h1>
+{% endif %}
+
+{% if message %}
+  <div class="errors"> {{ message }}</div>
+  <br/>
+{% endif %}
+
+
+{% if mode == 'create' %}
 <form id="add-team-form" action="/teams/add/" method="post" enctype="multipart/form-data">
- 
+{% endif %}
+
+{% if mode == 'edit' %}
+<form id="edit-team-form" action="/teams/{{ team.id }}/edit/" method="post" enctype="multipart/form-data">
+{% endif %} 
+
       <label for="team_name">{{ form.team_name.label }}</label>
       <div class="field">{{ form.team_name }}</div>
       <div class="errors">{{ form.team_name.errors.0 }}</div>
+      <br/>
 
      <label for="description">{{ form.description.label }}</label>
       <div class="field">{{ form.description }}</div>
       <div class="errors">{{ form.description.errors.0 }}</div>
+      <br/>
+<p>*Should be able to add multiple responsibilities, but need to figure out how want to do that if each responsibility has to be associated
+with a unique release</p>
+
+      <label for="responsibility">{{ form.responsibility.label }}</label>
+      <div class="field">{{ form.responsibility }}</div>
+      <div class="errors">{{ form.responsibility.errors.0 }}</div>
+      
+
+<p>Select the product release for this responsibility:</p> 
+     <label for="release">{{ form.release.label }}</label>
+      <div class="field">{{ form.release }}</div>
+      <div class="errors">{{ form.release.errors.0 }}</div>
+
 
 <br/>
+
+{% if mode == 'create' %}
 <input type="submit" value="Add Team">
+{% endif %}
+
+{% if mode == 'edit' %}
+<input type="submit" value="Save">
+{% endif %}
+
 
 {% csrf_token %}
 

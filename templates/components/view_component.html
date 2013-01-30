@@ -19,7 +19,7 @@ Design Components
 <a href="/components/{{ component.id }}/edit/">Edit</a> |
 <a href="/components/{{ component.id }}/delete/">Delete</a>
 
-  | <a href="/risks/add/">Add Risk</a> 
+  | <a href="/risks/add/component/{{ component.id }}/">Add Risk</a> 
   | <a href="/attributes/add/{{ component.id }}/">Add Attribute</a>
   | <a href="/attributes/{{ component.id }}/">View all attributes</a>
 
@@ -88,8 +88,8 @@ Parent Component:
 
 <p>
 Attributes:
-{% if component.attributes.all.0 %}   <!-- this is manyToMany field -->
-   {% for attribute in component.attributes.all %}
+{% if attributes %}  
+   {% for attribute in attributes %}
       <br/>
       <a href="/attributes/{{ component.id }}/{{ attribute.id }}/">{{ attribute.title }}</a>
    {% endfor %}
@@ -122,13 +122,17 @@ Requirements:
 {% endif %}
 </p>
 
-<p>Risk: 
-{% if component.risk %}
-<a href="/risks/{{ component.risk.id }}/">{{ component.risk.title }}</a>
+<p>Risks:
+{% if risks %}
+  {% for risk in risks %}
+     <br/>
+     <a href="/risks/{{ risk.id }}/">{{ risk.title }}</a>
+  {% endfor %}
 {% else %}
 None
 {% endif %}
 </p>
+
 
 <p>Notes:<br/>
 {{ component.notes }}

@@ -16,7 +16,7 @@
 {% endif %}
 
 
-{% if test %}
+{% if type = 'test' %}
 
 <p>Test: <a href="/tests/{{ test.id }}">{{ test.title }}</a>
 
@@ -24,11 +24,11 @@
 
 {% endif %}
 
-{% if betatest %}
+{% if type == 'betatest' %}
 
-<p>Beta Test: <a href="/betatests/{{ betatest.id }}">Beta {{ betatest.release.name }}</a>
+<p>Beta Test: <a href="/betatests/{{ test.id }}">Beta {{ test.release.name }}</a>
 
-<form id="add-bug-form" action="/bugs/add/betatest/{{ betatest.id }}/" method="post" enctype="multipart/form-data">
+<form id="add-bug-form" action="/bugs/add/betatest/{{ test.id }}/" method="post" enctype="multipart/form-data">
 
 {% else %}
 
@@ -92,9 +92,6 @@
       <label for="betatest">{{ form.betatest.label }}</label>
       <div class="field">{{ form.betatest }}</div>
       <div class="errors">{{ form.betatest.errors.0 }}</div>
-
-      <a href="/risks/add/">Add a new risk for this bug</a>
-      <br/><br/>
 
 <input type="submit" value="Add">
 

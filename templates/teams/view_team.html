@@ -16,7 +16,7 @@
 
 {% if team %}
 <a href="/teams/{{ team.id }}/edit/">Edit</a> |
-<a href="/teams/{{ team.id }}/delete/">Delete</a>
+<a href="/teams/{{ team.id }}/delete/">Delete Team</a>
  | <a href="/members/{{ team.id }}/add/">Add team member</a>
 
 <p>
@@ -33,7 +33,7 @@ Responsibilities:
 
   {% for responsibility  in responsibilities.all %}
       <br/>
-      {{ responsibility }} / Release <a href="/releases/{{ responsibility.release.id }}/">{{ responsibility.release.name }}</a>
+      {{ responsibility }} / <a href="/releases/{{ responsibility.release.id }}/">Release {{ responsibility.release.name }}</a>
   {% endfor %}
 
 {% else %}

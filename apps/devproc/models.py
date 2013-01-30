@@ -119,7 +119,6 @@ class Component(models.Model):
    notes = models.TextField(max_length=1028, blank=True, null=True)
    requirements = models.ManyToManyField('Requirement', blank=True, null=True)
    usecases = models.ManyToManyField('Usecase', blank=True, null=True)
-   risk = models.OneToOneField('Risk', blank=True, null=True)
 
    def __unicode__(self):
       return self.title
@@ -140,7 +139,6 @@ class Feature(models.Model):
    identifier = models.CharField(max_length=200)
    notes = models.TextField(max_length=1028, blank=True, null=True) 
    component = models.ManyToManyField('Component', blank=True, null=True)
-   risk = models.OneToOneField('Risk', blank=True, null=True)
 
    def __unicode__(self):
       return self.title
@@ -175,7 +173,6 @@ class Bug(models.Model):
    #attachments
    resolution = models.TextField(max_length=1028, blank=True, null=True)
    betatest = models.ForeignKey('BetaTest', blank=True, null=True)
-   risk = models.OneToOneField('Risk', blank=True, null=True)
 
    def __unicode__(self):
       return self.title
@@ -236,6 +233,9 @@ class Risk(models.Model):
    identifier = models.CharField(max_length=200)
    #attachment
    approval_status = models.CharField(max_length=128, choices=APPROVAL_STATUS_CHOICES)
+   feature = models.ForeignKey('Feature', blank=True, null=True)
+   bug = models.ForeignKey('Bug', blank=True, null=True)
+   component = models.ForeignKey('Component', blank=True, null=True)
 
    def __unicode__(self):
       return self.title

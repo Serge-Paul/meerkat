@@ -20,7 +20,7 @@ Bugs
 <a href="/bugs/{{ bug.id }}/edit/">Edit</a> |
 <a href="/bugs/{{ bug.id }}/delete/">Delete</a>
 
- | <a href="/risks/add/">Add a risk for this bug</a>
+ | <a href="/risks/add/bug/{{ bug.id }}/">Add a risk for this bug</a>
 
 <p>
 Bug title: {{ bug.title }}
@@ -79,23 +79,32 @@ Features:
 {% endif %}
 </p>
 
-<p>
-Test:
+
 {% if bug.test %} <!-- this is foreign key field -->
-   <a href="/tests/{{ bug.test.id }}/">{{ bug.test }}</a>
+<p>
+Test: <a href="/tests/{{ bug.test.id }}/">{{ bug.test }}</a>
+</p>
+{% endif %}
+
+
+{% if bug.betatest %} <!-- this is foreign key field -->
+<p>
+Beta Test: <a href="/betatests/{{ bug.betatest.id }}/">Beta {{ bug.betatest }}</a>
+</p>
+{% endif %}
+
+
+<p>Risks:
+{% if risks %}
+  {% for risk in risks %}
+     <br/>
+     <a href="/risks/{{ risk.id }}/">{{ risk.title }}</a>
+  {% endfor %}
 {% else %}
-   None
+None
 {% endif %}
 </p>
 
-<p>
-Beta Test:
-{% if bug.betatest %} <!-- this is foreign key field -->
-   <a href="/betatests/{{ bug.betatest.id }}/">Beta {{ bug.betatest }}</a>
-{% else %}
-   None
-{% endif %}
-</p>
 
 <p>
 Resolution:

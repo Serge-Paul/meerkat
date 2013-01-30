@@ -19,7 +19,7 @@ Features
 <a href="/features/{{ feature.id }}/edit/">Edit</a> |
 <a href="/features/{{ feature.id }}/delete/">Delete</a>
 
- | <a href="/risks/add/">Add Risk</a>
+ | <a href="/risks/add/feature/{{ feature.id }}/">Add Risk</a>
  | <a href="/feedback/add/{{ feature.id }}">Add Feedback</a>
 <p>
 Feature title: {{ feature.title }}
@@ -102,9 +102,12 @@ Design Components:
 {% endif %}
 </p>
 
-<p>Risk: 
-{% if feature.risk %}
-<a href="/risks/{{ feature.risk.id }}/">{{ feature.risk.title }}</a>
+<p>Risks: 
+{% if risks %}
+  {% for risk in risks %}
+     <br/>
+     <a href="/risks/{{ risk.id }}/">{{ risk.title }}</a>
+  {% endfor %}
 {% else %}
 None
 {% endif %}

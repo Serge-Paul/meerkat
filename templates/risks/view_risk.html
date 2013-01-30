@@ -11,7 +11,9 @@ Risk
 
 <h1>Risk</h1>
 
-<a href="/risks/add/">Add new risk</a> |
+<p>To add a new risk, go to the page for the feature, design component, or bug and click the 'add risk' link.
+</p>
+
 <a href="/risks/">View all risks</a> |
 
 {% if risk %}
@@ -26,6 +28,28 @@ Title: {{ risk.title }}
 <p>
 Risk ID: {{ risk.identifier }}
 <p>
+
+
+{% if feature %}
+<p>
+Related Feature:
+<a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
+</p>
+{% endif %}
+
+{% if component %}
+<p>
+Related Design Component:
+<a href="/components/{{ component.id }}/">{{ component.title }}</a>
+</p>
+{% endif %}
+
+{% if bug %}
+<p>
+Related Bug:
+<a href="/bugs/{{ bug.id }}/">{{ bug.title }}</a>
+</p>
+{% endif %}
 
 <p>
 Status: {{ risk.status }}
@@ -52,35 +76,6 @@ Severity: {{ risk.severity }}
 Release:
 {% if risk.release %} <!-- this is foreign key field -->
    <a href="/releases/{{ risk.release.id }}/">{{ risk.release }}</a>
-{% else %}
-   None
-{% endif %}
-</p>
-
-<p>*Consider associating a single risk with only one feature, component, or bug; not one of each</p>
-
-<p>
-Related Feature:
-{% if feature %}
-      <a href="/features/{{ feature.0.id }}/">{{ feature.0.title }}</a>
-{% else %}
-   None
-{% endif %}
-</p>
-
-<p>
-Related Design Component:
-{% if component %}
-      <a href="/components/{{ component.0.id }}/">{{ component.0.title }}</a>
-{% else %}
-   None
-{% endif %}
-</p>
-
-<p>
-Related Bug:
-{% if bug %}
-      <a href="/bugs/{{ bug.0.id }}/">{{ bug.0.title }}</a>
 {% else %}
    None
 {% endif %}
