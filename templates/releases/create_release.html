@@ -1,22 +1,43 @@
 {% extends "base.html" %}
 
 {% block title %}
+
+{% if mode == 'create' %}
     Add Release
+{% endif %}
+
+{% if mode == 'edit' %}
+    Edit Release
+{% endif %}
+
 {% endblock %}
 
 {% block headtags %}
 {% endblock %}
 
 {% block content %}
+
+{% if mode == 'create' %}
 <h1>Add Release</h1>
+{% endif %}
+
+{% if mode == 'edit' %}
+<h1>Edit Release</h1>
+{% endif %}
+
 
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
 
-
+{% if mode == 'create' %}
 <form id="add-release-form" action="/releases/add/" method="post" enctype="multipart/form-data">
+{% endif %}
+
+{% if mode == 'edit' %}
+<form id="edit-release-form" action="/releases/{{ release.id }}/edit/" method="post" enctype="multipart/form-data">
+{% endif %}
 
       <label for="name">{{ form.name.label }}</label>
       <div class="field">{{ form.name }}</div>
@@ -58,9 +79,14 @@
       <div class="errors">{{ form.betatest_engineer.errors.0 }}</div>
       <br/>
 
+{% if mode == 'create' %}
 <input type="submit" value="Add">
-
 *Note: Adding a new release will automatically generate a beta test for that release.
+{% endif %}
+
+{% if mode == 'edit' %}
+<input type="submit" value="Save">
+{% endif %}
 
 {% csrf_token %}
 

@@ -11,7 +11,11 @@ Customers
 
 <h1>Customer</h1>
 
+<a href="/customers/add/">Add a new customer</a>
+
 {% if customer %}
+
+ | <a href="/customers/{{ customer.id }}/edit/">Edit</a>
 
 <p>
 Name: {{ customer.first_name }} {{ customer.last_name }}

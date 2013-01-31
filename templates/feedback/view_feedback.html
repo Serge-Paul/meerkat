@@ -10,6 +10,7 @@
 {% block content %}
 
 <h1>Customer Feedback</h1>
+
 <p>
 Customer: <a href="/customers/{{ feedback_list.all.0.customer.id }}/">{{ feedback_list.all.0.customer.first_name }} {{ feedback_list.all.0.customer.last_name }}</a>
 </p>
@@ -23,7 +24,9 @@ Release: <a href="/releases/{{ feedback_list.all.0.betatest.release.id }}/">{{ f
    {% for feedback in feedback_list.all %}
       Feature:  <a href="/features/{{ feedback.feature.id }}/">{{ feedback.feature.title }}</a>
       <br/><br/>
-      Feedback: {{ feedback.feedback }}
+      Feedback:
+      <a href="/feedback/{{ feedback.id }}/edit/">Edit</a>
+      <br/> {{ feedback.feedback }}
       <br/><br/>
       <hr/>
    {% endfor %}
@@ -31,9 +34,9 @@ Release: <a href="/releases/{{ feedback_list.all.0.betatest.release.id }}/">{{ f
 
 
 
-<!-- *** IF NO REQMTS *** -->
+<!-- *** IF NO FEEDBACK *** -->
 {% else %}
-<p>No requirements are available.</p>
+<p>No feedback is available.</p>
 {% endif %}
 {% endblock %}
 	

@@ -1,19 +1,37 @@
 {% extends "base.html" %}
 
 {% block title %}
+
+{% if mode == 'create' %}
     Add Risk
+{% endif %}
+
+{% if mode == 'edit' %}
+    Edit Risk
+{% endif %}
+
 {% endblock %}
 
 {% block headtags %}
 {% endblock %}
 
 {% block content %}
+
+{% if mode == 'create' %}
 <h1>Add Risk</h1>
+{% endif %}
+
+{% if mode == 'edit' %}
+<h1>Edit Risk</h1>
+{% endif %}
+
 
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
+
+{% if mode == 'create' %}
 
 {% if type == 'feature' %}
 
@@ -42,6 +60,29 @@ Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
 <form id="add-risk-form" action="/risks/add/bug/{{ obj.id }}/" method="post" enctype="multipart/form-data">
 
 {% endif %}
+
+{% endif %} <!-- end if mode = create -->
+
+{% if mode == 'edit' %}
+
+{% if type == 'feature' %}
+Feature: <a href="/features/{{ obj.id }}/">{{ obj.title }}</a>
+<br/><br/>
+{% endif %}
+
+{% if type == 'component' %}
+Design Component: <a href="/components/{{ obj.id }}/">{{ obj.title }}</a>
+<br/><br/>
+{% endif %}
+
+{% if type == 'bug' %}
+Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
+<br/><br/>
+{% endif %}
+
+<form id="edit-risk-form" action="/risks/{{ risk.id }}/edit/" method="post" enctype="multipart/form-data">
+
+{% endif %} <!-- end if mode = edit -->
 
 
       <label for="title">{{ form.title.label }}</label>
@@ -89,7 +130,14 @@ Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
       <div class="errors">{{ form.approval_status.errors.0 }}</div>
       <br/>
 
+{% if mode == 'create' %}
 <input type="submit" value="Add">
+{% endif %}
+
+{% if mode == 'edit' %}
+<input type="submit" value="Save">
+{% endif %}
+
 
 {% csrf_token %}
 

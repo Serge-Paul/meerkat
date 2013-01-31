@@ -1,14 +1,30 @@
 {% extends "base.html" %}
 
 {% block title %}
+
+{% if mode == 'create' %}
     Add Team Member
+{% endif %}
+
+{% if mode == 'edit' %}
+    Edit Team Member
+{% endif %}
+
 {% endblock %}
 
 {% block headtags %}
 {% endblock %}
 
 {% block content %}
+
+{% if mode == 'create' %}
 <h1>Add Team Member</h1>
+{% endif %}
+
+{% if mode == 'edit' %}
+<h1>Edit Team Member</h1>
+{% endif %}
+
 
 {% if message %}
   <div class="errors"> {{ message }}</div>
@@ -17,7 +33,13 @@
 
 <p>Team: <a href="/teams/{{ team.id }}/">{{ team.name }}</a>
 
+{% if mode == 'create' %}
 <form id="add-member-form" action="/members/{{ team.id }}/add/" method="post" enctype="multipart/form-data">
+{% endif %}
+
+{% if mode == 'edit' %}
+<form id="edit-member-form" action="/members/{{ member.id }}/edit/" method="post" enctype="multipart/form-data">
+{% endif %}
 
 <p>*Need to implement allowing user to choose existing member</p>
 
@@ -47,7 +69,14 @@
       <br/>
 
 
+{% if mode == 'create' %}
 <input type="submit" value="Add">
+{% endif %}
+
+{% if mode == 'edit' %}
+<input type="submit" value="Save">
+{% endif %}
+
 
 {% csrf_token %}
 

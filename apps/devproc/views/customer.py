@@ -33,12 +33,12 @@ def create_customer(request):
          return redirect('apps.devproc.views.customer.view_customer', customer_id = customer.id)
 
       else: #if form is not valid
-         return render_to_response('customers/create_customer.html', {'form':form, 'message': 'Error adding customer. Please try again.'}, context_instance=RequestContext(request))
+         return render_to_response('customers/create_customer.html', {'form':form, 'message': 'Error adding customer. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = CustomerForm()
-      return render_to_response('customers/create_customer.html', {'form': form},  context_instance=RequestContext(request))
+      return render_to_response('customers/create_customer.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_customer(request, customer_id):
@@ -47,7 +47,42 @@ def view_customer(request, customer_id):
 
 
 def edit_customer(request, customer_id):
-   return HttpResponse("You're editing customer %s." % customer_id)
+
+   customer = Customer.objects.get(id = customer_id)
+
+   if request.method == 'POST':
+
+      form = CustomerForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         customer.first_name = form.cleaned_data['first_name']
+         customer.last_name = form.cleaned_data['last_name']
+         customer.organization = form.cleaned_data['organization']
+         customer.location = form.cleaned_data['location']
+
+         customer.save()
+
+         return redirect('apps.devproc.views.customer.view_customer', customer_id = customer.id)
+
+      else: #if form is not valid
+         return render_to_response('customers/create_customer.html', {'form':form, 'message': 'Error editing customer. Please try again.', 'customer': customer, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+     
+      defaults = {
+                 'first_name' : customer.first_name,
+                 'last_name' : customer.last_name,
+                 'organization' : customer.organization,
+                 'location' : customer.location,
+                 }
+
+      form = CustomerForm(initial=defaults)
+
+      return render_to_response('customers/create_customer.html', {'form': form, 'customer': customer, 'mode': 'edit'},  context_instance=RequestContext(request))
+
 
 
 def delete_customer(request, customer_id):

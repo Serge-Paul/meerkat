@@ -41,12 +41,12 @@ def create_attribute(request, component_id):
          return redirect('apps.devproc.views.attribute.view_attribute', component_id = component.id, attribute_id = attribute.id)
 
       else: #if form is not valid
-         return render_to_response('attributes/create_attribute.html', {'form':form, 'message': 'Error creating attribute. Please try again.', 'component': component}, context_instance=RequestContext(request))
+         return render_to_response('attributes/create_attribute.html', {'form':form, 'message': 'Error creating attribute. Please try again.', 'component': component, 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = AttributeForm()
-      return render_to_response('attributes/create_attribute.html', {'form': form, 'component': component},  context_instance=RequestContext(request))
+      return render_to_response('attributes/create_attribute.html', {'form': form, 'component': component, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_attribute(request, component_id, attribute_id):
@@ -56,7 +56,39 @@ def view_attribute(request, component_id, attribute_id):
 
 
 def edit_attribute(request, attribute_id):
-   return HttpResponse("You're editing attribute %s." % attribute_id)
+
+   attribute = Attribute.objects.get(id = attribute_id)
+
+   if request.method == 'POST':
+
+      form = AttributeForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         attribute.title = form.cleaned_data['title']
+         attribute.description = form.cleaned_data['description']
+
+         attribute.save()
+
+         return redirect('apps.devproc.views.attribute.view_attribute', component_id = attribute.component.id, attribute_id = attribute.id)
+
+      else: #if form is not valid
+         return render_to_response('attributes/create_attribute.html', {'form':form, 'message': 'Error editing attribute. Please try again.', 'component': attribute.component, 'attribute': attribute, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+      
+      defaults = {
+                 'title' : attribute.title,
+                 'description': attribute.description,
+                 }
+
+      form = AttributeForm(initial=defaults)
+
+      return render_to_response('attributes/create_attribute.html', {'form': form, 'component': attribute.component, 'attribute': attribute, 'mode': 'edit'},  context_instance=RequestContext(request))
+
+
 
 def delete_attribute(request, attribute_id):
 

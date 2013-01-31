@@ -49,12 +49,12 @@ def create_member(request, team_id):
          return redirect('apps.devproc.views.member.view_member', member_id = member.id)
 
       else: #if form is not valid
-         return render_to_response('members/create_member.html', {'form':form, 'message': 'Error adding team member. Please try again.', 'team': team}, context_instance=RequestContext(request))
+         return render_to_response('members/create_member.html', {'form':form, 'message': 'Error adding team member. Please try again.', 'team': team, 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = MemberForm()
-      return render_to_response('members/create_member.html', {'form': form, 'team': team},  context_instance=RequestContext(request))
+      return render_to_response('members/create_member.html', {'form': form, 'team': team, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_member(request, member_id):
@@ -63,7 +63,44 @@ def view_member(request, member_id):
 
 
 def edit_member(request, member_id):
-   return HttpResponse("You're editing member %s." % member_id)   
+
+   member = Member.objects.get(id = member_id)
+
+   if request.method == 'POST':
+
+      form = MemberForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+#NEED TO IMPLEMENT allowing user to choose existing members
+
+         member.first_name = form.cleaned_data['first_name']
+         member.last_name = form.cleaned_data['last_name']
+         member.title = form.cleaned_data['title']
+         member.is_manager = form.cleaned_data['is_manager']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         member.save()
+
+         return redirect('apps.devproc.views.member.view_member', member_id = member.id)
+
+      else: #if form is not valid
+         return render_to_response('members/create_member.html', {'form':form, 'message': 'Error editing team member. Please try again.', 'team': member.team, 'member': member, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+   
+      defaults = {
+                 'first_name' : member.first_name,
+                 'last_name': member.last_name,
+                 'title': member.title,
+                 'is_manager': member.is_manager,
+                 }
+
+      form = MemberForm(initial=defaults)
+
+      return render_to_response('members/create_member.html', {'form': form, 'team': team, 'member': member, 'mode': 'edit'},  context_instance=RequestContext(request))
+
 
 
 def delete_member(request, member_id):

@@ -1,21 +1,43 @@
 {% extends "base.html" %}
 
 {% block title %}
+
+{% if mode == 'create' %}
     Add Test
+{% endif %}
+
+{% if mode == 'edit' %}
+    Edit Test
+{% endif %}
+
 {% endblock %}
 
 {% block headtags %}
 {% endblock %}
 
 {% block content %}
+
+{% if mode == 'create' %}
 <h1>Add Test</h1>
+{% endif %}
+
+{% if mode == 'edit' %}
+<h1>Edit Test</h1>
+{% endif %}
+
 
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
 
+{% if mode == 'create' %}
 <form id="add-test-form" action="/tests/add/" method="post" enctype="multipart/form-data">
+{% endif %}
+
+{% if mode == 'edit' %}
+<form id="edit-test-form" action="/tests/{{ test.id }}/edit/" method="post" enctype="multipart/form-data">
+{% endif %}
 
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>
@@ -62,8 +84,14 @@
       <div class="errors">{{ form.identifier.errors.0 }}</div>
       <br/>
 
-
+{% if mode == 'create' %}
 <input type="submit" value="Add">
+{% endif %}
+
+{% if mode == 'edit' %}
+<input type="submit" value="Save">
+{% endif %}
+
 
 {% csrf_token %}
 

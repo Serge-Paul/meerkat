@@ -77,7 +77,7 @@ def edit_team(request, team_id):
          return redirect('apps.devproc.views.team.view_team', team_id = team.id)
     
       else: #if form is not valid 
-          return render_to_response('teams/create_team.html', {'form':form, 'message': 'Error editing team. Please try again.', 'mode': 'edit'}, context_instance=RequestContext(request))
+          return render_to_response('teams/create_team.html', {'form':form, 'message': 'Error editing team. Please try again.', 'team': team, 'mode': 'edit'}, context_instance=RequestContext(request))
 
    else: #code for just initially displaying form
       

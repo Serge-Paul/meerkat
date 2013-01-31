@@ -1,22 +1,43 @@
 {% extends "base.html" %}
 
 {% block title %}
+
+{% if mode == 'create' %}
     Add Feature
+{% endif %}
+
+{% if mode == 'edit' %}
+    Edit Feature
+{% endif %}
+
 {% endblock %}
 
 {% block headtags %}
 {% endblock %}
 
 {% block content %}
-<h1>Add Feature</h1>
+
+{% if mode == 'create' %}
+<h1>Add feature</h1>
+{% endif %}
+
+{% if mode == 'edit' %}
+<h1>Edit feature</h1>
+{% endif %}
+
 
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/> 
 {% endif %}
 
-
+{% if mode == 'create' %}
 <form id="add-feature-form" action="/features/add/" method="post" enctype="multipart/form-data">
+{% endif %}
+
+{% if mode == 'edit' %}
+<form id="edit-feature-form" action="/features/{{ feature.id }}/edit/" method="post" enctype="multipart/form-data">
+{% endif %}
 
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>
@@ -78,7 +99,14 @@
       <div class="errors">{{ form.component.errors.0 }}</div>
       <br/>
 
+{% if mode == 'create' %}
 <input type="submit" value="Add">
+{% endif %}
+
+{% if mode == 'edit' %}
+<input type="submit" value="Save">
+{% endif %}
+
 
 {% csrf_token %}
 

@@ -39,8 +39,9 @@ def create_release(request):
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          release.save()
-
-         release.responsible_engineer = form.cleaned_data['release_engineer'].all() # ManyToMany
+         
+         if form.cleaned_data['release_engineer']:
+            release.responsible_engineer = form.cleaned_data['release_engineer'].all() # ManyToMany
         
          release.save()
 
@@ -50,17 +51,21 @@ def create_release(request):
 
          betatest.release = release
          betatest.save()
-         betatest.responsible_engineer = form.cleaned_data['betatest_engineer'].all()
+
+         if form.cleaned_data['betatest_engineer']:
+            betatest.responsible_engineer = form.cleaned_data['betatest_engineer'].all()
+
+         betatest.save()
 
          return redirect('apps.devproc.views.release.view_release', release_id = release.id)
 
       else: #if form is not valid
-         return render_to_response('releases/create_release.html', {'form':form, 'message': 'Error creating release. Please try again.'}, context_instance=RequestContext(request))
+         return render_to_response('releases/create_release.html', {'form':form, 'message': 'Error creating release. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = ReleaseForm()
-      return render_to_response('releases/create_release.html', {'form': form},  context_instance=RequestContext(request))
+      return render_to_response('releases/create_release.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_release(request, release_id):

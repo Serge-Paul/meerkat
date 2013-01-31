@@ -70,12 +70,12 @@ def create_risk(request, obj_id, type):
          return redirect('apps.devproc.views.risk.view_risk', risk_id = risk.id)
 
       else: #if form is not valid
-         return render_to_response('risks/create_risk.html', {'form':form, 'message': 'Error creating risk. Please try again.', 'obj': obj, 'type': type}, context_instance=RequestContext(request))
+         return render_to_response('risks/create_risk.html', {'form':form, 'message': 'Error creating risk. Please try again.', 'obj': obj, 'type': type, 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = RiskForm()
-      return render_to_response('risks/create_risk.html', {'form': form, 'obj': obj, 'type': type},  context_instance=RequestContext(request))
+      return render_to_response('risks/create_risk.html', {'form': form, 'obj': obj, 'type': type, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_risk(request, risk_id):

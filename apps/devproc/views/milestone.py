@@ -44,19 +44,20 @@ def create_milestone(request):
          if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
             milestone.category = form.cleaned_data['category'].all() # ManyToMany
 
-	 milestone.predecessors  = form.cleaned_data['predecessors'].all() # ManyToMany
+         if form.cleaned_data['predecessors']:
+	    milestone.predecessors  = form.cleaned_data['predecessors'].all() # ManyToMany
 
 	 milestone.save()
 
          return redirect('apps.devproc.views.milestone.view_milestone', milestone_id = milestone.id)
 
       else: #if form is not valid
-         return render_to_response('milestones/create_milestone.html', {'form':form, 'message': 'Error creating milestone. Please try again.'}, context_instance=RequestContext(request))
+         return render_to_response('milestones/create_milestone.html', {'form':form, 'message': 'Error creating milestone. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = MilestoneForm()
-      return render_to_response('milestones/create_milestone.html', {'form': form},  context_instance=RequestContext(request))
+      return render_to_response('milestones/create_milestone.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_milestone(request, milestone_id):
@@ -65,7 +66,59 @@ def view_milestone(request, milestone_id):
 
 
 def edit_milestone(request, milestone_id):
-   return HttpResponse("You're editing milestone %s." % milestone_id)
+
+   milestone = Milestone.objects.get(id = milestone_id)
+
+   if request.method == 'POST':
+
+      form = MilestoneForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         milestone.title = form.cleaned_data['title']
+         milestone.description = form.cleaned_data['description']
+         milestone.start_date  = form.cleaned_data['start_date']
+         milestone.end_date  = form.cleaned_data['end_date']
+         milestone.percent_complete = form.cleaned_data['percent_complete']
+         milestone.notes  = form.cleaned_data['notes']
+         milestone.release  = form.cleaned_data['release']  # Foreign Key
+
+         # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         milestone.save()
+
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            milestone.category = form.cleaned_data['category'].all() # ManyToMany
+
+         if form.cleaned_data['predecessors']:
+            milestone.predecessors  = form.cleaned_data['predecessors'].all() # ManyToMany
+
+         milestone.save()
+
+         return redirect('apps.devproc.views.milestone.view_milestone', milestone_id = milestone.id)
+
+      else: #if form is not valid
+         return render_to_response('milestones/create_milestone.html', {'form':form, 'message': 'Error editing milestone. Please try again.', 'milestone': milestone, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+  
+      defaults = {
+                 'title' : milestone.title,
+                 'description' : milestone.description,
+                 'start_date' : milestone.start_date,
+                 'end_date' : milestone.end_date,
+                 'percent_complete' : milestone.percent_complete,
+                 'notes' : milestone.notes,
+                 'release' : milestone.release,
+                 'category' : milestone.category.all(),
+                 'predecessors' : milestone.predecessors.all(),               
+                 }
+
+      form = MilestoneForm(initial=defaults)
+
+      return render_to_response('milestones/create_milestone.html', {'form': form, 'milestone': milestone, 'mode': 'edit'},  context_instance=RequestContext(request))
+
 
 
 def delete_milestone(request, milestone_id):

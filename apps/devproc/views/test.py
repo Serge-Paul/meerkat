@@ -42,20 +42,23 @@ def create_test(request):
          if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
             test.category = form.cleaned_data['category'].all() # ManyToMany
 
-	 test.features = form.cleaned_data['features'].all()        
-	 test.responsible_engineer = form.cleaned_data['responsible_engineer'].all()
+         if form.cleaned_data['features']:
+	    test.features = form.cleaned_data['features'].all()        
+
+         if form.cleaned_data['responsible_engineer']:
+	    test.responsible_engineer = form.cleaned_data['responsible_engineer'].all()
 
          test.save()
 
          return redirect('apps.devproc.views.test.view_test', test_id = test.id)
 
       else: #if form is not valid
-         return render_to_response('tests/create_test.html', {'form':form, 'message': 'Error creating test. Please try again.'}, context_instance=RequestContext(request))
+         return render_to_response('tests/create_test.html', {'form':form, 'message': 'Error creating test. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = TestForm()
-      return render_to_response('tests/create_test.html', {'form': form},  context_instance=RequestContext(request))
+      return render_to_response('tests/create_test.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_test(request, test_id):

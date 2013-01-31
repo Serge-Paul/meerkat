@@ -1,14 +1,31 @@
 {% extends "base.html" %}
 
 {% block title %}
+
+{% if mode == 'create' %}
     Add Bug
+{% endif %}
+
+{% if mode == 'edit' %}
+    Edit Bug
+{% endif %}
+
+
 {% endblock %}
 
 {% block headtags %}
 {% endblock %}
 
 {% block content %}
-<h1>Add Bug</h1>
+
+{% if mode == 'create' %}
+<h1>Add bug</h1>
+{% endif %}
+
+{% if mode == 'edit' %}
+<h1>Edit bug</h1>
+{% endif %}
+
 
 {% if message %}
   <div class="errors"> {{ message }}</div>
@@ -20,7 +37,13 @@
 
 <p>Test: <a href="/tests/{{ test.id }}">{{ test.title }}</a>
 
-<form id="add-bug-form" action="/bugs/add/test/{{ test.id }}/" method="post" enctype="multipart/form-data">
+   {% if mode == 'create' %}
+      <form id="add-bug-form" action="/bugs/add/test/{{ test.id }}/" method="post" enctype="multipart/form-data">
+   {% endif %}
+
+   {% if mode == 'edit' %}
+      <form id="edit-bug-form" action="/bugs/{{ bug.id }}/edit/" method="post" enctype="multipart/form-data">
+   {% endif %}
 
 {% endif %}
 
@@ -28,7 +51,13 @@
 
 <p>Beta Test: <a href="/betatests/{{ test.id }}">Beta {{ test.release.name }}</a>
 
-<form id="add-bug-form" action="/bugs/add/betatest/{{ test.id }}/" method="post" enctype="multipart/form-data">
+      {% if mode == 'create' %}
+         <form id="add-bug-form" action="/bugs/{{ bug.id }}/edit/" method="post" enctype="multipart/form-data">
+      {% endif %}
+
+      {% if mode == 'edit' %}
+         <form id="edit-bug-form" action="/bugs/edit/betatest/{{ test.id }}/" method="post" enctype="multipart/form-data">
+      {% endif %}
 
 {% else %}
 
@@ -93,7 +122,14 @@
       <div class="field">{{ form.betatest }}</div>
       <div class="errors">{{ form.betatest.errors.0 }}</div>
 
+{% if mode == 'create' %}
 <input type="submit" value="Add">
+{% endif %}
+
+{% if mode == 'edit' %}
+<input type="submit" value="Save">
+{% endif %}
+
 
 {% csrf_token %}
 

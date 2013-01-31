@@ -45,25 +45,29 @@ def create_component(request):
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          component.save()
 
-	 component.responsible_engineer = form.cleaned_data['responsible_engineer'].all()
+         if form.cleaned_data['responsible_engineer']:
+	    component.responsible_engineer = form.cleaned_data['responsible_engineer'].all()
 
          if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
             component.category = form.cleaned_data['category'].all() # ManyToMany
-
-	 component.requirements = form.cleaned_data['requirements'].all()
-	 component.usecases = form.cleaned_data['usecases'].all()
+         
+         if form.cleaned_data['requirements']:
+	    component.requirements = form.cleaned_data['requirements'].all()
+	
+         if form.cleaned_data['usecases']: 
+            component.usecases = form.cleaned_data['usecases'].all()
 
          component.save()
 
          return redirect('apps.devproc.views.component.view_component', component_id = component.id)
 
       else: #if form is not valid
-         return render_to_response('components/create_component.html', {'form':form, 'message': 'Error creating component. Please try again.'}, context_instance=RequestContext(request))
+         return render_to_response('components/create_component.html', {'form':form, 'message': 'Error creating component. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = ComponentForm()
-      return render_to_response('components/create_component.html', {'form': form},  context_instance=RequestContext(request))
+      return render_to_response('components/create_component.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_component(request, component_id):
@@ -75,7 +79,70 @@ def view_component(request, component_id):
 
 
 def edit_component(request, component_id):
-   return HttpResponse("You're editing component %s." % component_id)
+   
+   component = Component.objects.get(id = component_id)
+
+   if request.method == 'POST':
+
+      form = ComponentForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         component.title = form.cleaned_data['title']
+         component.design_description = form.cleaned_data['design_description']
+         component.implementation_description = form.cleaned_data['implementation_description']
+         component.parent = form.cleaned_data['parent']
+         component.release = form.cleaned_data['release']
+         component.approval_status = form.cleaned_data['approval_status']
+         component.identifier = form.cleaned_data['identifier']
+         component.notes = form.cleaned_data['notes']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         component.save()
+
+         if form.cleaned_data['responsible_engineer']:
+            component.responsible_engineer = form.cleaned_data['responsible_engineer'].all()
+
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            component.category = form.cleaned_data['category'].all() # ManyToMany
+
+         if form.cleaned_data['requirements']:
+            component.requirements = form.cleaned_data['requirements'].all()
+
+         if form.cleaned_data['usecases']:
+            component.usecases = form.cleaned_data['usecases'].all()
+
+         component.save()
+
+         return redirect('apps.devproc.views.component.view_component', component_id = component.id)
+
+      else: #if form is not valid
+         return render_to_response('components/create_component.html', {'form':form, 'message': 'Error editing component. Please try again.', 'component': component, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+      
+      defaults = {
+                 'title' : component.title,
+                 'design_description': component.design_description,
+                 'implementation_description': component.implementation_description,
+		 'parent' : component.parent,
+                 'release' : component.release,
+                 'approval_status' : component.approval_status,
+                 'identifier' : component.identifier,
+                 'notes' : component.notes,
+                 'responsible_engineer' : component.responsible_engineer.all(),
+                 'category' : component.category.all(),
+                 'requirements' : component.requirements.all(),
+                 'usecases' : component.usecases.all(),
+                 }
+
+      form = ComponentForm(initial=defaults)
+
+      return render_to_response('components/create_component.html', {'form': form, 'component': component, 'mode': 'edit'},  context_instance=RequestContext(request))
+
+
 
 
 def delete_component(request, component_id):

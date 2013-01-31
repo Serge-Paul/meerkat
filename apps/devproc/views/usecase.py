@@ -45,12 +45,12 @@ def create_usecase(request):
          return redirect('apps.devproc.views.usecase.view_usecase', usecase_id = usecase.id)
 
       else: #if form is not valid
-         return render_to_response('usecases/create_usecase.html', {'form':form, 'message': 'Error creating use case. Please try again.'}, context_instance=RequestContext(request))
+         return render_to_response('usecases/create_usecase.html', {'form':form, 'message': 'Error creating use case. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = UseCaseForm()
-      return render_to_response('usecases/create_usecase.html', {'form': form},  context_instance=RequestContext(request))
+      return render_to_response('usecases/create_usecase.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_usecase(request, usecase_id):

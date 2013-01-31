@@ -48,7 +48,8 @@ def create_bug(request, test_id, type):
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          bug.save()
          
-         bug.features = form.cleaned_data['features'].all()
+         if form.cleaned_data['features']:
+            bug.features = form.cleaned_data['features'].all()
 
          if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
             bug.category = form.cleaned_data['category'].all() # ManyToMany
@@ -64,12 +65,12 @@ def create_bug(request, test_id, type):
          return redirect('apps.devproc.views.bug.view_bug', bug_id = bug.id)
 
       else: #if form is not valid
-         return render_to_response('bugs/create_bug.html', {'form':form, 'message': 'Error creating bug. Please try again.', 'test': test, 'type': type}, context_instance=RequestContext(request))
+         return render_to_response('bugs/create_bug.html', {'form':form, 'message': 'Error creating bug. Please try again.', 'test': test, 'type': type, 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = BugForm()
-      return render_to_response('bugs/create_bug.html', {'form': form, 'test': test, 'type': type},  context_instance=RequestContext(request))
+      return render_to_response('bugs/create_bug.html', {'form': form, 'test': test, 'type': type, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 def view_bug(request, bug_id):
@@ -80,7 +81,67 @@ def view_bug(request, bug_id):
 
 
 def edit_bug(request, bug_id):
-   return HttpResponse("You're editing bug %s." % bug_id)
+
+   bug = Bug.objects.get(id = bug_id)
+
+   if bug.test:
+      type = 'test'
+      test = bug.test
+
+   if bug.betatest:
+      type = 'betatest'
+      test = bug.betatest
+
+   if request.method == 'POST':
+
+      form = BugForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         bug.title = form.cleaned_data['title']
+         bug.description  = form.cleaned_data['description']
+         bug.severity = form.cleaned_data['severity']
+         bug.status = form.cleaned_data['status']
+         bug.release = form.cleaned_data['release']
+         bug.identifier = form.cleaned_data['identifier']
+         bug.resolution = form.cleaned_data['resolution']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         bug.save()
+
+         if form.cleaned_data['features']:
+            bug.features = form.cleaned_data['features'].all()
+
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            bug.category = form.cleaned_data['category'].all() # ManyToMany
+
+
+         return redirect('apps.devproc.views.bug.view_bug', bug_id = bug.id)
+
+      else: #if form is not valid
+         return render_to_response('bugs/create_bug.html', {'form':form, 'message': 'Error editing bug. Please try again.', 'test': test, 'type': type, 'bug': bug, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+      
+      defaults = {
+                 'title' : bug.title,
+                 'description': bug.description,
+                 'severity' : bug.severity,
+                 'status' : bug.status,
+                 'release' : bug.release,
+                 'identifier' : bug.identifier,
+                 'resolution' : bug.resolution,
+                 'features' : bug.features.all(),
+                 'category' : bug.category.all(),                
+		 }
+
+      form = BugForm(initial=defaults)
+
+      return render_to_response('bugs/create_bug.html', {'form': form, 'test': test, 'type': type, 'bug': bug, 'mode': 'edit'},  context_instance=RequestContext(request))
+
+
 
 def delete_bug(request, bug_id):
 
