@@ -52,7 +52,6 @@ def create_risk(request, obj_id, type):
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          risk.save()
 
-         # Add the risk to the (feature, bug, or component) object
          if type == "component":
             risk.component = obj
 
@@ -97,7 +96,69 @@ def view_risk(request, risk_id):
    return render_to_response('risks/view_risk.html', {'risk': risk, 'feature': feature, 'component': component, 'bug': bug})
 
 def edit_risk(request, risk_id):
-   return HttpResponse("You're editing risk %s." % risk_id)
+
+   risk = Risk.objects.get(id = risk_id)
+
+   if risk.component:
+      type = "component"
+      obj = risk.component
+
+   if risk.feature:
+      type = "feature"
+      obj = risk.feature
+
+   if risk.bug:
+      type = "bug"
+      obj = risk.bug
+
+   if request.method == 'POST':
+
+      form = RiskForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         risk.title = form.cleaned_data['title']
+         risk.description  = form.cleaned_data['description']
+         risk.release = form.cleaned_data['release']
+         risk.probability = form.cleaned_data['probability']
+         risk.severity = form.cleaned_data['severity']
+         risk.status = form.cleaned_data['status']
+         risk.identifier = form.cleaned_data['identifier']
+         risk.approval_status = form.cleaned_data['approval_status']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         risk.save()
+
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            risk.category = form.cleaned_data['category'].all() # ManyToMany
+
+         risk.save()
+
+         return redirect('apps.devproc.views.risk.view_risk', risk_id = risk.id)
+
+      else: #if form is not valid
+         return render_to_response('risks/create_risk.html', {'form':form, 'message': 'Error editing risk. Please try again.', 'obj': obj, 'type': type, 'risk': risk, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+
+      defaults = {
+                 'title' : risk.title,
+                 'description' : risk.description,
+                 'release' : risk.release,
+                 'probability' : risk.probability,
+                 'severity' : risk.severity,
+                 'status' : risk.status,
+                 'identifier' : risk.identifier,
+                 'approval_status' : risk.approval_status,
+                 'category' : risk.category.all(),
+                 }
+
+      form = RiskForm(initial=defaults)
+
+      return render_to_response('risks/create_risk.html', {'form': form, 'obj': obj, 'type': type, 'risk': risk, 'mode': 'edit'},  context_instance=RequestContext(request))
+
 
 def delete_risk(request, risk_id):
 

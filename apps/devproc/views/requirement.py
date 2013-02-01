@@ -67,7 +67,61 @@ def view_reqmt(request, reqmt_id):
    return render_to_response('requirements/view_reqmt.html', {'reqmt': reqmt})
 
 def edit_reqmt(request, reqmt_id):
-   return HttpResponse("You're editing reqmt %s." % reqmt_id)
+
+   reqmt = Requirement.objects.get(id = reqmt_id)
+
+   if request.method == 'POST':
+
+      form = RequirementForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         reqmt.title = form.cleaned_data['title']
+         reqmt.description = form.cleaned_data['description']
+         reqmt.parent = form.cleaned_data['parent']
+         reqmt.use_case = form.cleaned_data['use_case']
+         reqmt.priority = form.cleaned_data['priority']
+         reqmt.release = form.cleaned_data['release']
+         reqmt.approval_status = form.cleaned_data['approval_status']
+         reqmt.identifier = form.cleaned_data['identifier']
+         reqmt.source = form.cleaned_data['source']
+         reqmt.notes = form.cleaned_data['notes']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         reqmt.save()
+
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            reqmt.category = form.cleaned_data['category'].all() # ManyToMany
+
+         reqmt.save()
+
+         return redirect('apps.devproc.views.requirement.view_reqmt', reqmt_id = reqmt.id)
+
+      else: #if form is not valid
+         return render_to_response('requirements/create_reqmt.html', {'form':form, 'message': 'Error editing requirement. Please try again.', 'reqmt': reqmt, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+  
+      defaults = {
+                 'title' : reqmt.title,
+                 'description' : reqmt.description,
+                 'parent' : reqmt.parent,
+                 'use_case' : reqmt.use_case,
+                 'priority' : reqmt.priority,
+                 'release' : reqmt.release,
+                 'approval_status' : reqmt.approval_status,
+                 'identifier' : reqmt.identifier,
+                 'source' : reqmt.source,
+                 'notes' : reqmt.notes,
+                 'category' : reqmt.category.all(),
+                 }
+
+      form = RequirementForm(initial=defaults)
+
+      return render_to_response('requirements/create_reqmt.html', {'form': form, 'reqmt': reqmt, 'mode': 'edit'},  context_instance=RequestContext(request))
+
 
 
 def delete_reqmt(request, reqmt_id):

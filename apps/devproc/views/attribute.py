@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class AttributeForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -48,7 +49,7 @@ def create_attribute(request, component_id):
       form = AttributeForm()
       return render_to_response('attributes/create_attribute.html', {'form': form, 'component': component, 'mode': 'create'},  context_instance=RequestContext(request))
 
-
+@login_required
 def view_attribute(request, component_id, attribute_id):
    attribute = Attribute.objects.get(id = attribute_id)
    component = Component.objects.get(id = component_id)

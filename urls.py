@@ -14,6 +14,12 @@ urlpatterns = patterns('',
    url(r'^admin/', include(admin.site.urls)),
 )
 
+urlpatterns += patterns('apps.public.views.auth',
+#  url(r'^accounts/signup/$', 'account_signup'),
+  url(r'^accounts/login/$', 'process_login'),
+  url(r'^accounts/logout/$', 'process_logout'),
+)
+
 
 urlpatterns += patterns('apps.devproc.views.feedback',
    url(r'^feedback/$', 'view_all_feedback'),

@@ -35,7 +35,7 @@
 <form id="add-requirement-form" action="/requirements/add/" method="post" enctype="multipart/form-data">
 {% endif %}
 
-{% if mode == 'create' %}
+{% if mode == 'edit' %}
 <form id="edit-requirement-form" action="/requirements/{{ reqmt.id }}/edit/" method="post" enctype="multipart/form-data">
 {% endif %}
 
@@ -53,6 +53,8 @@
       <div class="field">{{ form.category }}</div>
       <div class="errors">{{ form.category.errors.0 }}</div>
       <br/>
+
+<p>*When editing need to prevent ability to add current reqmt as parent.</p>
 
       <label for="parent">{{ form.parent.label }}</label>
       <div class="field">{{ form.parent }}</div>

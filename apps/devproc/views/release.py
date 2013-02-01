@@ -81,7 +81,61 @@ def view_release(request, release_id):
 
 
 def edit_release(request, release_id):
-   return HttpResponse("You're editing release %s." % release_id)
+
+   release = Release.objects.get(id = release_id)
+   betatest = BetaTest.objects.get(release = release) 
+
+   if request.method == 'POST':
+
+      form = ReleaseForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         release.name = form.cleaned_data['name']
+         release.release_date = form.cleaned_data['release_date']
+         release.pass_fail_criteria = form.cleaned_data['pass_fail_criteria']
+         release.market = form.cleaned_data['market']
+         release.notes = form.cleaned_data['notes']
+         release.goals = form.cleaned_data['goals']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         release.save()
+
+         if form.cleaned_data['release_engineer']:
+            release.responsible_engineer = form.cleaned_data['release_engineer'].all() # ManyToMany
+
+         release.save()
+
+         if form.cleaned_data['betatest_engineer']:
+            betatest.responsible_engineer = form.cleaned_data['betatest_engineer'].all()
+
+         betatest.save()
+
+         return redirect('apps.devproc.views.release.view_release', release_id = release.id)
+
+      else: #if form is not valid
+         return render_to_response('releases/create_release.html', {'form':form, 'message': 'Error editing release. Please try again.', 'release': release, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+     
+      defaults = {
+                 'name' : release.name,
+                 'release_date' : release.release_date,
+                 'pass_fail_criteria' : release.pass_fail_criteria,
+                 'market' : release.market,
+                 'notes' : release.notes,
+                 'goals' : release.goals,
+                 'release_engineer' : release.responsible_engineer.all(),
+                 'betatest_engineer' : betatest.responsible_engineer.all(),               
+                 }
+
+      form = ReleaseForm(initial=defaults)
+
+      return render_to_response('releases/create_release.html', {'form': form, 'release': release, 'mode': 'edit'},  context_instance=RequestContext(request))
+
+
 
 
 def delete_release(request, release_id):

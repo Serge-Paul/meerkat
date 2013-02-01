@@ -59,7 +59,54 @@ def view_usecase(request, usecase_id):
 
 
 def edit_usecase(request, usecase_id):
-   return HttpResponse("You're editing usecase %s." % usecase_id)
+
+   usecase = UseCase.objects.get(id = usecase_id)
+
+   if request.method == 'POST':
+
+      form = UseCaseForm(request.POST)
+
+      # Do when form is submitted
+      if form.is_valid():
+
+         usecase.title = form.cleaned_data['title']
+         usecase.description = form.cleaned_data['description']
+         usecase.target_market = form.cleaned_data['target_market']
+         usecase.identifier = form.cleaned_data['identifier']
+         usecase.source = form.cleaned_data['source']
+         usecase.notes = form.cleaned_data['notes']
+
+# Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
+         usecase.save()
+
+         if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
+            usecase.category = form.cleaned_data['category'].all() # ManyToMany
+
+         usecase.save()
+
+         return redirect('apps.devproc.views.usecase.view_usecase', usecase_id = usecase.id)
+
+      else: #if form is not valid
+         return render_to_response('usecases/create_usecase.html', {'form':form, 'message': 'Error editing use case. Please try again.', 'usecase': usecase, 'mode': 'edit'}, context_instance=RequestContext(request))
+
+
+   else: #code for just initially displaying form
+     
+      defaults = {
+                 'title' : usecase.title,
+                 'description' : usecase.description,
+                 'target_market' : usecase.target_market,
+                 'identifier' : usecase.identifier,
+                 'source' : usecase.source,
+                 'notes' : usecase.notes,
+                 'category' : usecase.category.all(),
+                 }
+
+      form = UseCaseForm(initial=defaults)
+
+      return render_to_response('usecases/create_usecase.html', {'form': form, 'usecase': usecase, 'mode': 'edit'},  context_instance=RequestContext(request))
+
+
 
 def delete_usecase(request, usecase_id):
 
