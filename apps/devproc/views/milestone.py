@@ -20,7 +20,7 @@ class MilestoneForm(forms.Form):
 @login_required
 def view_all_milestones(request):
    milestone_list = Milestone.objects.all().order_by('-id')
-   return render_to_response('milestones/view_all_milestones.html', {'milestone_list': milestone_list})
+   return render_to_response('milestones/view_all_milestones.html', {'user' : request.user, 'milestone_list': milestone_list})
 
 
 @login_required
@@ -55,18 +55,18 @@ def create_milestone(request):
          return redirect('apps.devproc.views.milestone.view_milestone', milestone_id = milestone.id)
 
       else: #if form is not valid
-         return render_to_response('milestones/create_milestone.html', {'form':form, 'message': 'Error creating milestone. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('milestones/create_milestone.html', {'user' : request.user, 'form':form, 'message': 'Error creating milestone. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = MilestoneForm()
-      return render_to_response('milestones/create_milestone.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('milestones/create_milestone.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_milestone(request, milestone_id):
    milestone = Milestone.objects.get(id = milestone_id)
-   return render_to_response('milestones/view_milestone.html', {'milestone': milestone})
+   return render_to_response('milestones/view_milestone.html', {'user' : request.user, 'milestone': milestone})
 
 
 @login_required
@@ -103,7 +103,7 @@ def edit_milestone(request, milestone_id):
          return redirect('apps.devproc.views.milestone.view_milestone', milestone_id = milestone.id)
 
       else: #if form is not valid
-         return render_to_response('milestones/create_milestone.html', {'form':form, 'message': 'Error editing milestone. Please try again.', 'milestone': milestone, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('milestones/create_milestone.html', {'user' : request.user, 'form':form, 'message': 'Error editing milestone. Please try again.', 'milestone': milestone, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -122,7 +122,7 @@ def edit_milestone(request, milestone_id):
 
       form = MilestoneForm(initial=defaults)
 
-      return render_to_response('milestones/create_milestone.html', {'form': form, 'milestone': milestone, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('milestones/create_milestone.html', {'user' : request.user, 'form': form, 'milestone': milestone, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 

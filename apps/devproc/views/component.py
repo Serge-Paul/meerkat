@@ -22,7 +22,7 @@ class ComponentForm(forms.Form):
 @login_required
 def view_all_components(request):
    component_list = Component.objects.all().order_by('-id')
-   return render_to_response('components/view_all_components.html', {'component_list': component_list})
+   return render_to_response('components/view_all_components.html', {'user' : request.user, 'component_list': component_list})
 
 @login_required
 def create_component(request):
@@ -63,12 +63,12 @@ def create_component(request):
          return redirect('apps.devproc.views.component.view_component', component_id = component.id)
 
       else: #if form is not valid
-         return render_to_response('components/create_component.html', {'form':form, 'message': 'Error creating component. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('components/create_component.html', {'user' : request.user, 'form':form, 'message': 'Error creating component. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = ComponentForm()
-      return render_to_response('components/create_component.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('components/create_component.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 @login_required
 def view_component(request, component_id):
@@ -76,7 +76,7 @@ def view_component(request, component_id):
    risks = Risk.objects.filter(component = component)
    attributes = Attribute.objects.filter(component = component)   
 
-   return render_to_response('components/view_component.html', {'component': component, 'risks': risks, 'attributes': attributes})
+   return render_to_response('components/view_component.html', {'user' : request.user, 'component': component, 'risks': risks, 'attributes': attributes})
 
 
 @login_required
@@ -120,7 +120,7 @@ def edit_component(request, component_id):
          return redirect('apps.devproc.views.component.view_component', component_id = component.id)
 
       else: #if form is not valid
-         return render_to_response('components/create_component.html', {'form':form, 'message': 'Error editing component. Please try again.', 'component': component, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('components/create_component.html', {'user' : request.user, 'form':form, 'message': 'Error editing component. Please try again.', 'component': component, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -142,7 +142,7 @@ def edit_component(request, component_id):
 
       form = ComponentForm(initial=defaults)
 
-      return render_to_response('components/create_component.html', {'form': form, 'component': component, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('components/create_component.html', {'user' : request.user, 'form': form, 'component': component, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 @login_required

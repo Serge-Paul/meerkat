@@ -20,7 +20,7 @@ class TestForm(forms.Form):
 @login_required
 def view_all_tests(request):
    test_list = Test.objects.all().order_by('-id')
-   return render_to_response('tests/view_all_tests.html', {'test_list': test_list})
+   return render_to_response('tests/view_all_tests.html', {'user' : request.user, 'test_list': test_list})
 
 
 @login_required
@@ -57,19 +57,19 @@ def create_test(request):
          return redirect('apps.devproc.views.test.view_test', test_id = test.id)
 
       else: #if form is not valid
-         return render_to_response('tests/create_test.html', {'form':form, 'message': 'Error creating test. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('tests/create_test.html', {'user' : request.user, 'form':form, 'message': 'Error creating test. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = TestForm()
-      return render_to_response('tests/create_test.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('tests/create_test.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_test(request, test_id):
    test = Test.objects.get(id = test_id)
    bugs = Bug.objects.filter(test = test_id)
-   return render_to_response('tests/view_test.html', {'test': test, 'bugs': bugs})
+   return render_to_response('tests/view_test.html', {'user' : request.user, 'test': test, 'bugs': bugs})
 
 
 @login_required
@@ -108,7 +108,7 @@ def edit_test(request, test_id):
          return redirect('apps.devproc.views.test.view_test', test_id = test.id)
 
       else: #if form is not valid
-         return render_to_response('tests/create_test.html', {'form':form, 'message': 'Error editing test. Please try again.', 'test': test, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('tests/create_test.html', {'user' : request.user, 'form':form, 'message': 'Error editing test. Please try again.', 'test': test, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -128,7 +128,7 @@ def edit_test(request, test_id):
       form = TestForm(initial=defaults)
 
 
-      return render_to_response('tests/create_test.html', {'form': form, 'test': test, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('tests/create_test.html', {'user' : request.user, 'form': form, 'test': test, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 

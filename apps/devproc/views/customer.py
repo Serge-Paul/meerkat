@@ -37,18 +37,18 @@ def create_customer(request):
          return redirect('apps.devproc.views.customer.view_customer', customer_id = customer.id)
 
       else: #if form is not valid
-         return render_to_response('customers/create_customer.html', {'form':form, 'message': 'Error adding customer. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('customers/create_customer.html', {'user' : request.user, 'form':form, 'message': 'Error adding customer. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = CustomerForm()
-      return render_to_response('customers/create_customer.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('customers/create_customer.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_customer(request, customer_id):
   customer = Customer.objects.get(id = customer_id)
-  return render_to_response('customers/view_customer.html', {'customer': customer})
+  return render_to_response('customers/view_customer.html', {'user' : request.user, 'customer': customer})
 
 
 @login_required
@@ -73,7 +73,7 @@ def edit_customer(request, customer_id):
          return redirect('apps.devproc.views.customer.view_customer', customer_id = customer.id)
 
       else: #if form is not valid
-         return render_to_response('customers/create_customer.html', {'form':form, 'message': 'Error editing customer. Please try again.', 'customer': customer, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('customers/create_customer.html', {'user' : request.user, 'form':form, 'message': 'Error editing customer. Please try again.', 'customer': customer, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -87,7 +87,7 @@ def edit_customer(request, customer_id):
 
       form = CustomerForm(initial=defaults)
 
-      return render_to_response('customers/create_customer.html', {'form': form, 'customer': customer, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('customers/create_customer.html', {'user' : request.user, 'form': form, 'customer': customer, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 

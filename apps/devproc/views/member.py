@@ -20,7 +20,7 @@ def view_all_members(request, team_id):
 
    team = Team.objects.get(id = team_id)   
 
-   return render_to_response('members/view_all_members.html', {'member_list': member_list, 'team': team})
+   return render_to_response('members/view_all_members.html', {'user' : request.user, 'member_list': member_list, 'team': team})
 
 
 @login_required
@@ -52,18 +52,18 @@ def create_member(request, team_id):
          return redirect('apps.devproc.views.member.view_member', member_id = member.id)
 
       else: #if form is not valid
-         return render_to_response('members/create_member.html', {'form':form, 'message': 'Error adding team member. Please try again.', 'team': team, 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('members/create_member.html', {'user' : request.user, 'form':form, 'message': 'Error adding team member. Please try again.', 'team': team, 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = MemberForm()
-      return render_to_response('members/create_member.html', {'form': form, 'team': team, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('members/create_member.html', {'user' : request.user, 'form': form, 'team': team, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_member(request, member_id):
    member = Member.objects.get(id = member_id)
-   return render_to_response('members/view_member.html', {'member': member})
+   return render_to_response('members/view_member.html', {'user' : request.user, 'member': member})
 
 
 @login_required
@@ -90,7 +90,7 @@ def edit_member(request, member_id):
          return redirect('apps.devproc.views.member.view_member', member_id = member.id)
 
       else: #if form is not valid
-         return render_to_response('members/create_member.html', {'form':form, 'message': 'Error editing team member. Please try again.', 'team': member.team, 'member': member, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('members/create_member.html', {'user' : request.user, 'form':form, 'message': 'Error editing team member. Please try again.', 'team': member.team, 'member': member, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -104,7 +104,7 @@ def edit_member(request, member_id):
 
       form = MemberForm(initial=defaults)
 
-      return render_to_response('members/create_member.html', {'form': form, 'team': team, 'member': member, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('members/create_member.html', {'user' : request.user, 'form': form, 'team': team, 'member': member, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 

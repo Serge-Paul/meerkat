@@ -15,7 +15,7 @@ class TeamForm(forms.Form):
 @login_required
 def view_all_teams(request):
    team_list = Team.objects.all().order_by('-id')
-   return render_to_response('teams/view_all_teams.html', {'team_list': team_list})
+   return render_to_response('teams/view_all_teams.html', {'user' : request.user, 'team_list': team_list})
 
 
 @login_required
@@ -41,12 +41,12 @@ def create_team(request):
          return redirect('apps.devproc.views.team.view_team', team_id = team.id)
     
       else: #if form is not valid
-          return render_to_response('teams/create_team.html', {'form':form, 'message': 'Error creating team. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+          return render_to_response('teams/create_team.html', {'user' : request.user, 'form':form, 'message': 'Error creating team. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = TeamForm()
-      return render_to_response('teams/create_team.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('teams/create_team.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
@@ -55,7 +55,7 @@ def view_team(request, team_id):
    members = Member.objects.filter(team = team_id)
    responsibilities = Responsibility.objects.filter(team = team_id)
 
-   return render_to_response('teams/view_team.html', {'team': team, 'members': members, 'responsibilities': responsibilities})
+   return render_to_response('teams/view_team.html', {'user' : request.user, 'team': team, 'members': members, 'responsibilities': responsibilities})
 
 
 @login_required
@@ -82,7 +82,7 @@ def edit_team(request, team_id):
          return redirect('apps.devproc.views.team.view_team', team_id = team.id)
     
       else: #if form is not valid 
-          return render_to_response('teams/create_team.html', {'form':form, 'message': 'Error editing team. Please try again.', 'team': team, 'mode': 'edit'}, context_instance=RequestContext(request))
+          return render_to_response('teams/create_team.html', {'user' : request.user, 'form':form, 'message': 'Error editing team. Please try again.', 'team': team, 'mode': 'edit'}, context_instance=RequestContext(request))
 
    else: #code for just initially displaying form
       
@@ -95,7 +95,7 @@ def edit_team(request, team_id):
 
       form = TeamForm(initial=defaults)   
  
-      return render_to_response('teams/create_team.html', {'form': form, 'team': team, 'mode': 'edit' },  context_instance=RequestContext(request))
+      return render_to_response('teams/create_team.html', {'user' : request.user, 'form': form, 'team': team, 'mode': 'edit' },  context_instance=RequestContext(request))
 
 
 @login_required

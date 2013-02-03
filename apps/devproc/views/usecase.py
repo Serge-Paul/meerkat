@@ -18,7 +18,7 @@ class UseCaseForm(forms.Form):
 @login_required
 def view_all_usecases(request):
    usecase_list = UseCase.objects.all().order_by('-id')
-   return render_to_response('usecases/view_all_usecases.html', {'usecase_list': usecase_list})
+   return render_to_response('usecases/view_all_usecases.html', {'user' : request.user, 'usecase_list': usecase_list})
 
 
 @login_required
@@ -49,18 +49,18 @@ def create_usecase(request):
          return redirect('apps.devproc.views.usecase.view_usecase', usecase_id = usecase.id)
 
       else: #if form is not valid
-         return render_to_response('usecases/create_usecase.html', {'form':form, 'message': 'Error creating use case. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('usecases/create_usecase.html', {'user' : request.user, 'form':form, 'message': 'Error creating use case. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = UseCaseForm()
-      return render_to_response('usecases/create_usecase.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('usecases/create_usecase.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_usecase(request, usecase_id):
    usecase = UseCase.objects.get(id = usecase_id)
-   return render_to_response('usecases/view_usecase.html', {'usecase': usecase})
+   return render_to_response('usecases/view_usecase.html', {'user' : request.user, 'usecase': usecase})
 
 
 @login_required
@@ -93,7 +93,7 @@ def edit_usecase(request, usecase_id):
          return redirect('apps.devproc.views.usecase.view_usecase', usecase_id = usecase.id)
 
       else: #if form is not valid
-         return render_to_response('usecases/create_usecase.html', {'form':form, 'message': 'Error editing use case. Please try again.', 'usecase': usecase, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('usecases/create_usecase.html', {'user' : request.user, 'form':form, 'message': 'Error editing use case. Please try again.', 'usecase': usecase, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -110,7 +110,7 @@ def edit_usecase(request, usecase_id):
 
       form = UseCaseForm(initial=defaults)
 
-      return render_to_response('usecases/create_usecase.html', {'form': form, 'usecase': usecase, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('usecases/create_usecase.html', {'user' : request.user, 'form': form, 'usecase': usecase, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 

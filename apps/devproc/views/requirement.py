@@ -22,7 +22,7 @@ class RequirementForm(forms.Form):
 @login_required
 def view_all_reqmts(request): 
    reqmt_list = Requirement.objects.all().order_by('-id') 
-   return render_to_response('requirements/view_all_reqmts.html', {'reqmt_list': reqmt_list})
+   return render_to_response('requirements/view_all_reqmts.html', {'user' : request.user, 'reqmt_list': reqmt_list})
 
 
 @login_required
@@ -57,18 +57,18 @@ def create_reqmt(request):
          return redirect('apps.devproc.views.requirement.view_reqmt', reqmt_id = reqmt.id)
 
       else: #if form is not valid
-         return render_to_response('requirements/create_reqmt.html', {'form':form, 'message': 'Error creating requirement. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('requirements/create_reqmt.html', {'user' : request.user, 'form':form, 'message': 'Error creating requirement. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = RequirementForm()
-      return render_to_response('requirements/create_reqmt.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('requirements/create_reqmt.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_reqmt(request, reqmt_id):
    reqmt = Requirement.objects.get(id = reqmt_id)
-   return render_to_response('requirements/view_reqmt.html', {'reqmt': reqmt})
+   return render_to_response('requirements/view_reqmt.html', {'user' : request.user, 'reqmt': reqmt})
 
 
 @login_required
@@ -105,7 +105,7 @@ def edit_reqmt(request, reqmt_id):
          return redirect('apps.devproc.views.requirement.view_reqmt', reqmt_id = reqmt.id)
 
       else: #if form is not valid
-         return render_to_response('requirements/create_reqmt.html', {'form':form, 'message': 'Error editing requirement. Please try again.', 'reqmt': reqmt, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('requirements/create_reqmt.html', {'user' : request.user, 'form':form, 'message': 'Error editing requirement. Please try again.', 'reqmt': reqmt, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -126,7 +126,7 @@ def edit_reqmt(request, reqmt_id):
 
       form = RequirementForm(initial=defaults)
 
-      return render_to_response('requirements/create_reqmt.html', {'form': form, 'reqmt': reqmt, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('requirements/create_reqmt.html', {'user' : request.user, 'form': form, 'reqmt': reqmt, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 

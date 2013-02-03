@@ -11,5 +11,5 @@ def view_roadmap(request):
    #right now just showing all releases, but later need to only select releases for the current product account
    releases = Release.objects.all().order_by('-id')
    features = Feature.objects.all()
-   return render_to_response('roadmaps/roadmap.html', {'releases': releases, 'features': features})
+   return render_to_response('roadmaps/roadmap.html', {'user' : request.user, 'releases': releases, 'features': features})
 

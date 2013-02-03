@@ -23,7 +23,7 @@ class FeatureForm(forms.Form):
 @login_required
 def view_all_features(request):
    feature_list = Feature.objects.all().order_by('-id')
-   return render_to_response('features/view_all_features.html', {'feature_list': feature_list})
+   return render_to_response('features/view_all_features.html', {'user' : request.user, 'feature_list': feature_list})
 
 
 
@@ -69,12 +69,12 @@ def create_feature(request):
          return redirect('apps.devproc.views.feature.view_feature', feature_id = feature.id)
 
       else: #if form is not valid
-         return render_to_response('features/create_feature.html', {'form':form, 'message': 'Error creating feature. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('features/create_feature.html', {'user' : request.user, 'form':form, 'message': 'Error creating feature. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = FeatureForm()
-      return render_to_response('features/create_feature.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('features/create_feature.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
@@ -82,7 +82,7 @@ def view_feature(request, feature_id):
    feature = Feature.objects.get(id = feature_id)
    risks = Risk.objects.filter(feature = feature)
 
-   return render_to_response('features/view_feature.html', {'feature': feature, 'risks': risks})
+   return render_to_response('features/view_feature.html', {'user' : request.user, 'feature': feature, 'risks': risks})
 
 
 @login_required
@@ -129,7 +129,7 @@ def edit_feature(request, feature_id):
          return redirect('apps.devproc.views.feature.view_feature', feature_id = feature.id)
 
       else: #if form is not valid
-         return render_to_response('features/create_feature.html', {'form':form, 'message': 'Error creating feature. Please try again.', 'feature': feature, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('features/create_feature.html', {'user' : request.user, 'form':form, 'message': 'Error creating feature. Please try again.', 'feature': feature, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -151,7 +151,7 @@ def edit_feature(request, feature_id):
 
       form = FeatureForm(initial=defaults)
 
-      return render_to_response('features/create_feature.html', {'form': form, 'feature': feature, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('features/create_feature.html', {'user' : request.user, 'form': form, 'feature': feature, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 @login_required

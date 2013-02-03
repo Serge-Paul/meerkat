@@ -14,7 +14,7 @@ class FeedbackForm(forms.Form):
 @login_required
 def view_all_feedback(request):
    feedback_list = Feedback.objects.all().order_by('-id')
-   return render_to_response('feedback/view_all_feedback.html', {'feedback_list': feedback_list})
+   return render_to_response('feedback/view_all_feedback.html', {'user' : request.user, 'feedback_list': feedback_list})
 
 
 @login_required
@@ -40,12 +40,12 @@ def create_feedback(request, feature_id):
          return redirect('apps.devproc.views.feedback.view_feedback', betatest_id = feedback.betatest.id, customer_id = feedback.customer.id)
 
       else: #if form is not valid
-         return render_to_response('feedback/create_feedback.html', {'form':form, 'message': 'Error saving feedback. Please try again.', 'feature': feature, 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('feedback/create_feedback.html', {'user' : request.user, 'form':form, 'message': 'Error saving feedback. Please try again.', 'feature': feature, 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = FeedbackForm()
-      return render_to_response('feedback/create_feedback.html', {'form': form, 'feature': feature, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('feedback/create_feedback.html', {'user' : request.user, 'form': form, 'feature': feature, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
@@ -53,7 +53,7 @@ def view_feedback(request, betatest_id, customer_id):
    #get list of all feedbacks for a certain beta test and specific customer
    feedback_list = Feedback.objects.filter(betatest = betatest_id, customer = customer_id)
  
-   return render_to_response('feedback/view_feedback.html', {'feedback_list': feedback_list})
+   return render_to_response('feedback/view_feedback.html', {'user' : request.user, 'feedback_list': feedback_list})
 
 
 @login_required
@@ -78,7 +78,7 @@ def edit_feedback(request, feedback_id):
          return redirect('apps.devproc.views.feedback.view_feedback', betatest_id = feedback.betatest.id, customer_id = feedback.customer.id)
 
       else: #if form is not valid
-         return render_to_response('feedback/create_feedback.html', {'form':form, 'message': 'Error editing feedback. Please try again.', 'feature': feedback.feature, 'feedback': feedback, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('feedback/create_feedback.html', {'user' : request.user, 'form':form, 'message': 'Error editing feedback. Please try again.', 'feature': feedback.feature, 'feedback': feedback, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -91,7 +91,7 @@ def edit_feedback(request, feedback_id):
 
       form = FeedbackForm(initial=defaults)
 
-      return render_to_response('feedback/create_feedback.html', {'form': form, 'feature': feedback.feature, 'feedback': feedback, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('feedback/create_feedback.html', {'user' : request.user, 'form': form, 'feature': feedback.feature, 'feedback': feedback, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 
