@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class UseCaseForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -13,11 +14,14 @@ class UseCaseForm(forms.Form):
    source = forms.ChoiceField(choices=SOURCE_CHOICES)
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
 
+
+@login_required
 def view_all_usecases(request):
    usecase_list = UseCase.objects.all().order_by('-id')
    return render_to_response('usecases/view_all_usecases.html', {'usecase_list': usecase_list})
 
 
+@login_required
 def create_usecase(request):
    if request.method == 'POST':
 
@@ -53,11 +57,13 @@ def create_usecase(request):
       return render_to_response('usecases/create_usecase.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_usecase(request, usecase_id):
    usecase = UseCase.objects.get(id = usecase_id)
    return render_to_response('usecases/view_usecase.html', {'usecase': usecase})
 
 
+@login_required
 def edit_usecase(request, usecase_id):
 
    usecase = UseCase.objects.get(id = usecase_id)
@@ -108,6 +114,7 @@ def edit_usecase(request, usecase_id):
 
 
 
+@login_required
 def delete_usecase(request, usecase_id):
 
    usecase = UseCase.objects.get(id = usecase_id)

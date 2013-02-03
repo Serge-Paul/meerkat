@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class RiskForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -16,10 +17,13 @@ class RiskForm(forms.Form):
    approval_status = forms.ChoiceField(choices=APPROVAL_STATUS_CHOICES)
 
 
+@login_required
 def view_all_risks(request):
    risk_list = Risk.objects.all().order_by('-id')
    return render_to_response('risks/view_all_risks.html', {'risk_list': risk_list})
 
+
+@login_required
 def create_risk(request, obj_id, type):
 
    if type == "component":
@@ -77,6 +81,7 @@ def create_risk(request, obj_id, type):
       return render_to_response('risks/create_risk.html', {'form': form, 'obj': obj, 'type': type, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_risk(request, risk_id):
    risk = Risk.objects.get(id = risk_id)
    
@@ -95,6 +100,8 @@ def view_risk(request, risk_id):
 
    return render_to_response('risks/view_risk.html', {'risk': risk, 'feature': feature, 'component': component, 'bug': bug})
 
+
+@login_required
 def edit_risk(request, risk_id):
 
    risk = Risk.objects.get(id = risk_id)
@@ -160,6 +167,7 @@ def edit_risk(request, risk_id):
       return render_to_response('risks/create_risk.html', {'form': form, 'obj': obj, 'type': type, 'risk': risk, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
+@login_required
 def delete_risk(request, risk_id):
 
    risk = Risk.objects.get(id = risk_id)

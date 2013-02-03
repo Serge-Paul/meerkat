@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class ComponentForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -18,12 +19,12 @@ class ComponentForm(forms.Form):
    requirements = forms.ModelMultipleChoiceField(queryset=Requirement.objects.all(), required=False)
    usecases = forms.ModelMultipleChoiceField(queryset=UseCase.objects.all(), required=False)
 
-
+@login_required
 def view_all_components(request):
    component_list = Component.objects.all().order_by('-id')
    return render_to_response('components/view_all_components.html', {'component_list': component_list})
 
-
+@login_required
 def create_component(request):
    if request.method == 'POST':
 
@@ -69,7 +70,7 @@ def create_component(request):
       form = ComponentForm()
       return render_to_response('components/create_component.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
-
+@login_required
 def view_component(request, component_id):
    component = Component.objects.get(id = component_id)
    risks = Risk.objects.filter(component = component)
@@ -78,6 +79,7 @@ def view_component(request, component_id):
    return render_to_response('components/view_component.html', {'component': component, 'risks': risks, 'attributes': attributes})
 
 
+@login_required
 def edit_component(request, component_id):
    
    component = Component.objects.get(id = component_id)
@@ -143,8 +145,7 @@ def edit_component(request, component_id):
       return render_to_response('components/create_component.html', {'form': form, 'component': component, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
-
-
+@login_required
 def delete_component(request, component_id):
 
    component = Component.objects.get(id = component_id)

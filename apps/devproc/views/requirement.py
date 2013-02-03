@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class RequirementForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -18,11 +19,13 @@ class RequirementForm(forms.Form):
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
 
 
-
+@login_required
 def view_all_reqmts(request): 
    reqmt_list = Requirement.objects.all().order_by('-id') 
    return render_to_response('requirements/view_all_reqmts.html', {'reqmt_list': reqmt_list})
 
+
+@login_required
 def create_reqmt(request):
    if request.method == 'POST':
 
@@ -62,10 +65,13 @@ def create_reqmt(request):
       return render_to_response('requirements/create_reqmt.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_reqmt(request, reqmt_id):
    reqmt = Requirement.objects.get(id = reqmt_id)
    return render_to_response('requirements/view_reqmt.html', {'reqmt': reqmt})
 
+
+@login_required
 def edit_reqmt(request, reqmt_id):
 
    reqmt = Requirement.objects.get(id = reqmt_id)
@@ -124,6 +130,7 @@ def edit_reqmt(request, reqmt_id):
 
 
 
+@login_required
 def delete_reqmt(request, reqmt_id):
 
    reqmt = Requirement.objects.get(id = reqmt_id)

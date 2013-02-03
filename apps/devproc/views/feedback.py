@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class FeedbackForm(forms.Form):
    betatest = forms.ModelChoiceField(queryset=BetaTest.objects.all(), required=True) 
@@ -10,10 +11,13 @@ class FeedbackForm(forms.Form):
    feedback = forms.CharField(max_length=1028, widget=forms.Textarea)
 
 
+@login_required
 def view_all_feedback(request):
    feedback_list = Feedback.objects.all().order_by('-id')
    return render_to_response('feedback/view_all_feedback.html', {'feedback_list': feedback_list})
 
+
+@login_required
 def create_feedback(request, feature_id):
 
    feature =  Feature.objects.get(id = feature_id)
@@ -44,12 +48,15 @@ def create_feedback(request, feature_id):
       return render_to_response('feedback/create_feedback.html', {'form': form, 'feature': feature, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_feedback(request, betatest_id, customer_id):
    #get list of all feedbacks for a certain beta test and specific customer
    feedback_list = Feedback.objects.filter(betatest = betatest_id, customer = customer_id)
  
    return render_to_response('feedback/view_feedback.html', {'feedback_list': feedback_list})
 
+
+@login_required
 def edit_feedback(request, feedback_id):
 
    feedback = Feedback.objects.get(id = feedback_id)
@@ -88,6 +95,7 @@ def edit_feedback(request, feedback_id):
 
 
 
+@login_required
 def delete_feedback(request, feedback_id):
 
    feedback = Feedback.objects.get(id = feedback_id)

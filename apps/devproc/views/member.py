@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class MemberForm(forms.Form):
    existing_member = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False)
@@ -12,6 +13,7 @@ class MemberForm(forms.Form):
    is_manager = forms.BooleanField()
 
 
+@login_required
 def view_all_members(request, team_id):
    # view all members for a specific team
    member_list = Member.objects.all().order_by('-id')
@@ -21,6 +23,7 @@ def view_all_members(request, team_id):
    return render_to_response('members/view_all_members.html', {'member_list': member_list, 'team': team})
 
 
+@login_required
 def create_member(request, team_id):
    # create a new member and add them to a specific team
 
@@ -57,11 +60,13 @@ def create_member(request, team_id):
       return render_to_response('members/create_member.html', {'form': form, 'team': team, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_member(request, member_id):
    member = Member.objects.get(id = member_id)
    return render_to_response('members/view_member.html', {'member': member})
 
 
+@login_required
 def edit_member(request, member_id):
 
    member = Member.objects.get(id = member_id)
@@ -103,6 +108,7 @@ def edit_member(request, member_id):
 
 
 
+@login_required
 def delete_member(request, member_id):
 
    member = Member.objects.get(id = member_id)

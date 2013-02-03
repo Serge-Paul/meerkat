@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class BugForm(forms.Form):
    title = forms.CharField(max_length=200, label="Bug Title")
@@ -15,12 +16,12 @@ class BugForm(forms.Form):
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
    resolution = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
 
-
+@login_required
 def view_all_bugs(request):
    bug_list = Bug.objects.all().order_by('-id')
    return render_to_response('bugs/view_all_bugs.html', {'bug_list': bug_list})
 
-
+@login_required
 def create_bug(request, test_id, type):
    if type == 'test':
       test = Test.objects.get(id = test_id)
@@ -72,14 +73,14 @@ def create_bug(request, test_id, type):
       form = BugForm()
       return render_to_response('bugs/create_bug.html', {'form': form, 'test': test, 'type': type, 'mode': 'create'},  context_instance=RequestContext(request))
 
-
+@login_required
 def view_bug(request, bug_id):
    bug = Bug.objects.get(id = bug_id)
    risks = Risk.objects.filter(bug = bug)
 
    return render_to_response('bugs/view_bug.html', {'bug': bug, 'risks': risks})
 
-
+@login_required
 def edit_bug(request, bug_id):
 
    bug = Bug.objects.get(id = bug_id)
@@ -142,7 +143,7 @@ def edit_bug(request, bug_id):
       return render_to_response('bugs/create_bug.html', {'form': form, 'test': test, 'type': type, 'bug': bug, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
-
+@login_required
 def delete_bug(request, bug_id):
 
    bug = Bug.objects.get(id = bug_id)

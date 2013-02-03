@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class CustomerForm(forms.Form):
    first_name = forms.CharField(max_length=200)
@@ -11,9 +12,12 @@ class CustomerForm(forms.Form):
    location = forms.CharField(max_length=200, required=False)
 
 
+@login_required
 def view_all_customers(request):
    return HttpResponse("Hello, world. You're viewing all customers")
 
+
+@login_required
 def create_customer(request):
    if request.method == 'POST':
 
@@ -41,11 +45,13 @@ def create_customer(request):
       return render_to_response('customers/create_customer.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_customer(request, customer_id):
   customer = Customer.objects.get(id = customer_id)
   return render_to_response('customers/view_customer.html', {'customer': customer})
 
 
+@login_required
 def edit_customer(request, customer_id):
 
    customer = Customer.objects.get(id = customer_id)
@@ -85,6 +91,7 @@ def edit_customer(request, customer_id):
 
 
 
+@login_required
 def delete_customer(request, customer_id):
 
    customer = Customer.objects.get(id = customer_id)

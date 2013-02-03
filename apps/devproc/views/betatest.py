@@ -3,17 +3,18 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class BetaTestForm(forms.Form):
    release = forms.ModelChoiceField(queryset=Release.objects.all(), required=True) 
    responsible_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False) 
 
-
+@login_required
 def view_all_betatests(request):
    betatest_list = BetaTest.objects.all().order_by('-id')
    return render_to_response('betatests/view_all_betatests.html', {'betatest_list': betatest_list})
 
-
+@login_required
 def create_betatest(request):
    if request.method == 'POST':
 
@@ -42,7 +43,7 @@ def create_betatest(request):
       form = BetaTestForm()
       return render_to_response('betatests/create_betatest.html', {'form': form},  context_instance=RequestContext(request))
 
-
+@login_required
 def view_betatest(request, betatest_id):
    betatest = BetaTest.objects.get(id = betatest_id)
    feedback_list = Feedback.objects.filter(betatest = betatest_id)
@@ -51,9 +52,8 @@ def view_betatest(request, betatest_id):
    return render_to_response('betatests/view_betatest.html', {'betatest': betatest, 'feedback_list': feedback_list, 'bugs': bugs})
 
 
-def edit_betatest(request, betatest_id):
-   return HttpResponse("You're editing betatest %s." % betatest_id)
 
+@login_required
 def delete_betatest(request, betatest_id):
 
    betatest = BetaTest.objects.get(id = betatest_id)

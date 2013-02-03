@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class MilestoneForm(forms.Form):
    title = forms.CharField(max_length=200, error_messages={'required' : 'Please enter a title.'})
@@ -16,11 +17,13 @@ class MilestoneForm(forms.Form):
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
 
 
+@login_required
 def view_all_milestones(request):
    milestone_list = Milestone.objects.all().order_by('-id')
    return render_to_response('milestones/view_all_milestones.html', {'milestone_list': milestone_list})
 
 
+@login_required
 def create_milestone(request):
    if request.method == 'POST':
 
@@ -60,11 +63,13 @@ def create_milestone(request):
       return render_to_response('milestones/create_milestone.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_milestone(request, milestone_id):
    milestone = Milestone.objects.get(id = milestone_id)
    return render_to_response('milestones/view_milestone.html', {'milestone': milestone})
 
 
+@login_required
 def edit_milestone(request, milestone_id):
 
    milestone = Milestone.objects.get(id = milestone_id)
@@ -121,6 +126,7 @@ def edit_milestone(request, milestone_id):
 
 
 
+@login_required
 def delete_milestone(request, milestone_id):
 
    milestone = Milestone.objects.get(id = milestone_id)

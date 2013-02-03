@@ -21,6 +21,11 @@ urlpatterns += patterns('apps.public.views.auth',
 )
 
 
+urlpatterns += patterns('apps.devproc.views.dashboard',
+  url(r'^dashboard/$', 'view_dashboard'),
+)
+
+
 urlpatterns += patterns('apps.devproc.views.feedback',
    url(r'^feedback/$', 'view_all_feedback'),
    url(r'^feedback/add/(?P<feature_id>\d+)/$', 'create_feedback'),
@@ -52,7 +57,6 @@ urlpatterns += patterns('apps.devproc.views.betatest',
    url(r'^betatests/$', 'view_all_betatests'),
    url(r'^betatests/add/$', 'create_betatest'),
    url(r'^betatests/(?P<betatest_id>\d+)/$', 'view_betatest'),
-   url(r'^betatests/(?P<betatest_id>\d+)/edit/$', 'edit_betatest'),
    url(r'^betatests/(?P<betatest_id>\d+)/delete/$', 'delete_betatest'),
 )
 

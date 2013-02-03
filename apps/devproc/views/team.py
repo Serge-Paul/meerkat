@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class TeamForm(forms.Form):
    team_name = forms.CharField(max_length=250) 
@@ -11,11 +12,13 @@ class TeamForm(forms.Form):
    release = forms.ModelChoiceField(queryset=Release.objects.all(), required=True) 
 
 
+@login_required
 def view_all_teams(request):
    team_list = Team.objects.all().order_by('-id')
    return render_to_response('teams/view_all_teams.html', {'team_list': team_list})
 
 
+@login_required
 def create_team(request):
    if request.method == 'POST':
 
@@ -46,6 +49,7 @@ def create_team(request):
       return render_to_response('teams/create_team.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_team(request, team_id):
    team = Team.objects.get(id = team_id)
    members = Member.objects.filter(team = team_id)
@@ -54,6 +58,7 @@ def view_team(request, team_id):
    return render_to_response('teams/view_team.html', {'team': team, 'members': members, 'responsibilities': responsibilities})
 
 
+@login_required
 def edit_team(request, team_id):
    
    team = Team.objects.get(id = team_id)
@@ -93,6 +98,7 @@ def edit_team(request, team_id):
       return render_to_response('teams/create_team.html', {'form': form, 'team': team, 'mode': 'edit' },  context_instance=RequestContext(request))
 
 
+@login_required
 def delete_team(request, team_id):
    
    team = Team.objects.get(id = team_id)

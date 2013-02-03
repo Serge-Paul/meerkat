@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class ReleaseForm(forms.Form):
    name = forms.CharField(max_length=200)
@@ -16,11 +17,14 @@ class ReleaseForm(forms.Form):
    #this field is for betatest object that is created automatically when creating a new release
    betatest_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False)
 
+
+@login_required
 def view_all_releases(request):
    release_list = Release.objects.all().order_by('-id')
    return render_to_response('releases/view_all_releases.html', {'release_list': release_list})
 
 
+@login_required
 def create_release(request):
    if request.method == 'POST':
 
@@ -68,6 +72,7 @@ def create_release(request):
       return render_to_response('releases/create_release.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_release(request, release_id):
    release = Release.objects.get(id = release_id)
    features = Feature.objects.filter(release = release_id)
@@ -80,6 +85,7 @@ def view_release(request, release_id):
    return render_to_response('releases/view_release.html', {'release': release,'features':features , 'risks':risks, 'bugs': bugs, 'milestones': milestones, 'betatest': betatest })
 
 
+@login_required
 def edit_release(request, release_id):
 
    release = Release.objects.get(id = release_id)
@@ -136,8 +142,7 @@ def edit_release(request, release_id):
       return render_to_response('releases/create_release.html', {'form': form, 'release': release, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
-
-
+@login_required
 def delete_release(request, release_id):
 
    release = Release.objects.get(id = release_id)

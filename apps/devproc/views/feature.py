@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
+from django.contrib.auth.decorators import login_required
 
 class FeatureForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -19,12 +20,14 @@ class FeatureForm(forms.Form):
    component = forms.ModelMultipleChoiceField(queryset=Component.objects.all(), required=False) 
 
 
+@login_required
 def view_all_features(request):
    feature_list = Feature.objects.all().order_by('-id')
    return render_to_response('features/view_all_features.html', {'feature_list': feature_list})
 
 
 
+@login_required
 def create_feature(request):
    if request.method == 'POST':
 
@@ -74,6 +77,7 @@ def create_feature(request):
       return render_to_response('features/create_feature.html', {'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
+@login_required
 def view_feature(request, feature_id):
    feature = Feature.objects.get(id = feature_id)
    risks = Risk.objects.filter(feature = feature)
@@ -81,6 +85,7 @@ def view_feature(request, feature_id):
    return render_to_response('features/view_feature.html', {'feature': feature, 'risks': risks})
 
 
+@login_required
 def edit_feature(request, feature_id):
 
    feature = Feature.objects.get(id = feature_id)
@@ -149,6 +154,7 @@ def edit_feature(request, feature_id):
       return render_to_response('features/create_feature.html', {'form': form, 'feature': feature, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
+@login_required
 def delete_feature(request, feature_id):
 
    feature = Feature.objects.get(id = feature_id)
