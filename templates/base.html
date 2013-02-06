@@ -6,7 +6,7 @@
   <title>Meerkat - {% block title %}Product Development{% endblock %}</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/default.css" type="text/css" />
+   <link rel="stylesheet" type="text/css" href="/static/css/default.css" type="text/css" />
 
 
 {% block headtags %}{% endblock %}
@@ -27,10 +27,10 @@
 {% endif %}
 
 
-
+<div class = "whiteShadowBox">
 {% block content %}
 {% endblock %}
-
+</div>
 
 </body>
 </html>

@@ -1,3 +1,29 @@
 .errors {
   color:#FB000D;
 }
+
+h1 {
+  color:#0C5DA5;
+  font-family: Cambria;
+  margin-top: 0px;
+}
+
+.whiteShadowBox {
+  -webkit-box-shadow: 2px 2px 10px 1px #808080;
+  box-shadow: 2px 2px 10px 1px #808080; 
+  padding: 20px;
+  margin: 30px;
+}
+
+.orangeButton {
+  background: #ffa84c; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffa84c 42%, #ff7b0d 94%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(42%,#ffa84c), color-stop(94%,#ff7b0d)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffa84c 42%,#ff7b0d 94%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffa84c 42%,#ff7b0d 94%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffa84c 42%,#ff7b0d 94%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffa84c 42%,#ff7b0d 94%); /* W3C */
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa84c', endColorstr='#ff7b0d',GradientType=0 ); /* IE6-9 */
+
+}
+
