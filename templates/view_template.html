@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{% block heading %} {% endblock %}</h1>
+
+<div class = "left">
+{% block main_links %}
+{% endblock main_links %}
+</div>
+<br/>
+<hr/>
+
+<div class = "right">
+{% block sub_links %}
+{% endblock sub_links %}
+</div>
+<br/>
+
+<div class = "leftCol">
+{% block left_col %}
+{% endblock left_col%}
+</div>
+
+<div class = "rightCol">
+{% block right_col %}
+{% endblock right_col %}
+</div>
+
+{% endblock content %}
