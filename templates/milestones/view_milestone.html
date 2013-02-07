@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
 Milestones
@@ -7,18 +7,28 @@ Milestones
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
 
-<h1>Milestone</h1>
+{% block heading %}
+Milestone
+{% endblock %}
 
+
+
+{% block main_links %}
 <a href="/milestones/add/">Add new milestone</a> |
-<a href="/milestones/">View all milestone</a> |
+<a href="/milestones/">View all milestone</a>
+{% endblock %}
+
 
 {% if milestone %}
 
+{% block sub_links %}
 <a href="/milestones/{{ milestone.id }}/edit/">Edit</a> |
 <a href="/milestones/{{ milestone.id }}/delete/">Delete</a>
+{% endblock %}
 
+
+{% block left_col %}
 <p>
 Title: {{ milestone.title }}
 </p>
@@ -36,6 +46,10 @@ Duration: {{ milestone.start_date }} to {{ milestone.end_date }}
 Percent complete: {{ milestone.percent_complete }}%
 </p>
 
+
+{% endblock %}
+
+{% block right_col %}
 <p>
 Release: 
 <a href="/releases/{{ milestone.release.id }}/">{{ milestone.release }}</a>
@@ -69,11 +83,12 @@ Predecessor milestones:
 <p>Notes:<br/>
 {{ milestone.notes }}
 </p>
-
+{% endblock %}
 
 <!-- *** IF NO milestones *** -->
 {% else %}
 <p>No milestones are available.</p>
+
 {% endif %}
-{% endblock %}
+
 

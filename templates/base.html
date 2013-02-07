@@ -29,7 +29,24 @@
 
 <div class = "whiteShadowBox">
 {% block content %}
-{% endblock %}
+
+
+<div class = "left">
+{% block main_links %}
+{% endblock main_links %}
+<br/>
+<hr/>
+
+<div class = "right">
+{% block sub_links %}
+{% endblock sub_links %}
+<br/>
+
+
+{% endblock content %}
+
+
+<div class = "clear"></div>
 </div>
 
 </body>

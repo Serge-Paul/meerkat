@@ -11,13 +11,20 @@
 
 <h1>Team</h1>
 
+<div class = "left">
 <a href="/teams/add/">Add new team</a> |
-<a href="/teams/">View all teams</a> | 
+<a href="/teams/">View all teams</a> 
+</div>
+
+<br/>
+<hr/>
 
 {% if team %}
+<div class = "right">
 <a href="/teams/{{ team.id }}/edit/">Edit</a> |
 <a href="/teams/{{ team.id }}/delete/">Delete Team</a>
  | <a href="/members/{{ team.id }}/add/">Add team member</a>
+</div>
 
 <p>
 Name: {{ team.name }}
