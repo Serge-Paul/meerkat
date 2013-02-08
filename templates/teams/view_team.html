@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
     {{ team.name }}
@@ -7,25 +7,23 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
+Team
+{% endblock %}
 
-<h1>Team</h1>
-
-<div class = "left">
+{% block main_links %}
 <a href="/teams/add/">Add new team</a> |
 <a href="/teams/">View all teams</a> 
-</div>
-
-<br/>
-<hr/>
+{% endblock %}
 
 {% if team %}
-<div class = "right">
+{% block sub_links %}
 <a href="/teams/{{ team.id }}/edit/">Edit</a> |
 <a href="/teams/{{ team.id }}/delete/">Delete Team</a>
  | <a href="/members/{{ team.id }}/add/">Add team member</a>
-</div>
+{% endblock %}
 
+{% block left_col %}
 <p>
 Name: {{ team.name }}
 </p>
@@ -34,6 +32,9 @@ Name: {{ team.name }}
 Description:<br/> {{ team.description }}
 </p>
 
+{% endblock %}
+
+{% block right_col %}
 <p>
 Responsibilities:
  {% if responsibilities %}
@@ -63,10 +64,12 @@ Team Members:
    None
 {% endif %}
 </p>
+{% endblock %}
+
 
 <!-- *** IF NO TEAMS *** -->
 {% else %}
 <p>No teams are available.</p>
 {% endif %}
 
-{% endblock %}
+

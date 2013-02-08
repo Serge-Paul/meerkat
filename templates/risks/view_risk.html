@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
 Risk
@@ -7,20 +7,31 @@ Risk
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
 
-<h1>Risk</h1>
+{% block heading %}
+Risk
+{% endblock %}
 
-<p>To add a new risk, go to the page for the feature, design component, or bug and click the 'add risk' link.
-</p>
 
-<a href="/risks/">View all risks</a> |
+
+{% block sub_heading %}
+To add a new risk, go to the page for the feature, design component, or bug and click the 'add risk' link.
+{% endblock %}
+
+
+{% block main_links %}
+
+<a href="/risks/">View all risks</a>
+{% endblock %}
 
 {% if risk %}
 
+{% block sub_links %}
 <a href="/risks/{{ risk.id }}/edit/">Edit</a> |
 <a href="/risks/{{ risk.id }}/delete/">Delete</a>
+{% endblock %}
 
+{% block left_col %}
 <p>
 Title: {{ risk.title }}
 </p>
@@ -52,23 +63,11 @@ Related Bug:
 {% endif %}
 
 <p>
-Status: {{ risk.status }}
-</p>
-
-<p>
-Approval Status: {{ risk.approval_status}}
+Status: {{ risk.status }} &nbsp;&nbsp;&nbsp;&nbsp; Approval Status: {{ risk.approval_status}}
 <p>
 
 <p>
-Description: {{ risk.description }}
-</p>
-
-<p>
-Probability: {{ risk.probability }}
-</p>
-
-<p>
-Severity: {{ risk.severity }}
+Probability: {{ risk.probability }}  &nbsp;&nbsp; Severity: {{ risk.severity }}
 </p>
 
 
@@ -94,11 +93,21 @@ Categories:
 {% endif %}
 </p>
 
+{% endblock %}
+
+{% block right_col %}
+<p>
+Description: {{ risk.description }}
+</p>
+
+
+{% endblock %}
+
 <!-- *** IF NO risks *** -->
 {% else %}
 <p>No risks are available.</p>
 {% endif %}
-{% endblock %}
+
 
 
 

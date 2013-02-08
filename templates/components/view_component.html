@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
 Design Components
@@ -7,22 +7,25 @@ Design Components
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
+Design Component
+{% endblock %}
 
-<h1>Design Component</h1>
-
+{% block main_links %}
 <a href="/components/add/">Add new design component</a> |
 <a href="/components/">View all design components</a>
+{% endblock %}
 
 {% if component %}
-<br/><br/>
-<a href="/components/{{ component.id }}/edit/">Edit</a> |
-<a href="/components/{{ component.id }}/delete/">Delete</a>
-
+{% block sub_links %}
+<a href="/components/{{ component.id }}/edit/">Edit</a>
+  | <a href="/components/{{ component.id }}/delete/">Delete</a>
   | <a href="/risks/add/component/{{ component.id }}/">Add Risk</a> 
   | <a href="/attributes/add/{{ component.id }}/">Add Attribute</a>
   | <a href="/attributes/{{ component.id }}/">View all attributes</a>
+{% endblock %}
 
+{% block left_col %}
 <p>
 Component name: {{ component.title }}
 </p>
@@ -65,6 +68,11 @@ Categories:
 {% endif %}
 </p>
 
+{% endblock %}
+
+{% block right_col %}
+
+
 <p>
 Responsible Engineers:
 {% if component.responsible_engineer.all.0 %}   <!-- this is manyToMany field -->
@@ -97,6 +105,7 @@ Attributes:
    None
 {% endif %}
 </p>
+
 
 <p>
 Use Cases:
@@ -138,11 +147,12 @@ None
 {{ component.notes }}
 </p>
 
+{% endblock %}
 
 <!-- *** IF NO components *** -->
 {% else %}
 <p>No components are available.</p>
 {% endif %}
-{% endblock %}
+{% endblock %
 
 

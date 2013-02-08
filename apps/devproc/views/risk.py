@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 class RiskForm(forms.Form):
    title = forms.CharField(max_length=200)
-   description = forms.CharField(max_length=200, widget=forms.Textarea)
+   description = forms.CharField(max_length=1028, widget=forms.Textarea)
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(),required=False)
    release = forms.ModelChoiceField(queryset=Release.objects.all(), required=False)
    probability = forms.ChoiceField(choices=PROBABILITY_CHOICES)

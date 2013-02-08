@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 class UseCaseForm(forms.Form):
    title = forms.CharField(max_length=200)
-   description = forms.CharField(max_length=1028)
+   description = forms.CharField(max_length=1028, widget=forms.Textarea)
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
    target_market = forms.CharField(max_length=200, required=False)
    identifier = forms.CharField(max_length=200)

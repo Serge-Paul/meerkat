@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 class RequirementForm(forms.Form):
    title = forms.CharField(max_length=200)
-   description = forms.CharField(max_length=1028)
+   description = forms.CharField(max_length=1028, widget=forms.Textarea)
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
    parent = forms.ModelChoiceField(queryset=Requirement.objects.all(), required=False) #need to prevent chosing current reqmt as parent
    use_case = forms.ModelChoiceField(queryset=UseCase.objects.all(), required=False)

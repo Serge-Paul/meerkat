@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
     Use Case
@@ -7,18 +7,23 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
+Use Case
+{% endblock %}
 
-<h1>Use Case</h1>
-
+{% block main_links %}
 <a href="/usecases/add/">Add new use case</a> |
-<a href="/usecases/">View all use cases</a> |
+<a href="/usecases/">View all use cases</a>
+{% endblock %}
 
 {% if usecase %}
 
+{% block sub_links %}
 <a href="/usecases/{{ usecase.id }}/edit/">Edit</a> |
 <a href="/usecases/{{ usecase.id }}/delete/">Delete</a>
+{% endblock %}
 
+{% block left_col %}
 <p>
 Title: {{ usecase.title }}
 </p>
@@ -36,6 +41,9 @@ Source:
 {{ usecase.source }}
 </p>
 
+{% endblock %}
+
+{% block right_col %}
 <p>
 Categories:
 {% if usecase.category.all.0 %}   <!-- this is manyToMany field -->
@@ -57,11 +65,11 @@ Target Market/User: {{ usecase.target_market }}
 Notes: <br/>
 {{ usecase.notes }}
 </p>
-
+{% endblock %}
 
 <!-- *** IF NO USECASES *** -->
 {% else %}
 <p>No usecases are available.</p>
 {% endif %}
-{% endblock %}
+
 

@@ -224,7 +224,7 @@ class Release(models.Model):
 
 class Risk(models.Model):
    title = models.CharField(max_length=200)
-   description = models.TextField(max_length=200)
+   description = models.TextField(max_length=1028)
    category = models.ManyToManyField('Category', blank=True, null=True)
    release = models.ForeignKey('Release', blank=True, null=True)
    probability = models.CharField(max_length=128, choices=PROBABILITY_CHOICES)
@@ -275,7 +275,7 @@ class Member(models.Model):
 
 class Milestone(models.Model):
    title = models.CharField(max_length=200)
-   description = models.TextField(max_length=200)
+   description = models.TextField(max_length=1028)
    category = models.ManyToManyField('Category', blank=True, null=True)
    #phase
    start_date = models.DateTimeField(default=datetime.now)

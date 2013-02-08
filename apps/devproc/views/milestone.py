@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 class MilestoneForm(forms.Form):
    title = forms.CharField(max_length=200, error_messages={'required' : 'Please enter a title.'})
-   description = forms.CharField(max_length=200, widget=forms.Textarea)
+   description = forms.CharField(max_length=1028, widget=forms.Textarea)
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) # ManyToMany
    start_date = forms.DateField()
    end_date = forms.DateField()

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
     Requirements
@@ -7,21 +7,29 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
 
-<h1>Requirement</h1>
+{% block heading %}
+Requirement
+{% endblock %}
 
+{% block main_links %}
 <a href="/requirements/add/">Add new requirements</a> |
-<a href="/requirements/">View all requirements</a> |
+<a href="/requirements/">View all requirements</a>
+{% endblock %}
+
+{% block sub_heading %}
+*Warning: Deleting a parent requirement, automatically deletes all children requirements. But deleting a child does NOT automatically
+delete the parent.
+{% endblock %}
 
 {% if reqmt %}
 
+{% block sub_links %}
 <a href="/requirements/{{ reqmt.id }}/edit/">Edit</a> |
 <a href="/requirements/{{ reqmt.id }}/delete/">Delete</a>
+{% endblock %}
 
-<p>*Warning: Deleting a parent requirement, automatically deletes all children requirements. But deleting a child does NOT automatically
-delete the parent.</p>
-
+{% block left_col %}
 <p>
 Requirement ID: {{ reqmt.identifier }}
 </p>
@@ -71,6 +79,10 @@ Categories:
 
 </p>
 
+{% endblock %}
+
+{% block right_col %}
+
 <p>
 Priority: {{ reqmt.priority }}
 </p>
@@ -111,6 +123,8 @@ Use Case:
 {{ reqmt.notes }}
 </p>
 
+{% endblock %}
+
 <!-- *** IF NO REQMTS *** -->
 
 {% else %}
@@ -118,4 +132,4 @@ Use Case:
 <p>No requirements are available.</p>
 
 {% endif %}
-{% endblock %}
+
