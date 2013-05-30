@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
 Releases
@@ -7,22 +7,28 @@ Releases
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
+Release
+{% endblock heading %}
 
-<h1>Release</h1>
-
+{% block main_links %}
 <a href="/releases/add/">Add new release</a> |
-<a href="/releases/">View all releases</a> |
+<a href="/releases/">View all releases</a>
+{% endblock main_links %}
+
+{% block sub_heading %}
+*Note: Deleting this release will automatically delete the beta test associated with this release.
+{% endblock sub_heading %}
 
 {% if release %}
 
-<a href="/releases/{{ release.id }}/edit/">Edit</a> |
-<a href="/releases/{{ release.id }}/delete/">Delete</a>
+{% block sub_links %}
+<a href="/releases/{{ release.id }}/edit/">Edit</a>
+ | <a href="/releases/{{ release.id }}/delete/">Delete</a>
  | <a href="/betatests/{{ betatest.id }}/">View Beta Test</a>
+{% endblock sub_links %}
 
-
-<br/><br/>*Note: Deleting this release will automatically delete the beta test associated with this release.
-
+{% block left_col %}
 <p>
 Release name: {{ release.name }}
 </p>
@@ -81,6 +87,11 @@ Bugs:
 {% endif %}
 </p>
 
+{% endblock left_col %}
+
+{% block right_col %}
+
+
 <p>
 Milestones:
 {% if milestones %}   
@@ -119,11 +130,12 @@ Pass/fail criteria: {{ release.pass_fail_criteria }}
 {{ release.notes }}
 </p>
 
+{% endblock right_col %}
 
 <!-- *** IF NO release *** -->
 {% else %}
 <p>No releases are available.</p>
 {% endif %}
-{% endblock %}
+
 
 

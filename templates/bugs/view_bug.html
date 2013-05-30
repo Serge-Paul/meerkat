@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
 Bugs
@@ -7,21 +7,27 @@ Bugs
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
+Bug
+{% endblock heading%}
 
-<h1>Bug</h1>
+{% block main_links %}
+<a href="/bugs/">View all bugs</a>
+{% endblock main_links %}
 
-<p>To add a new bug, go to the test or beta test, and click the 'add bug' link.</p>
-
-<a href="/bugs/">View all bugs</a> |
+{% block sub_heading %}
+To add a new bug, go to the test or beta test, and click the 'add bug' link.
+{% endblock sub_heading %}
 
 {% if bug %}
 
-<a href="/bugs/{{ bug.id }}/edit/">Edit</a> |
-<a href="/bugs/{{ bug.id }}/delete/">Delete</a>
-
+{% block sub_links %}
+<a href="/bugs/{{ bug.id }}/edit/">Edit</a>
+ | <a href="/bugs/{{ bug.id }}/delete/">Delete</a>
  | <a href="/risks/add/bug/{{ bug.id }}/">Add a risk for this bug</a>
+{% endblock sub_links %}
 
+{% block left_col %}
 <p>
 Bug title: {{ bug.title }}
 </p>
@@ -66,6 +72,9 @@ Categories:
 {% endif %}
 </p>
 
+{% endblock left_col %}
+
+{% block right_col %}
 
 <p>
 Features:
@@ -111,10 +120,11 @@ Resolution:
 <br/>{{ bug.resolution }}
 </p>
 
+{% endblock right_col %}
 
 <!-- *** IF NO REQMTS *** -->
 {% else %}
 <p>No requirements are available.</p>
 {% endif %}
-{% endblock %}
+
 

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
 Features
@@ -7,20 +7,26 @@ Features
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
 
-<h1>Feature</h1>
+{% block heading %}
+Feature
+{% endblock %}
 
+{% block main_links %}
 <a href="/features/add/">Add new feature</a> |
-<a href="/features/">View all features</a> |
+<a href="/features/">View all features</a>
+{% endblock %}
 
 {% if feature %}
 
-<a href="/features/{{ feature.id }}/edit/">Edit</a> |
-<a href="/features/{{ feature.id }}/delete/">Delete</a>
-
+{% block sub_links %}
+<a href="/features/{{ feature.id }}/edit/">Edit</a>
+ | <a href="/features/{{ feature.id }}/delete/">Delete</a>
  | <a href="/risks/add/feature/{{ feature.id }}/">Add Risk</a>
  | <a href="/feedback/add/{{ feature.id }}">Add Feedback</a>
+{% endblock %}
+
+{% block left_col %}
 <p>
 Feature title: {{ feature.title }}
 </p>
@@ -77,6 +83,9 @@ Use Cases:
 {% endif %}
 </p>
 
+{% endblock %}
+
+{% block right_col %}
 
 <p>
 Requirements:
@@ -129,9 +138,11 @@ Responsible Engineers:
 {{ feature.notes }}
 </p>
 
+{% endblock %}
+
 <!-- *** IF NO features *** -->
 {% else %}
 <p>No features are available.</p>
 {% endif %}
-{% endblock %}
+
 

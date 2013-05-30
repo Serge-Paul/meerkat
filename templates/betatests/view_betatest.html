@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_template.html" %}
 
 {% block title %}
 Beta Test
@@ -7,18 +7,23 @@ Beta Test
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
+Beta Test
+{% endblock %}
 
-<h1>Beta Test</h1>
-
-<a href="/betatests/">View all Beta Tests</a> |
+{% block main_links %}
+<a href="/betatests/">View all Beta Tests</a>
+{% endblock %}
 
 {% if betatest %}
 
+{% block sub_links %}
 <a href="/betatests/{{ betatest.id }}/edit/">Edit</a>
  | <a href="/customers/add/">Add a new customer</a>
  | <a href="/bugs/add/betatest/{{ betatest.id }}">Add a new bug for this beta test</a> 
+{% endblock %}
 
+{% block left_col %}
 <p>
 Release:  <a href="/releases/{{ betatest.release.id }}/">{{ betatest.release }}</a>
 </p>
@@ -41,6 +46,9 @@ None
 {% endif %}
 </p>
 
+{% endblock left_col %}
+
+{% block right_col %}
 
 <p>
 Customers:
@@ -57,21 +65,13 @@ Customers:
 {% else %}
    None
 {% endif %}
-
-
-
-
-
-
-
-
-
 </p>
 
+{% endblock right_col %}
 
 <!-- *** IF NO BETA TESTS *** -->
 {% else %}
 <p>No beta tests are available.</p>
 {% endif %}
-{% endblock %}
+
 

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "view_all_template.html" %}
 
 {% block title %}
 Teams
@@ -7,20 +7,30 @@ Teams
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
-<h1>Teams</h1>
+{% block heading %}
+Teams
+{% endblock heading %}
 
+{% block main_links %}
 <a href="/teams/add/">Add new team</a>
-<br/>
+{% endblock main_links %}
 
 {% if team_list %}
+
+{% block list %}
+
 <ul>
 {% for team in team_list %}
 <li><a href="/teams/{{ team.id }}/">{{ team.name }}</a></li>
 {% endfor %}
 </ul>
+
+{% endblock list %}
+
 {% else %}
-<p>No teams are available.</p>
+
+No teams are available.
+
 {% endif %}
-{% endblock %}
+
 

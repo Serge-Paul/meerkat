@@ -15,16 +15,35 @@
 
 <body>
 
-<a href="/dashboard/">Dashboard</a> | <a href="/teams/">Teams</a> | <a href="/milestones/">Milestones</a> | <a href="/roadmap/">Roadmap</a>
- | <a href="/risks/">Risks</a> | <a href="/requirements/">Requirements</a> | <a href="/usecases/">Use Cases</a>
- | <a href="/components/">Design Components</a>
- | <a href="/features/">Features</a> | <a href="/tests/">Tests</a> | <a href="/betatests/">Beta</a>
- | <a href="/releases/">Releases</a> | <a href="/bugs/">Bugs</a>
+<div class="heading">
+<img src="/static/images/meerkatLogo.png"> 
+Meerkat
 
-
-{% if user.is_authenticated %}  
- | <a href="{% url apps.public.views.auth.process_logout %}">Logout</a>
+{% if user.is_authenticated %}
+<div class = "right">
+<a href="{% url apps.public.views.auth.process_logout %}">Logout</a>
+</div>
 {% endif %}
+
+</div>
+
+<div class ="blueBar">
+
+<a href="/dashboard/">Dashboard</a>
+ | <a href="/teams/">Teams</a>
+ | <a href="/milestones/">Milestones</a>
+ | <a href="/roadmap/">Roadmap</a>
+ | <a href="/risks/">Risks</a>
+ | <a href="/requirements/">Requirements</a>
+ | <a href="/usecases/">Use Cases</a>
+ | <a href="/components/">Design Components</a>
+ | <a href="/features/">Features</a>
+ | <a href="/tests/">Tests</a>
+ | <a href="/betatests/">Beta</a>
+ | <a href="/releases/">Releases</a>
+ | <a href="/bugs/">Bugs</a>
+
+</div>
 
 
 <div class = "whiteShadowBox">
