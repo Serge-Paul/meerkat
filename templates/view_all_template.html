@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{% block heading %} {% endblock %}</h1>
+
+<div class = "left">
+{% block main_links %}
+{% endblock main_links %}
+</div>
+<br/>
+
+<p>
+{% block sub_heading %} {% endblock %}
+</p>
+
+<hr/>
+
+{% block list %}
+{% endblock list %}
+
+
+<p>
+{% block none_exist %}
+{% endblock none_exist %}
+</p>
+
+{% endblock content %}
