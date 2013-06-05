@@ -11,7 +11,8 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 
-EMAIL_HOST = 'us8836734347347013.dynamiccloudserver.info'
+#EMAIL_HOST = 'us8836734347347013.dynamiccloudserver.info'
+EMAIL_HOST = 'u16655747.onlinehome-server.com'
 EMAIL_HOST_USER = 'info@meerkatdev.com'
 EMAIL_HOST_PASSWORD = 'tnnt32906'
 DEFAULT_FROM_EMAIL = 'info@meerkatdev.com'
