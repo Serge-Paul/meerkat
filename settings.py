@@ -10,6 +10,13 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+
+EMAIL_HOST = 'us8836734347347013.dynamiccloudserver.info'
+EMAIL_HOST_USER = 'info@meerkatdev.com'
+EMAIL_HOST_PASSWORD = 'tnnt32906'
+
+
+
 ADMINS = (
     # ('Thea', 'tnorment@stanfordalumni.org'),
 )

@@ -1,7 +1,5 @@
 from django.conf.urls import patterns, include, url
 
-
-
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -18,6 +16,22 @@ urlpatterns += patterns('apps.public.views.auth',
 #  url(r'^accounts/signup/$', 'account_signup'),
   url(r'^accounts/login/$', 'process_login'),
   url(r'^accounts/logout/$', 'process_logout'),
+)
+
+urlpatterns += patterns('',
+
+  (r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset',
+    {'template_name' : 'registration/password_reset_form.html',
+     'email_template_name' : 'registration/password_reset_email.html'}),
+
+  (r'^accounts/password_reset_done/$', 'django.contrib.auth.views.password_reset_done',
+    {'template_name' : 'registration/password_reset_done.html'}),
+
+  (r'^accounts/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm',
+    {'template_name': 'registration/password_reset_confirm.html'}),
+
+  (r'^accounts/password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete',
+    {'template_name': 'registration/password_reset_complete.html'}),
 )
 
 

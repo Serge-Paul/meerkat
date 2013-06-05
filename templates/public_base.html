@@ -15,13 +15,23 @@
 
 <body>
 
-
-
+<div class="heading">
+<a href="/home/"><img src="/static/images/meerkatLogo.png"></a>
+Meerkat
+</div>
 
 
 <div class = "whiteShadowBox">
+
+
+
+<h1>{% block heading %} {% endblock %}</h1>
+
+<p>{% block sub_heading %} {% endblock %}</p>
+
 {% block content %}
-{% endblock %}
+
+{% endblock content %}
 
 
 <div class = "clear"></div>
