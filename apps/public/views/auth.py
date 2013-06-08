@@ -47,28 +47,28 @@ def process_logout(request):
   logout(request)
   return redirect('apps.public.views.auth.process_login')
 
-def password_reset(request):
-  if request.method == 'POST':
+#def password_reset(request):
+ # if request.method == 'POST':
 
-    form = ForgotPasswordForm(request.POST)
+  #  form = ForgotPasswordForm(request.POST)
 
     # Do when form is submitted
-    if form.is_valid():
-      email  = form.cleaned_data['email']
+   # if form.is_valid():
+    #  email  = form.cleaned_data['email']
 
       #send email 
       
       #display blank form when showing confirmation msg
-      form = ForgotPasswordForm()
+     # form = ForgotPasswordForm()
  
-      return render_to_response('registration/password_reset.html', {'form':form, 'message': 'An email has been sent to ' + email + '. Please check your email and click on the link to reset your password.'}, context_instance=RequestContext(request))
+     # return render_to_response('registration/password_reset.html', {'form':form, 'message': 'An email has been sent to ' + email + '. Please check your email and click on the link to reset your password.'}, context_instance=RequestContext(request))
 
-    else: #if form is not valid
-         return render_to_response('registration/password_reset.html', {'form':form, 'message': 'Error resetting password. Please try again.'}, context_instance=RequestContext(request))
+   # else: #if form is not valid
+    #     return render_to_response('registration/password_reset.html', {'form':form, 'message': 'Error resetting password. Please try again.'}, context_instance=RequestContext(request))
 
-  else: #code for just initially displaying form
-      form = ForgotPasswordForm()
-      return render_to_response('registration/password_reset.html', {'form': form},  context_instance=RequestContext(request))
+ # else: #code for just initially displaying form
+  #    form = ForgotPasswordForm()
+   #   return render_to_response('registration/password_reset.html', {'form': form},  context_instance=RequestContext(request))
  
 
 
