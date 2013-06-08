@@ -8,8 +8,8 @@ class LoginForm(forms.Form):
   password = forms.CharField(max_length=100, widget=forms.PasswordInput)
   next = forms.CharField(max_length=255, widget=forms.HiddenInput, required=False, initial="/")
 
-class ForgotPasswordForm(forms.Form):
-   email = forms.EmailField(max_length=200, label="Email", error_messages={'required' : 'Please enter your email address.'})
+#class ForgotPasswordForm(forms.Form):
+ #  email = forms.EmailField(max_length=200, label="Email", error_messages={'required' : 'Please enter your email address.'})
 
 
 def process_login(request):
@@ -47,28 +47,28 @@ def process_logout(request):
   logout(request)
   return redirect('apps.public.views.auth.process_login')
 
-#def password_reset(request):
- # if request.method == 'POST':
 
-  #  form = ForgotPasswordForm(request.POST)
 
-    # Do when form is submitted
-   # if form.is_valid():
-    #  email  = form.cleaned_data['email']
 
-      #send email 
+
+
+
+
+
+
+
       
-      #display blank form when showing confirmation msg
-     # form = ForgotPasswordForm()
+
+
  
-     # return render_to_response('registration/password_reset.html', {'form':form, 'message': 'An email has been sent to ' + email + '. Please check your email and click on the link to reset your password.'}, context_instance=RequestContext(request))
 
-   # else: #if form is not valid
-    #     return render_to_response('registration/password_reset.html', {'form':form, 'message': 'Error resetting password. Please try again.'}, context_instance=RequestContext(request))
 
- # else: #code for just initially displaying form
-  #    form = ForgotPasswordForm()
-   #   return render_to_response('registration/password_reset.html', {'form': form},  context_instance=RequestContext(request))
+
+
+
+
+
+
  
 
 
