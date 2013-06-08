@@ -8,10 +8,6 @@ class LoginForm(forms.Form):
   password = forms.CharField(max_length=100, widget=forms.PasswordInput)
   next = forms.CharField(max_length=255, widget=forms.HiddenInput, required=False, initial="/")
 
-#class ForgotPasswordForm(forms.Form):
- #  email = forms.EmailField(max_length=200, label="Email", error_messages={'required' : 'Please enter your email address.'})
-
-
 def process_login(request):
 
   if request.method == 'POST':
