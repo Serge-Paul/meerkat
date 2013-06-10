@@ -1,0 +1,105 @@
+{% extends "public_base.html" %}
+
+
+{% block title %}New Account Registration{% endblock %}
+
+{% block headtags %}
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+  firstNameValidation = new LiveValidation('id_first_name', { validMessage: " ", onInvalid: customOnInvalid, onValid: customOnValid } );
+  firstNameValidation.add( Validate.Presence, { failureMessage: "Please enter your first name." } );
+
+  lastNameValidation = new LiveValidation('id_last_name', { validMessage: " ", onInvalid: customOnInvalid, onValid: customOnValid } );
+  lastNameValidation.add( Validate.Presence, { failureMessage: "Please enter your last name." } );
+
+  emailValidation = new LiveValidation('id_email', { validMessage: " ", onInvalid: customOnInvalid, onValid: customOnValid } );
+  emailValidation.add( Validate.Presence, { failureMessage: "Please enter your email address." } );
+  emailValidation.add( Validate.Email, { failureMessage: "Please enter a valid email address." } );
+
+  passwordValidation = new LiveValidation('id_password', { validMessage: " ", onInvalid: customOnInvalid, onValid: customOnValid });
+  passwordValidation.add( Validate.Presence, { failureMessage: "Please provide a password." } );
+
+  confirmPasswordValidation = new LiveValidation('id_confirm_password', { validMessage: " ", onInvalid: customOnInvalid, onValid: customOnValid });
+  confirmPasswordValidation.add( Validate.Presence, { failureMessage: "Please retype your password." } );
+  confirmPasswordValidation.add( Validate.Confirmation, { match: 'id_password', failureMessage: "Passwords do not match. Please try again." } );
+
+});
+
+</script>
+
+{% endblock %}
+
+
+{% block content %}
+<div>
+
+<h1>Create a New Account</h1>
+
+<form id="signup-form" class="compact" action="/account/registration/" method="post">
+
+
+
+
+        <label for="id_first_name">{{ form.first_name.label }}</label>
+        {{ form.first_name }}
+        <div class="errors">{{ form.first_name.errors.0 }}</div>
+
+
+
+        <label for="id_last_name">{{ form.last_name.label }}</label>
+        {{ form.last_name }}
+        <div class="errors">{{ form.last_name.errors.0 }}</div>
+
+
+
+      <label for="id_email">{{ form.email.label }}</label>
+      {{ form.email }}
+      <div class="errors">{{ form.email.errors.0 }}</div>
+
+
+
+      <label for="id_company">{{ form.company.label }}</label>
+      {{ form.company }}
+      <div class="errors">{{ form.company.errors.0 }}</div>
+
+
+      <label for="id_password">{{ form.password.label }}</label>
+      {{ form.password }}
+      <div class="errors">{{ form.password.errors.0 }}</div>
+
+
+      <label for="id_confirm_password">{{ form.confirm_password.label }}</label>
+      {{ form.confirm_password }}
+      <div class="errors">{{ form.confirm_password.errors.0 }}</div>
+
+
+<!-- Opens a new tab in browser when clicking on link.
+-->
+    <p>
+    By clicking on "Create Account" below, you agree to our <a href="/terms/" target="_blank" title="Terms of Service">Terms of Service</a> and <a href="/privacy/" target="_blank" title="Privacy Policy">Privacy Policy</a>.
+    </p>
+
+
+    <div class="actions cf">
+      <br/>
+<!--     
+ <a class="button" href="#" onclick="document.forms[0].submit();" title="Create Account">Create Account</a>
+-->
+    
+  <input type="submit" value="Create Account" onclick="document.forms[0].submit();">
+
+    </div>
+
+  {% csrf_token %}
+
+</form>
+
+
+</div>
+
+
+{% endblock %}
+

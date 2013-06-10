@@ -1,0 +1,25 @@
+{% extends "emails/base_email_template.html" %}
+
+{% block header %}<div style='font-size:90%;'>Welcome!</div>{% endblock %}
+
+
+{% block email_content %}
+
+{% if name %}
+Hi {{name}}!
+{% else %}
+Hi!
+{% endif %}
+<br/><br/>
+Thanks for signing up!  Welcome to Meerkat!
+<br/><br/>
+Meerkat will help speed up your product development and enable you to visualize product development status at a glance.
+<br/><br/>
+If you have questions, please email us at <a href='mailto:info@meerkatdev.com' style='color:#06c;'>info@meerkatedev.com</a>
+
+<br/><br/>
+
+Good luck with your project!<br/>
+The Meerkat Team
+<br/><br/>
+{% endblock %}
