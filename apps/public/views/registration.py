@@ -16,7 +16,7 @@ class RegistrationForm(forms.Form):
   password = forms.CharField(label="Password", max_length=100, widget=forms.PasswordInput)
   confirm_password = forms.CharField(label="Confirm password", max_length=100, widget=forms.PasswordInput)
   company = forms.CharField(label="Company or Project Name", max_length=256)
-  username =  = forms.CharField(label="Username", max_length=256)
+  username = forms.CharField(label="Username", max_length=256)
 
   # Return errr if user tries to signup and already has an active account
   def clean_email(self):
