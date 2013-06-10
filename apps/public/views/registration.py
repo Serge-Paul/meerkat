@@ -16,6 +16,7 @@ class RegistrationForm(forms.Form):
   password = forms.CharField(label="Password", max_length=100, widget=forms.PasswordInput)
   confirm_password = forms.CharField(label="Confirm password", max_length=100, widget=forms.PasswordInput)
   company = forms.CharField(label="Company or Project Name", max_length=256)
+  username =  = forms.CharField(label="Username", max_length=256)
 
   # Return errr if user tries to signup and already has an active account
   def clean_email(self):
@@ -47,7 +48,7 @@ def account_registration(request):
   
    
     #user = User.objects.create_user( base64_uuid(), form.cleaned_data['email'], form.cleaned_data['password'])
-    user = User.objects.create_user( 'tnorment', form.cleaned_data['email'], form.cleaned_data['password'])
+    user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
 
 
     user.first_name = form.cleaned_data['first_name']
@@ -65,14 +66,14 @@ def account_registration(request):
     profile.save()
 
 
-    # Send welcome e-mail to the user
+    # Send welcome email to the user
 
     send_welcome_email(form.cleaned_data['email'])
 
     # Log the user in (saves the user's ID in the session)
     #user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
-    #user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-    user = authenticate(username='tnorment', password=form.cleaned_data['password'])
+    user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+  
     login(request, user)
 
     return render_to_response('registration/registration_success.html', {}, context_instance=RequestContext(request))

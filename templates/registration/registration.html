@@ -65,6 +65,10 @@ $(document).ready(function() {
       {{ form.company }}
       <div class="errors">{{ form.company.errors.0 }}</div>
 
+      <label for="id_username">{{ form.username.label }}</label>
+      {{ form.username }}
+      <div class="errors">{{ form.username.errors.0 }}</div>
+
 
       <label for="id_password">{{ form.password.label }}</label>
       {{ form.password }}

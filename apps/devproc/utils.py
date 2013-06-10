@@ -49,7 +49,7 @@ def send_welcome_email(email):
    text_content = strip_tags(html_content) # this strips the html, so people will have the text as well.
 
    # create the email, and attach the HTML version as well.
-   email = EmailMultiAlternatives('Welcome to Meerkat!', text_content, 'Meerkate <info@meerkatdev.com>',
+   email = EmailMultiAlternatives('Welcome to Meerkat!', text_content, 'Meerkat <info@meerkatdev.com>',
                 [email], ['info@meerkatdev.com'], headers = {'Reply-To': settings.DEFAULT_FROM_EMAIL})
 
    email.attach_alternative(html_content, "text/html")
