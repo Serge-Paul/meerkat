@@ -56,6 +56,6 @@ def send_welcome_email(email):
 
    email.send(fail_silently = False)
 
-   log.debug("Sent welcome email to %s" % email)
+   
 
 
