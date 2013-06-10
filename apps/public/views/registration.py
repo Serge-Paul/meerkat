@@ -46,8 +46,6 @@ def account_registration(request):
 
     # Look to see if there is an user object already created for the email. 
   
-   
-    #user = User.objects.create_user( base64_uuid(), form.cleaned_data['email'], form.cleaned_data['password'])
     user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
 
 
@@ -71,7 +69,6 @@ def account_registration(request):
     send_welcome_email(form.cleaned_data['email'])
 
     # Log the user in (saves the user's ID in the session)
-    #user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
     user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
   
     login(request, user)

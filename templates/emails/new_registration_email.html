@@ -6,12 +6,17 @@
 {% block email_content %}
 
 {% if name %}
-Hi {{name}}!
+Welcome {{name}}!
 {% else %}
-Hi!
+Welcome!
 {% endif %}
 <br/><br/>
-Thanks for signing up!  Welcome to Meerkat!
+Thanks for registering with Meerkat!
+<br/><br/>
+<a href = "{{site_url }}/dashboard/">
+Click here to get started
+</a>
+
 <br/><br/>
 Meerkat will help speed up your product development and enable you to visualize product development status at a glance.
 <br/><br/>
