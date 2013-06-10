@@ -13,9 +13,12 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('apps.public.views.auth',
-#  url(r'^accounts/signup/$', 'account_signup'),
   url(r'^accounts/login/$', 'process_login'),
   url(r'^accounts/logout/$', 'process_logout'),
+)
+
+urlpatterns += patterns('apps.public.views.registration',
+  (r'^account/registration/$', 'account_registration'),
 )
 
 urlpatterns += patterns('',

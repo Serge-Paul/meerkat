@@ -149,7 +149,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'south',
     'apps.devproc',
-    # 'apps.frontend',
+    'apps.public',
 )
 
 # A sample logging configuration. The only tangible logging

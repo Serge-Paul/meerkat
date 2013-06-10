@@ -34,7 +34,7 @@ def process_login(request):
     else: #if form is not valid
       return render_to_response('registration/login.html', {'form' : form}, context_instance=RequestContext(request))
 
-  else:
+  else:  # displaying blank form for the first time
     defaults = { 'next' : request.REQUEST.get('next','/') }
     form = LoginForm(initial=defaults)
     return render_to_response('registration/login.html', {'form' : form}, context_instance=RequestContext(request))

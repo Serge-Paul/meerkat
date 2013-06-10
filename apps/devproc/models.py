@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.contrib.auth.models import User
 
 # CHOICES = (('display_text', 'database_text'), )
 
@@ -57,6 +58,40 @@ RESPONSIBILITY_CHOICES = (
 )
 
 
+class UserProfile(models.Model): 
+   user = models.OneToOneField(User) # user object has firstname, lastname, and email
+   title = models.CharField(max_length=200, blank=True, null=True)
+   team = models.ManyToManyField('Team')
+   is_manager = models.BooleanField(default=False)
+   #photo
+   #permissions
+   company = models.ForeignKey('Company')
+
+   def __unicode__(self):
+      return self.user.first_name
+
+
+# Add an extra attribute called profile to the User object.
+User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+
+
+class Company(models.Model):
+   name = models.CharField(max_length=200)
+   admin = models.ForeignKey(User)
+
+   def __unicode__(self):
+      return self.name
+
+
+class Product(models.Model):
+   name = models.CharField(max_length=200)
+   description = models.TextField(max_length=1028)
+   company = models.ForeignKey('Company')
+
+   def __unicode__(self):
+      return self.name
+
+
 class Category(models.Model):
    category = models.CharField(max_length=200)
    
@@ -77,6 +112,7 @@ class Requirement(models.Model):
    source = models.CharField(max_length=128, choices=SOURCE_CHOICES)
    notes = models.TextField(max_length=1028, blank=True, null=True)
    #attachments
+   product = models.ForeignKey('Product')
 
    def __unicode__(self):
       return self.title
@@ -90,6 +126,7 @@ class UseCase(models.Model):
    identifier = models.CharField(max_length=200)
    source = models.CharField(max_length=128, choices=SOURCE_CHOICES)
    notes = models.TextField(max_length=1028, blank=True, null=True)
+   product = models.ForeignKey('Product')
    #attachments
 
    def __unicode__(self):
@@ -119,6 +156,7 @@ class Component(models.Model):
    notes = models.TextField(max_length=1028, blank=True, null=True)
    requirements = models.ManyToManyField('Requirement', blank=True, null=True)
    usecases = models.ManyToManyField('Usecase', blank=True, null=True)
+   product = models.ForeignKey('Product')
 
    def __unicode__(self):
       return self.title
@@ -139,6 +177,7 @@ class Feature(models.Model):
    identifier = models.CharField(max_length=200)
    notes = models.TextField(max_length=1028, blank=True, null=True) 
    component = models.ManyToManyField('Component', blank=True, null=True)
+   product = models.ForeignKey('Product')
 
    def __unicode__(self):
       return self.title
@@ -155,6 +194,7 @@ class Test(models.Model):
    status = models.CharField(max_length=128, choices=TEST_STATUS_CHOICES)
    identifier = models.CharField(max_length=200)
    #attachments
+   product = models.ForeignKey('Product')
 
    def __unicode__(self):
       return self.title
@@ -191,6 +231,7 @@ class Customer(models.Model):
    last_name = models.CharField(max_length=200) 
    organization = models.CharField(max_length=200)
    location = models.CharField(max_length=200, blank=True, null=True) 
+   company = models.ForeignKey('Company')
 
    def __unicode__(self):
       return self.first_name
@@ -217,6 +258,7 @@ class Release(models.Model):
    notes = models.TextField(max_length=1028, blank=True, null=True)
    responsible_engineer = models.ManyToManyField('Member', blank=True, null=True)
    goals = models.CharField(max_length=1028, blank=True, null=True)
+   product = models.ForeignKey('Product')
 
    def __unicode__(self):
       return self.name
@@ -255,6 +297,8 @@ class Team(models.Model):
    name = models.CharField(max_length=200)
    #logo
    description = models.TextField(max_length=1028, blank=True, null=True)
+   company = models.ForeignKey('Company')
+   products = models.ManyToManyField('Product')
 
    def __unicode__(self):
       return self.name
@@ -268,6 +312,7 @@ class Member(models.Model):
    is_manager = models.BooleanField(default=False)
    #photo
    #permissions
+   company = models.ForeignKey('Company')
 
    def __unicode__(self):
       return self.first_name
@@ -284,6 +329,7 @@ class Milestone(models.Model):
    predecessors = models.ManyToManyField('Milestone', blank=True, null=True)
    percent_complete = models.IntegerField()
    notes = models.TextField(max_length=1028, blank=True, null=True) 
+   product = models.ForeignKey('Product')
 
    def __unicode__(self):
       return self.title
