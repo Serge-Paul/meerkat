@@ -5,6 +5,8 @@ from django import forms
 from django.shortcuts import render_to_response, redirect
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+
 
 class RegistrationForm(forms.Form):
 
