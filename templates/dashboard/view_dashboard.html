@@ -11,4 +11,23 @@ Dashboard
 
 <h1>Welcome {{ user.first_name }}</h1>
 
+<p>
+{{ company.name }} Products:
+</p>
+
+{% if products %}
+   {% for product in products %} 
+
+   <a href="/products/{{ product.id }}/">{{ product.name }}</a>: {{ product.description }}
+   <br/>
+
+   {% endfor %} 
+
+{% else %}
+
+You have not defined any products. <a href="/products/add/">Click here to get started</a>
+
+{% endif %}
+
+
 {% endblock %}

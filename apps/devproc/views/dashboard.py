@@ -8,6 +8,10 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def view_dashboard(request):
 
-  return render_to_response('dashboard/view_dashboard.html', {'user' : request.user}, context_instance=RequestContext(request))
+  company = request.user.profile.company
+
+  products = Product.objects.filter(company = company.id)
+
+  return render_to_response('dashboard/view_dashboard.html', {'user' : request.user, 'company': company, 'products': products}, context_instance=RequestContext(request))
 
 

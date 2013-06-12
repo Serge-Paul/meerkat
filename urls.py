@@ -177,36 +177,13 @@ urlpatterns += patterns('apps.devproc.views.usecase',
 )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+urlpatterns += patterns('apps.devproc.views.product',
+   url(r'^products/$', 'view_all_products'),
+   url(r'^products/add/$', 'create_product'),
+   url(r'^products/(?P<product_id>\d+)/$', 'view_product'),
+   url(r'^products/(?P<product_id>\d+)/edit/$', 'edit_product'),
+   url(r'^products/(?P<product_id>\d+)/delete/$', 'delete_product'),
+)
 
 
 
