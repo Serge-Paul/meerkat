@@ -1,0 +1,68 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+{% if mode == 'create' %}
+    Add Product
+{% endif %}
+
+{% if mode == 'edit' %}
+    Edit Product
+{% endif %}
+
+
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+
+{% if mode == 'create' %}
+<h1>Add product</h1>
+{% endif %}
+
+{% if mode == 'edit' %}
+<h1>Edit product</h1>
+{% endif %}
+
+{% if message %}
+  <div class="errors"> {{ message }}</div>
+  <br/>
+{% endif %}
+
+
+{% if mode == 'create' %}
+<form id="add-product-form" action="/products/add/" method="post" enctype="multipart/form-data">
+{% endif %}
+
+{% if mode == 'edit' %}
+<form id="edit-product-form" action="/products/{{ product.id }}/edit/" method="post" enctype="multipart/form-data">
+{% endif %} 
+
+      <label for="name">{{ form.name.label }}</label>
+      <div class="field">{{ form.name }}</div>
+      <div class="errors">{{ form.name.errors.0 }}</div>
+      <br/>
+
+     <label for="description">{{ form.description.label }}</label>
+      <div class="field">{{ form.description }}</div>
+      <div class="errors">{{ form.description.errors.0 }}</div>
+      <br/>
+    
+{% if mode == 'create' %}
+<input type="submit" value="Add">
+{% endif %}
+
+{% if mode == 'edit' %}
+<input type="submit" value="Save">
+
+
+{% endif %}
+
+
+{% csrf_token %}
+
+</form>
+
+{% endblock %}

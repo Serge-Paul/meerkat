@@ -1,0 +1,46 @@
+{% extends "view_template.html" %}
+
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block heading %}
+Product
+{% endblock %}
+
+{% block main_links %}
+<a href="/products/add/">Add new product</a> |
+<a href="/products/">View all products</a> 
+{% endblock %}
+
+{% if product %}
+{% block sub_links %}
+<a href="/products/{{ product.id }}/edit/">Edit</a> |
+<a href="/products/{{ product.id }}/delete/">Delete product</a>
+{% endblock %}
+
+{% block left_col %}
+<p>
+Name: {{ product.name }}
+</p>
+
+{% endblock %}
+
+{% block right_col %}
+
+<p>
+Description:<br/> {{ product.description }}
+</p>
+
+{% endblock %}
+
+
+<!-- *** IF NO PRODUCTS *** -->
+{% else %}
+<p>No products are available.</p>
+{% endif %}
+
+

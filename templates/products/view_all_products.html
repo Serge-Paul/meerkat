@@ -1,0 +1,36 @@
+{% extends "view_all_template.html" %}
+
+{% block title %}
+Products
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block heading %}
+Products
+{% endblock heading %}
+
+{% block main_links %}
+<a href="/products/add/">Add new product</a>
+{% endblock main_links %}
+
+{% if product_list %}
+
+{% block list %}
+
+<ul>
+{% for product in product_list %}
+<li><a href="/products/{{ product.id }}/">{{ product.name }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock list %}
+
+{% else %}
+
+No products are available.
+
+{% endif %}
+
+
