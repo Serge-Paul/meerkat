@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class BugForm(forms.Form):
    title = forms.CharField(max_length=200, label="Bug Title")
@@ -18,11 +20,15 @@ class BugForm(forms.Form):
 
 @login_required
 def view_all_bugs(request):
+   session_info = get_session_info(request)
+
    bug_list = Bug.objects.all().order_by('-id')
-   return render_to_response('bugs/view_all_bugs.html', {'user' : request.user, 'bug_list': bug_list})
+   return render_to_response('bugs/view_all_bugs.html', {'session_info': session_info, 'user' : request.user, 'bug_list': bug_list})
 
 @login_required
 def create_bug(request, test_id, type):
+   session_info = get_session_info(request)
+
    if type == 'test':
       test = Test.objects.get(id = test_id)
    
@@ -66,22 +72,25 @@ def create_bug(request, test_id, type):
          return redirect('apps.devproc.views.bug.view_bug', bug_id = bug.id)
 
       else: #if form is not valid
-         return render_to_response('bugs/create_bug.html', {'user' : request.user, 'form':form, 'message': 'Error creating bug. Please try again.', 'test': test, 'type': type, 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('bugs/create_bug.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating bug. Please try again.', 'test': test, 'type': type, 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = BugForm()
-      return render_to_response('bugs/create_bug.html', {'user' : request.user, 'form': form, 'test': test, 'type': type, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('bugs/create_bug.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'test': test, 'type': type, 'mode': 'create'},  context_instance=RequestContext(request))
 
 @login_required
 def view_bug(request, bug_id):
+   session_info = get_session_info(request)
+
    bug = Bug.objects.get(id = bug_id)
    risks = Risk.objects.filter(bug = bug)
 
-   return render_to_response('bugs/view_bug.html', {'user' : request.user, 'bug': bug, 'risks': risks})
+   return render_to_response('bugs/view_bug.html', {'session_info': session_info, 'user' : request.user, 'bug': bug, 'risks': risks})
 
 @login_required
 def edit_bug(request, bug_id):
+   session_info = get_session_info(request)
 
    bug = Bug.objects.get(id = bug_id)
 
@@ -121,7 +130,7 @@ def edit_bug(request, bug_id):
          return redirect('apps.devproc.views.bug.view_bug', bug_id = bug.id)
 
       else: #if form is not valid
-         return render_to_response('bugs/create_bug.html', {'user' : request.user, 'form':form, 'message': 'Error editing bug. Please try again.', 'test': test, 'type': type, 'bug': bug, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('bugs/create_bug.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error editing bug. Please try again.', 'test': test, 'type': type, 'bug': bug, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -140,11 +149,12 @@ def edit_bug(request, bug_id):
 
       form = BugForm(initial=defaults)
 
-      return render_to_response('bugs/create_bug.html', {'user' : request.user, 'form': form, 'test': test, 'type': type, 'bug': bug, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('bugs/create_bug.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'test': test, 'type': type, 'bug': bug, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 @login_required
 def delete_bug(request, bug_id):
+   session_info = get_session_info(request)
 
    bug = Bug.objects.get(id = bug_id)
    bug.delete()

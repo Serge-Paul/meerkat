@@ -6,6 +6,22 @@ from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
 
+def get_session_info(request):
+   company = request.user.profile.company
+
+   products = Product.objects.filter(company = company.id)
+
+   active_product = request.session.get('active_product')
+
+   session_info = {
+                   'company': company,
+                   'products': products,
+                   'active_product': active_product,
+                  } 
+
+   return session_info
+
+
 def new_user(email, password, first_name="", last_name=""):
 
   if( User.objects.filter(email=email).count() == 0 ):  #if user does not exist in database

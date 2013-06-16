@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class UseCaseForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -17,12 +19,16 @@ class UseCaseForm(forms.Form):
 
 @login_required
 def view_all_usecases(request):
+   session_info = get_session_info(request)
+
    usecase_list = UseCase.objects.all().order_by('-id')
-   return render_to_response('usecases/view_all_usecases.html', {'user' : request.user, 'usecase_list': usecase_list})
+   return render_to_response('usecases/view_all_usecases.html', {'session_info': session_info, 'user' : request.user, 'usecase_list': usecase_list})
 
 
 @login_required
 def create_usecase(request):
+   session_info = get_session_info(request)
+
    if request.method == 'POST':
 
       form = UseCaseForm(request.POST)
@@ -37,6 +43,7 @@ def create_usecase(request):
 	 usecase.identifier = form.cleaned_data['identifier']
 	 usecase.source = form.cleaned_data['source']
 	 usecase.notes = form.cleaned_data['notes']
+         usecase.product = Product.objects.get(id = session_info['active_product'])
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          usecase.save()
@@ -49,22 +56,25 @@ def create_usecase(request):
          return redirect('apps.devproc.views.usecase.view_usecase', usecase_id = usecase.id)
 
       else: #if form is not valid
-         return render_to_response('usecases/create_usecase.html', {'user' : request.user, 'form':form, 'message': 'Error creating use case. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('usecases/create_usecase.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating use case. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = UseCaseForm()
-      return render_to_response('usecases/create_usecase.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('usecases/create_usecase.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_usecase(request, usecase_id):
+   session_info = get_session_info(request)
+
    usecase = UseCase.objects.get(id = usecase_id)
-   return render_to_response('usecases/view_usecase.html', {'user' : request.user, 'usecase': usecase})
+   return render_to_response('usecases/view_usecase.html', {'session_info': session_info, 'user' : request.user, 'usecase': usecase})
 
 
 @login_required
 def edit_usecase(request, usecase_id):
+   session_info = get_session_info(request)
 
    usecase = UseCase.objects.get(id = usecase_id)
 
@@ -93,7 +103,7 @@ def edit_usecase(request, usecase_id):
          return redirect('apps.devproc.views.usecase.view_usecase', usecase_id = usecase.id)
 
       else: #if form is not valid
-         return render_to_response('usecases/create_usecase.html', {'user' : request.user, 'form':form, 'message': 'Error editing use case. Please try again.', 'usecase': usecase, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('usecases/create_usecase.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error editing use case. Please try again.', 'usecase': usecase, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -110,12 +120,13 @@ def edit_usecase(request, usecase_id):
 
       form = UseCaseForm(initial=defaults)
 
-      return render_to_response('usecases/create_usecase.html', {'user' : request.user, 'form': form, 'usecase': usecase, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('usecases/create_usecase.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'usecase': usecase, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 
 @login_required
 def delete_usecase(request, usecase_id):
+   session_info = get_session_info(request)
 
    usecase = UseCase.objects.get(id = usecase_id)
    usecase.delete()

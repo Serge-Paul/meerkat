@@ -80,12 +80,12 @@
       <br/>
 
 {% if mode == 'create' %}
-<input type="submit" value="Add">
+<input type="submit" value="Add" class ="blueButton">
 <br/>*Note: Adding a new release will automatically generate a beta test for that release.
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save">
+<input type="submit" value="Save" class ="blueButton">
 {% endif %}
 
 {% csrf_token %}

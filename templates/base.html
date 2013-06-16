@@ -27,9 +27,37 @@ Meerkat
 
 </div>
 
-<div class ="blueBar">
+<div>
+<div class ="orangeBar left" style ="padding-right: 10px;">
 
-<a href="/dashboard/">Dashboard</a>
+{{ session_info.company.name }} Products: &nbsp;
+</div>
+
+{% if session_info.products %}
+   {% for product in session_info.products %}
+      {% if session_info.active_product = product.id %} 
+         <div class = "blueBar left">
+      {% else %}
+         <div class = "orangeBar left">
+      {% endif %} 
+
+      <a href="/products/{{ product.id}}">{{ product.name }}</a>
+      </div>
+
+   {% endfor %}
+
+{% else %}
+    <div class = "orangeBar left">
+    <a href = "/products/add/">Add a new product</a>
+    </div>
+
+{% endif %}
+ 
+<div class = "orangeBar left">&nbsp;</div>
+</div>
+
+<div class ="blueBar clear">
+   <a href="/dashboard/">Dashboard</a>
  | <a href="/teams/">Teams</a>
  | <a href="/milestones/">Milestones</a>
  | <a href="/roadmap/">Roadmap</a>

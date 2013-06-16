@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class FeatureForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -22,13 +24,17 @@ class FeatureForm(forms.Form):
 
 @login_required
 def view_all_features(request):
+   session_info = get_session_info(request)
+
    feature_list = Feature.objects.all().order_by('-id')
-   return render_to_response('features/view_all_features.html', {'user' : request.user, 'feature_list': feature_list})
+   return render_to_response('features/view_all_features.html', {'session_info': session_info, 'user' : request.user, 'feature_list': feature_list})
 
 
 
 @login_required
 def create_feature(request):
+   session_info = get_session_info(request)
+
    if request.method == 'POST':
 
       form = FeatureForm(request.POST)
@@ -44,7 +50,7 @@ def create_feature(request):
 	 feature.approval_status = form.cleaned_data['approval_status']
 	 feature.identifier = form.cleaned_data['identifier']
 	 feature.notes = form.cleaned_data['notes']
-
+         feature.product = Product.objects.get(id = session_info['active_product'])
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          feature.save()
@@ -69,24 +75,27 @@ def create_feature(request):
          return redirect('apps.devproc.views.feature.view_feature', feature_id = feature.id)
 
       else: #if form is not valid
-         return render_to_response('features/create_feature.html', {'user' : request.user, 'form':form, 'message': 'Error creating feature. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('features/create_feature.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating feature. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = FeatureForm()
-      return render_to_response('features/create_feature.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('features/create_feature.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_feature(request, feature_id):
+   session_info = get_session_info(request)
+
    feature = Feature.objects.get(id = feature_id)
    risks = Risk.objects.filter(feature = feature)
 
-   return render_to_response('features/view_feature.html', {'user' : request.user, 'feature': feature, 'risks': risks})
+   return render_to_response('features/view_feature.html', {'session_info': session_info, 'user' : request.user, 'feature': feature, 'risks': risks})
 
 
 @login_required
 def edit_feature(request, feature_id):
+   session_info = get_session_info(request)
 
    feature = Feature.objects.get(id = feature_id)
 
@@ -129,7 +138,7 @@ def edit_feature(request, feature_id):
          return redirect('apps.devproc.views.feature.view_feature', feature_id = feature.id)
 
       else: #if form is not valid
-         return render_to_response('features/create_feature.html', {'user' : request.user, 'form':form, 'message': 'Error creating feature. Please try again.', 'feature': feature, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('features/create_feature.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating feature. Please try again.', 'feature': feature, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -151,11 +160,12 @@ def edit_feature(request, feature_id):
 
       form = FeatureForm(initial=defaults)
 
-      return render_to_response('features/create_feature.html', {'user' : request.user, 'form': form, 'feature': feature, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('features/create_feature.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'feature': feature, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 @login_required
 def delete_feature(request, feature_id):
+   session_info = get_session_info(request)
 
    feature = Feature.objects.get(id = feature_id)
    feature.delete()

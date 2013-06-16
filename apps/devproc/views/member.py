@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class MemberForm(forms.Form):
    existing_member = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False)
@@ -15,16 +17,20 @@ class MemberForm(forms.Form):
 
 @login_required
 def view_all_members(request, team_id):
+   session_info = get_session_info(request)
+
    # view all members for a specific team
    member_list = Member.objects.all().order_by('-id')
 
    team = Team.objects.get(id = team_id)   
 
-   return render_to_response('members/view_all_members.html', {'user' : request.user, 'member_list': member_list, 'team': team})
+   return render_to_response('members/view_all_members.html', {'session_info': session_info, 'user' : request.user, 'member_list': member_list, 'team': team})
 
 
 @login_required
 def create_member(request, team_id):
+   session_info = get_session_info(request)
+
    # create a new member and add them to a specific team
 
    team = Team.objects.get(id = team_id)
@@ -41,6 +47,7 @@ def create_member(request, team_id):
          member.last_name = form.cleaned_data['last_name']
 	 member.title = form.cleaned_data['title']
 	 member.is_manager = form.cleaned_data['is_manager']
+         member.company = request.user.profile.company        
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          member.save()
@@ -52,22 +59,25 @@ def create_member(request, team_id):
          return redirect('apps.devproc.views.member.view_member', member_id = member.id)
 
       else: #if form is not valid
-         return render_to_response('members/create_member.html', {'user' : request.user, 'form':form, 'message': 'Error adding team member. Please try again.', 'team': team, 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('members/create_member.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error adding team member. Please try again.', 'team': team, 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = MemberForm()
-      return render_to_response('members/create_member.html', {'user' : request.user, 'form': form, 'team': team, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('members/create_member.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'team': team, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_member(request, member_id):
+   session_info = get_session_info(request) 
+ 
    member = Member.objects.get(id = member_id)
-   return render_to_response('members/view_member.html', {'user' : request.user, 'member': member})
+   return render_to_response('members/view_member.html', {'session_info': session_info, 'user' : request.user, 'member': member})
 
 
 @login_required
 def edit_member(request, member_id):
+   session_info = get_session_info(request)
 
    member = Member.objects.get(id = member_id)
 
@@ -90,7 +100,7 @@ def edit_member(request, member_id):
          return redirect('apps.devproc.views.member.view_member', member_id = member.id)
 
       else: #if form is not valid
-         return render_to_response('members/create_member.html', {'user' : request.user, 'form':form, 'message': 'Error editing team member. Please try again.', 'team': member.team, 'member': member, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('members/create_member.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error editing team member. Please try again.', 'team': member.team, 'member': member, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -104,12 +114,13 @@ def edit_member(request, member_id):
 
       form = MemberForm(initial=defaults)
 
-      return render_to_response('members/create_member.html', {'user' : request.user, 'form': form, 'team': team, 'member': member, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('members/create_member.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'team': team, 'member': member, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 
 @login_required
 def delete_member(request, member_id):
+   session_info = get_session_info(request)
 
    member = Member.objects.get(id = member_id)
    member.delete()

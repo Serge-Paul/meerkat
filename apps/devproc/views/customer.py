@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class CustomerForm(forms.Form):
    first_name = forms.CharField(max_length=200)
@@ -14,11 +16,15 @@ class CustomerForm(forms.Form):
 
 @login_required
 def view_all_customers(request):
+   session_info = get_session_info(request)
+
    return HttpResponse("Hello, world. You're viewing all customers")
 
 
 @login_required
 def create_customer(request):
+   session_info = get_session_info(request)
+
    if request.method == 'POST':
 
       form = CustomerForm(request.POST)
@@ -31,28 +37,34 @@ def create_customer(request):
          customer.last_name = form.cleaned_data['last_name']
 	 customer.organization = form.cleaned_data['organization'] 
 	 customer.location = form.cleaned_data['location']	
+         customer.company = request.user.profile.company         
 
          customer.save()
 
          return redirect('apps.devproc.views.customer.view_customer', customer_id = customer.id)
 
       else: #if form is not valid
-         return render_to_response('customers/create_customer.html', {'user' : request.user, 'form':form, 'message': 'Error adding customer. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('customers/create_customer.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error adding customer. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = CustomerForm()
-      return render_to_response('customers/create_customer.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('customers/create_customer.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_customer(request, customer_id):
+  session_info = get_session_info(request)
+
   customer = Customer.objects.get(id = customer_id)
-  return render_to_response('customers/view_customer.html', {'user' : request.user, 'customer': customer})
+  
+  return render_to_response('customers/view_customer.html', {'session_info': session_info, 'user' : request.user, 'customer': customer})
 
 
 @login_required
 def edit_customer(request, customer_id):
+   session_info = get_session_info(request)
+
 
    customer = Customer.objects.get(id = customer_id)
 
@@ -73,7 +85,7 @@ def edit_customer(request, customer_id):
          return redirect('apps.devproc.views.customer.view_customer', customer_id = customer.id)
 
       else: #if form is not valid
-         return render_to_response('customers/create_customer.html', {'user' : request.user, 'form':form, 'message': 'Error editing customer. Please try again.', 'customer': customer, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('customers/create_customer.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error editing customer. Please try again.', 'customer': customer, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -87,12 +99,13 @@ def edit_customer(request, customer_id):
 
       form = CustomerForm(initial=defaults)
 
-      return render_to_response('customers/create_customer.html', {'user' : request.user, 'form': form, 'customer': customer, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('customers/create_customer.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'customer': customer, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 
 @login_required
 def delete_customer(request, customer_id):
+   session_info = get_session_info(request)
 
    customer = Customer.objects.get(id = customer_id)
    customer.delete()

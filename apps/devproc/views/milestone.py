@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class MilestoneForm(forms.Form):
    title = forms.CharField(max_length=200, error_messages={'required' : 'Please enter a title.'})
@@ -19,12 +21,16 @@ class MilestoneForm(forms.Form):
 
 @login_required
 def view_all_milestones(request):
+   session_info = get_session_info(request)
+
    milestone_list = Milestone.objects.all().order_by('-id')
-   return render_to_response('milestones/view_all_milestones.html', {'user' : request.user, 'milestone_list': milestone_list})
+   return render_to_response('milestones/view_all_milestones.html', {'session_info': session_info, 'user' : request.user, 'milestone_list': milestone_list})
 
 
 @login_required
 def create_milestone(request):
+   session_info = get_session_info(request)
+
    if request.method == 'POST':
 
       form = MilestoneForm(request.POST)
@@ -40,7 +46,8 @@ def create_milestone(request):
          milestone.percent_complete = form.cleaned_data['percent_complete']
          milestone.notes  = form.cleaned_data['notes']
          milestone.release  = form.cleaned_data['release']  # Foreign Key
- 
+         milestone.product = Product.objects.get(id = session_info['active_product']) 
+
          # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          milestone.save()         
 
@@ -55,22 +62,27 @@ def create_milestone(request):
          return redirect('apps.devproc.views.milestone.view_milestone', milestone_id = milestone.id)
 
       else: #if form is not valid
-         return render_to_response('milestones/create_milestone.html', {'user' : request.user, 'form':form, 'message': 'Error creating milestone. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         Milestone.objects.get(id = milestone_id)
+         
+         return render_to_response('milestones/create_milestone.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating milestone. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = MilestoneForm()
-      return render_to_response('milestones/create_milestone.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('milestones/create_milestone.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_milestone(request, milestone_id):
+   session_info = get_session_info(request)
+
    milestone = Milestone.objects.get(id = milestone_id)
-   return render_to_response('milestones/view_milestone.html', {'user' : request.user, 'milestone': milestone})
+   return render_to_response('milestones/view_milestone.html', {'session_info': session_info, 'user' : request.user, 'milestone': milestone})
 
 
 @login_required
 def edit_milestone(request, milestone_id):
+   session_info = get_session_info(request)
 
    milestone = Milestone.objects.get(id = milestone_id)
 
@@ -103,7 +115,7 @@ def edit_milestone(request, milestone_id):
          return redirect('apps.devproc.views.milestone.view_milestone', milestone_id = milestone.id)
 
       else: #if form is not valid
-         return render_to_response('milestones/create_milestone.html', {'user' : request.user, 'form':form, 'message': 'Error editing milestone. Please try again.', 'milestone': milestone, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('milestones/create_milestone.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error editing milestone. Please try again.', 'milestone': milestone, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -122,12 +134,13 @@ def edit_milestone(request, milestone_id):
 
       form = MilestoneForm(initial=defaults)
 
-      return render_to_response('milestones/create_milestone.html', {'user' : request.user, 'form': form, 'milestone': milestone, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('milestones/create_milestone.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'milestone': milestone, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 
 @login_required
 def delete_milestone(request, milestone_id):
+   session_info = get_session_info(request)
 
    milestone = Milestone.objects.get(id = milestone_id)
    milestone.delete()

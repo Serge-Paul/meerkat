@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class RiskForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -19,12 +21,15 @@ class RiskForm(forms.Form):
 
 @login_required
 def view_all_risks(request):
+   session_info = get_session_info(request)
+
    risk_list = Risk.objects.all().order_by('-id')
-   return render_to_response('risks/view_all_risks.html', {'user' : request.user, 'risk_list': risk_list})
+   return render_to_response('risks/view_all_risks.html', {'session_info': session_info, 'user' : request.user, 'risk_list': risk_list})
 
 
 @login_required
 def create_risk(request, obj_id, type):
+   session_info = get_session_info(request)
 
    if type == "component":
       obj = Component.objects.get(id = obj_id)
@@ -73,16 +78,18 @@ def create_risk(request, obj_id, type):
          return redirect('apps.devproc.views.risk.view_risk', risk_id = risk.id)
 
       else: #if form is not valid
-         return render_to_response('risks/create_risk.html', {'user' : request.user, 'form':form, 'message': 'Error creating risk. Please try again.', 'obj': obj, 'type': type, 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('risks/create_risk.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating risk. Please try again.', 'obj': obj, 'type': type, 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = RiskForm()
-      return render_to_response('risks/create_risk.html', {'user' : request.user, 'form': form, 'obj': obj, 'type': type, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('risks/create_risk.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'obj': obj, 'type': type, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_risk(request, risk_id):
+   session_info = get_session_info(request)
+
    risk = Risk.objects.get(id = risk_id)
    
    feature = None
@@ -98,11 +105,12 @@ def view_risk(request, risk_id):
    if risk.bug:
         bug = Bug.objects.get(id = risk.bug.id)
 
-   return render_to_response('risks/view_risk.html', {'user' : request.user, 'risk': risk, 'feature': feature, 'component': component, 'bug': bug})
+   return render_to_response('risks/view_risk.html', {'session_info': session_info, 'user' : request.user, 'risk': risk, 'feature': feature, 'component': component, 'bug': bug})
 
 
 @login_required
 def edit_risk(request, risk_id):
+   session_info = get_session_info(request)
 
    risk = Risk.objects.get(id = risk_id)
 
@@ -145,7 +153,7 @@ def edit_risk(request, risk_id):
          return redirect('apps.devproc.views.risk.view_risk', risk_id = risk.id)
 
       else: #if form is not valid
-         return render_to_response('risks/create_risk.html', {'user' : request.user, 'form':form, 'message': 'Error editing risk. Please try again.', 'obj': obj, 'type': type, 'risk': risk, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('risks/create_risk.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error editing risk. Please try again.', 'obj': obj, 'type': type, 'risk': risk, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -164,11 +172,12 @@ def edit_risk(request, risk_id):
 
       form = RiskForm(initial=defaults)
 
-      return render_to_response('risks/create_risk.html', {'user' : request.user, 'form': form, 'obj': obj, 'type': type, 'risk': risk, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('risks/create_risk.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'obj': obj, 'type': type, 'risk': risk, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 @login_required
 def delete_risk(request, risk_id):
+   session_info = get_session_info(request)
 
    risk = Risk.objects.get(id = risk_id)
    risk.delete()

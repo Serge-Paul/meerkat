@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class ReleaseForm(forms.Form):
    name = forms.CharField(max_length=200)
@@ -20,12 +22,16 @@ class ReleaseForm(forms.Form):
 
 @login_required
 def view_all_releases(request):
+   session_info = get_session_info(request)
+
    release_list = Release.objects.all().order_by('-id')
-   return render_to_response('releases/view_all_releases.html', {'user' : request.user, 'release_list': release_list})
+   return render_to_response('releases/view_all_releases.html', {'session_info': session_info, 'user' : request.user, 'release_list': release_list})
 
 
 @login_required
 def create_release(request):
+   session_info = get_session_info(request)
+
    if request.method == 'POST':
 
       form = ReleaseForm(request.POST)
@@ -40,6 +46,7 @@ def create_release(request):
 	 release.market = form.cleaned_data['market']
 	 release.notes = form.cleaned_data['notes']
 	 release.goals = form.cleaned_data['goals']
+         release.product = Product.objects.get(id = session_info['active_product'])
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          release.save()
@@ -64,16 +71,18 @@ def create_release(request):
          return redirect('apps.devproc.views.release.view_release', release_id = release.id)
 
       else: #if form is not valid
-         return render_to_response('releases/create_release.html', {'user' : request.user, 'form':form, 'message': 'Error creating release. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('releases/create_release.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating release. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = ReleaseForm()
-      return render_to_response('releases/create_release.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('releases/create_release.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_release(request, release_id):
+   session_info = get_session_info(request)
+
    release = Release.objects.get(id = release_id)
    features = Feature.objects.filter(release = release_id)
    risks = Risk.objects.filter(release = release_id)
@@ -82,11 +91,12 @@ def view_release(request, release_id):
 
    betatest = BetaTest.objects.get(release = release_id)
 
-   return render_to_response('releases/view_release.html', {'user' : request.user, 'release': release,'features':features , 'risks':risks, 'bugs': bugs, 'milestones': milestones, 'betatest': betatest })
+   return render_to_response('releases/view_release.html', {'session_info': session_info, 'user' : request.user, 'release': release,'features':features , 'risks':risks, 'bugs': bugs, 'milestones': milestones, 'betatest': betatest })
 
 
 @login_required
 def edit_release(request, release_id):
+   session_info = get_session_info(request)
 
    release = Release.objects.get(id = release_id)
    betatest = BetaTest.objects.get(release = release) 
@@ -121,7 +131,7 @@ def edit_release(request, release_id):
          return redirect('apps.devproc.views.release.view_release', release_id = release.id)
 
       else: #if form is not valid
-         return render_to_response('releases/create_release.html', {'user' : request.user, 'form':form, 'message': 'Error editing release. Please try again.', 'release': release, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('releases/create_release.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error editing release. Please try again.', 'release': release, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -139,11 +149,12 @@ def edit_release(request, release_id):
 
       form = ReleaseForm(initial=defaults)
 
-      return render_to_response('releases/create_release.html', {'user' : request.user, 'form': form, 'release': release, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('releases/create_release.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'release': release, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 @login_required
 def delete_release(request, release_id):
+   session_info = get_session_info(request)
 
    release = Release.objects.get(id = release_id)
    release.delete()

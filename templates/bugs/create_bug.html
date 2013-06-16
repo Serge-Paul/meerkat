@@ -52,11 +52,11 @@
 <p>Beta Test: <a href="/betatests/{{ test.id }}">Beta {{ test.release.name }}</a>
 
       {% if mode == 'create' %}
-         <form id="add-bug-form" action="/bugs/{{ bug.id }}/edit/" method="post" enctype="multipart/form-data">
+         <form id="add-bug-form" action="/bugs/add/betatest/{{ test.id }}/" method="post" enctype="multipart/form-data">
       {% endif %}
 
       {% if mode == 'edit' %}
-         <form id="edit-bug-form" action="/bugs/edit/betatest/{{ test.id }}/" method="post" enctype="multipart/form-data">
+         <form id="edit-bug-form" action="/bugs/{{ bug.id }}/edit/" method="post" enctype="multipart/form-data">
       {% endif %}
 
 {% else %}
@@ -123,11 +123,11 @@
       <div class="errors">{{ form.betatest.errors.0 }}</div>
 
 {% if mode == 'create' %}
-<input type="submit" value="Add">
+<input type="submit" value="Add" class ="blueButton">
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save">
+<input type="submit" value="Save" class = "blueButton">
 {% endif %}
 
 

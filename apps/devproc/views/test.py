@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class TestForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -19,12 +21,16 @@ class TestForm(forms.Form):
 
 @login_required
 def view_all_tests(request):
+   session_info = get_session_info(request)
+
    test_list = Test.objects.all().order_by('-id')
-   return render_to_response('tests/view_all_tests.html', {'user' : request.user, 'test_list': test_list})
+   return render_to_response('tests/view_all_tests.html', {'session_info': session_info, 'user' : request.user, 'test_list': test_list})
 
 
 @login_required
 def create_test(request):
+   session_info = get_session_info(request)
+
    if request.method == 'POST':
 
       form = TestForm(request.POST)
@@ -39,6 +45,7 @@ def create_test(request):
 	 test.pass_fail_criteria = form.cleaned_data['pass_fail_criteria']
 	 test.status = form.cleaned_data['status']
 	 test.identifier = form.cleaned_data['identifier']
+         test.product = Product.objects.get(id = session_info['active_product'])
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          test.save()
@@ -57,23 +64,26 @@ def create_test(request):
          return redirect('apps.devproc.views.test.view_test', test_id = test.id)
 
       else: #if form is not valid
-         return render_to_response('tests/create_test.html', {'user' : request.user, 'form':form, 'message': 'Error creating test. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('tests/create_test.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating test. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = TestForm()
-      return render_to_response('tests/create_test.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('tests/create_test.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_test(request, test_id):
+   session_info = get_session_info(request)
+
    test = Test.objects.get(id = test_id)
    bugs = Bug.objects.filter(test = test_id)
-   return render_to_response('tests/view_test.html', {'user' : request.user, 'test': test, 'bugs': bugs})
+   return render_to_response('tests/view_test.html', {'session_info': session_info, 'user' : request.user, 'test': test, 'bugs': bugs})
 
 
 @login_required
 def edit_test(request, test_id):
+   session_info = get_session_info(request)
 
    test = Test.objects.get(id = test_id)
 
@@ -108,7 +118,7 @@ def edit_test(request, test_id):
          return redirect('apps.devproc.views.test.view_test', test_id = test.id)
 
       else: #if form is not valid
-         return render_to_response('tests/create_test.html', {'user' : request.user, 'form':form, 'message': 'Error editing test. Please try again.', 'test': test, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('tests/create_test.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error editing test. Please try again.', 'test': test, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -128,13 +138,14 @@ def edit_test(request, test_id):
       form = TestForm(initial=defaults)
 
 
-      return render_to_response('tests/create_test.html', {'user' : request.user, 'form': form, 'test': test, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('tests/create_test.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'test': test, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 
 
 @login_required
 def delete_test(request, test_id):
+   session_info = get_session_info(request)
 
    test = Test.objects.get(id = test_id)
    test.delete()

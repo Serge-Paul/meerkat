@@ -4,6 +4,8 @@ from apps.devproc.models import *
 from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
+from apps.devproc.utils import *
+
 
 class RequirementForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -21,12 +23,16 @@ class RequirementForm(forms.Form):
 
 @login_required
 def view_all_reqmts(request): 
+   session_info = get_session_info(request)
+
    reqmt_list = Requirement.objects.all().order_by('-id') 
-   return render_to_response('requirements/view_all_reqmts.html', {'user' : request.user, 'reqmt_list': reqmt_list})
+   return render_to_response('requirements/view_all_reqmts.html', {'session_info': session_info, 'user' : request.user, 'reqmt_list': reqmt_list})
 
 
 @login_required
 def create_reqmt(request):
+   session_info = get_session_info(request)
+
    if request.method == 'POST':
 
       form = RequirementForm(request.POST)
@@ -45,6 +51,7 @@ def create_reqmt(request):
 	 reqmt.identifier = form.cleaned_data['identifier']
 	 reqmt.source = form.cleaned_data['source']
 	 reqmt.notes = form.cleaned_data['notes']
+         reqmt.product = Product.objects.get(id = session_info['active_product'])
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          reqmt.save()
@@ -57,22 +64,25 @@ def create_reqmt(request):
          return redirect('apps.devproc.views.requirement.view_reqmt', reqmt_id = reqmt.id)
 
       else: #if form is not valid
-         return render_to_response('requirements/create_reqmt.html', {'user' : request.user, 'form':form, 'message': 'Error creating requirement. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
+         return render_to_response('requirements/create_reqmt.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating requirement. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
       form = RequirementForm()
-      return render_to_response('requirements/create_reqmt.html', {'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      return render_to_response('requirements/create_reqmt.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_reqmt(request, reqmt_id):
+   session_info = get_session_info(request)
+
    reqmt = Requirement.objects.get(id = reqmt_id)
-   return render_to_response('requirements/view_reqmt.html', {'user' : request.user, 'reqmt': reqmt})
+   return render_to_response('requirements/view_reqmt.html', {'session_info': session_info, 'user' : request.user, 'reqmt': reqmt})
 
 
 @login_required
 def edit_reqmt(request, reqmt_id):
+   session_info = get_session_info(request)
 
    reqmt = Requirement.objects.get(id = reqmt_id)
 
@@ -105,7 +115,7 @@ def edit_reqmt(request, reqmt_id):
          return redirect('apps.devproc.views.requirement.view_reqmt', reqmt_id = reqmt.id)
 
       else: #if form is not valid
-         return render_to_response('requirements/create_reqmt.html', {'user' : request.user, 'form':form, 'message': 'Error editing requirement. Please try again.', 'reqmt': reqmt, 'mode': 'edit'}, context_instance=RequestContext(request))
+         return render_to_response('requirements/create_reqmt.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error editing requirement. Please try again.', 'reqmt': reqmt, 'mode': 'edit'}, context_instance=RequestContext(request))
 
 
    else: #code for just initially displaying form
@@ -126,12 +136,13 @@ def edit_reqmt(request, reqmt_id):
 
       form = RequirementForm(initial=defaults)
 
-      return render_to_response('requirements/create_reqmt.html', {'user' : request.user, 'form': form, 'reqmt': reqmt, 'mode': 'edit'},  context_instance=RequestContext(request))
+      return render_to_response('requirements/create_reqmt.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'reqmt': reqmt, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 
 @login_required
 def delete_reqmt(request, reqmt_id):
+   session_info = get_session_info(request)
 
    reqmt = Requirement.objects.get(id = reqmt_id)
    reqmt.delete()
