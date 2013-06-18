@@ -38,6 +38,12 @@ urlpatterns += patterns('',
 )
 
 
+urlpatterns += patterns('apps.devproc.views.account',
+  url(r'^account/$', 'view_account'),
+  url(r'^account/edit/$', 'edit_account'),
+)
+
+
 urlpatterns += patterns('apps.devproc.views.dashboard',
   url(r'^dashboard/$', 'view_dashboard'),
 )

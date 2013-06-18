@@ -26,6 +26,10 @@ a:hover {
   text-decoration: underline;
 }
 
+.expand {
+  overflow:auto;
+}
+
 .leftCol {
   float:left;
   margin-right: 30px;
