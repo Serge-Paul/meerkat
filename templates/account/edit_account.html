@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Account
+{% endblock %}
+
+{% block headtags %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Edit Account Profile</h1>
+
+
+{% if message %}
+  <div class="errors"> {{ message }}</div>
+  <br/>
+{% endif %}
+
+
+<form id="edit-account-form" action="/account/edit/" method="post" enctype="multipart/form-data">
+
+      <label for="first_name">{{ form.first_name.label }}</label>
+      <div class="field">{{ form.first_name }}</div>
+      <div class="errors">{{ form.first_name.errors.0 }}</div>
+      <br/>
+
+  
+      <label for="last_name">{{ form.last_name.label }}</label>
+      <div class="field">{{ form.last_name }}</div>
+      <div class="errors">{{ form.last_name.errors.0 }}</div>
+      <br/>
+
+
+      <label for="username">{{ form.username.label }}</label>
+      <div class="field">{{ form.username }}</div>
+      <div class="errors">{{ form.username.errors.0 }}</div>
+      <br/>
+
+
+      <label for="email">{{ form.email.label }}</label>
+      <div class="field">{{ form.email }}</div>
+      <div class="errors">{{ form.email.errors.0 }}</div>
+      <br/>
+
+
+<br/>
+
+<input type="submit" value="Save" class ="blueButton">
+
+{% csrf_token %}
+
+</form>
+
+{% endblock %}
