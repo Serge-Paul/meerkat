@@ -23,7 +23,8 @@ class MilestoneForm(forms.Form):
 def view_all_milestones(request):
    session_info = get_session_info(request)
 
-   milestone_list = Milestone.objects.all().order_by('-id')
+   milestone_list = Milestone.objects.filter(product = session_info['active_product']).order_by('-id')
+
    return render_to_response('milestones/view_all_milestones.html', {'session_info': session_info, 'user' : request.user, 'milestone_list': milestone_list})
 
 
@@ -46,8 +47,8 @@ def create_milestone(request):
          milestone.percent_complete = form.cleaned_data['percent_complete']
          milestone.notes  = form.cleaned_data['notes']
          milestone.release  = form.cleaned_data['release']  # Foreign Key
-         milestone.product = Product.objects.get(id = session_info['active_product']) 
-
+         milestone.product = session_info['active_product']
+        
          # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          milestone.save()         
 

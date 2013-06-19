@@ -11,9 +11,8 @@ from apps.devproc.utils import *
 def view_roadmap(request): 
    session_info = get_session_info(request)
 
-   #right now just showing all releases, but later need to only select releases for the current product account
-   releases = Release.objects.all().order_by('-id')
-   features = Feature.objects.all()
+   releases = Release.objects.filter(product = session_info['active_product']).order_by('-id')
+   features = Feature.objects.filter(product = session_info['active_product']).order_by('-id')
 
    return render_to_response('roadmaps/roadmap.html', {'session_info': session_info, 'user' : request.user, 'releases': releases, 'features': features})
 

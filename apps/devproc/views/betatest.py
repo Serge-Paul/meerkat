@@ -14,7 +14,9 @@ class BetaTestForm(forms.Form):
 def view_all_betatests(request):
    session_info = get_session_info(request)
 
-   betatest_list = BetaTest.objects.all().order_by('-id')
+   #betatest_list = BetaTest.objects.all().order_by('-id')
+   betatest_list = BetaTest.objects.filter(release__product = session_info['active_product']).order_by('-id')
+
    return render_to_response('betatests/view_all_betatests.html', {'session_info': session_info, 'user' : request.user, 'betatest_list': betatest_list})
 
 @login_required

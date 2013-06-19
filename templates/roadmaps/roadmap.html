@@ -38,7 +38,7 @@ Features:
 {% endfor %}
 
 {% else %}
-<p>There are no releases.</p>
+<p>There are no releases for the {{ session_info.active_product.name }} product. <a href="/releases/add/">Click here</a> to add a new release.</p>
 {% endif %}
 {% endblock %}
 

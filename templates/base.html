@@ -41,7 +41,7 @@ Meerkat
 
 {% if session_info.products %}
    {% for product in session_info.products %}
-      {% if session_info.active_product = product.id %} 
+      {% if session_info.active_product.id = product.id %} 
          <div class = "blueBar left">
       {% else %}
          <div class = "orangeBar left">

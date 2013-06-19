@@ -26,7 +26,8 @@ class FeatureForm(forms.Form):
 def view_all_features(request):
    session_info = get_session_info(request)
 
-   feature_list = Feature.objects.all().order_by('-id')
+   feature_list = Feature.objects.filter(product = session_info['active_product']).order_by('-id')
+
    return render_to_response('features/view_all_features.html', {'session_info': session_info, 'user' : request.user, 'feature_list': feature_list})
 
 
@@ -50,7 +51,7 @@ def create_feature(request):
 	 feature.approval_status = form.cleaned_data['approval_status']
 	 feature.identifier = form.cleaned_data['identifier']
 	 feature.notes = form.cleaned_data['notes']
-         feature.product = Product.objects.get(id = session_info['active_product'])
+         feature.product = session_info['active_product']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          feature.save()

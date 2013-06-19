@@ -21,7 +21,8 @@ class UseCaseForm(forms.Form):
 def view_all_usecases(request):
    session_info = get_session_info(request)
 
-   usecase_list = UseCase.objects.all().order_by('-id')
+   usecase_list = UseCase.objects.filter(product = session_info['active_product']).order_by('-id')
+
    return render_to_response('usecases/view_all_usecases.html', {'session_info': session_info, 'user' : request.user, 'usecase_list': usecase_list})
 
 
@@ -43,7 +44,7 @@ def create_usecase(request):
 	 usecase.identifier = form.cleaned_data['identifier']
 	 usecase.source = form.cleaned_data['source']
 	 usecase.notes = form.cleaned_data['notes']
-         usecase.product = Product.objects.get(id = session_info['active_product'])
+         usecase.product = session_info['active_product']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          usecase.save()

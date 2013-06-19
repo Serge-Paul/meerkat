@@ -50,7 +50,7 @@
       <div class="errors">{{ form.description.errors.0 }}</div>
       <br/>
 <p>*Should be able to add multiple responsibilities, but need to figure out how want to do that if each responsibility has to be associated
-with a unique release</p>
+with a unique product and release</p>
 
       <label for="responsibility">{{ form.responsibility.label }}</label>
       <div class="field">{{ form.responsibility }}</div>
@@ -58,12 +58,18 @@ with a unique release</p>
       
 
 <p>Select the product release for this responsibility:</p> 
+
+      <label for="products">{{ form.products.label }}</label>
+      <div class="field">{{ form.products }}</div>
+      <div class="errors">{{ form.products.errors.0 }}</div>
+      <br/>
+
+
      <label for="release">{{ form.release.label }}</label>
       <div class="field">{{ form.release }}</div>
       <div class="errors">{{ form.release.errors.0 }}</div>
+      <br/>
 
-
-<br/>
 
 {% if mode == 'create' %}
 <input type="submit" value="Add" class ="blueButton">

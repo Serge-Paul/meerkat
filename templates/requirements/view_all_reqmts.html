@@ -10,7 +10,7 @@
 {% block content %}
 <h1>Requirements</h1>
 
-<a href="/requirements/add/">Add new requirements</a>
+<a href="/requirements/add/">Add new requirement</a>
 <br/>
 
 {% if reqmt_list %} 
@@ -27,7 +27,7 @@
 
 {% else %} 
 
-<p>No requirements are available.</p>
+<p>There are no requirements for the {{ session_info.active_product.name }} product.</p>
 
 {% endif %}
 

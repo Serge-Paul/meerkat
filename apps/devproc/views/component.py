@@ -25,7 +25,8 @@ class ComponentForm(forms.Form):
 def view_all_components(request):
    session_info = get_session_info(request)
 
-   component_list = Component.objects.all().order_by('-id')
+   component_list = Component.objects.filter(product = session_info['active_product']).order_by('-id')
+
    return render_to_response('components/view_all_components.html', {'session_info': session_info, 'user' : request.user, 'component_list': component_list})
 
 @login_required
@@ -48,7 +49,7 @@ def create_component(request):
 	 component.approval_status = form.cleaned_data['approval_status']
 	 component.identifier = form.cleaned_data['identifier']
 	 component.notes = form.cleaned_data['notes']
-         component.product = Product.objects.get(id = session_info['active_product'])
+         component.product = session_info['active_product']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          component.save()

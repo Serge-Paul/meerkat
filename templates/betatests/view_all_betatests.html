@@ -20,7 +20,7 @@ Beta Tests
 {% endfor %}
 </ul>
 {% else %}
-<p>No beta tests are available.</p>
+<p>No beta tests are available because there are no releases defined for the {{ session_info.active_product.name }} product. <a href="/releases/add/">Click here</a> to create a new release.</p>
 {% endif %}
 {% endblock %}
 

@@ -56,7 +56,7 @@ def view_product(request, product_id):
    product = Product.objects.get(id = product_id)
 
    #change the session variable
-   request.session['active_product'] = product.id
+   request.session['active_product'] = product
    request.session.save()
 
    session_info = get_session_info(request)
@@ -109,7 +109,7 @@ def delete_product(request, product_id):
    if Product.objects.filter(company = request.user.profile.company.id).count() != 0: 
       active_product = Product.objects.filter(company = request.user.profile.company.id)[0]
 
-      request.session['active_product'] = active_product.id
+      request.session['active_product'] = active_product
       request.session.save()
 
    return redirect('apps.devproc.views.product.view_all_products')   

@@ -25,7 +25,7 @@ def process_login(request):
 
         active_product = Product.objects.filter(company = request.user.profile.company.id)[0]
 
-        request.session['active_product'] = active_product.id
+        request.session['active_product'] = active_product
         request.session.save()
   
         session_info = get_session_info(request)

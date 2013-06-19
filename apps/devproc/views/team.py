@@ -8,17 +8,21 @@ from apps.devproc.utils import *
 
 
 class TeamForm(forms.Form):
+   #session_info = get_session_info(request)
+
    team_name = forms.CharField(max_length=250) 
    description= forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
    responsibility = forms.ChoiceField(choices=RESPONSIBILITY_CHOICES)
    release = forms.ModelChoiceField(queryset=Release.objects.all(), required=True) 
-
+   #products = forms.ModelChoiceField(queryset=Product.objects.filter(company = session_info['active_product'].company), required=True)
+   products = forms.ModelMultipleChoiceField(queryset=Product.objects.all(), required=True)
 
 @login_required
 def view_all_teams(request):
    session_info = get_session_info(request)
 
-   team_list = Team.objects.all().order_by('-id')
+   team_list = Team.objects.filter(company = session_info['active_product'].company).order_by('-id')
+
    return render_to_response('teams/view_all_teams.html', {'session_info': session_info, 'user' : request.user, 'team_list': team_list})
 
 
@@ -37,6 +41,9 @@ def create_team(request):
          team.name = form.cleaned_data['team_name']
          team.description = form.cleaned_data['description']
          team.company = request.user.profile.company
+         team.save()
+
+         team.products = form.cleaned_data['products'].all()
          team.save()
 
          responsibility = Responsibility()
@@ -83,6 +90,7 @@ def edit_team(request, team_id):
 
          team.name = form.cleaned_data['team_name']
          team.description = form.cleaned_data['description']
+         team.products = form.cleaned_data['products'].all()
          team.save()
 
          responsibility.release = form.cleaned_data['release']
@@ -101,7 +109,8 @@ def edit_team(request, team_id):
                  'description': team.description,
                  'responsibility': responsibility.responsibility,
                  'release': responsibility.release,
-                 }
+                 'products': team.products.all()
+                  }
 
       form = TeamForm(initial=defaults)   
  

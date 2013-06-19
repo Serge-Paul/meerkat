@@ -23,7 +23,8 @@ class TestForm(forms.Form):
 def view_all_tests(request):
    session_info = get_session_info(request)
 
-   test_list = Test.objects.all().order_by('-id')
+   test_list = Test.objects.filter(product = session_info['active_product']).order_by('-id')
+
    return render_to_response('tests/view_all_tests.html', {'session_info': session_info, 'user' : request.user, 'test_list': test_list})
 
 
@@ -45,7 +46,7 @@ def create_test(request):
 	 test.pass_fail_criteria = form.cleaned_data['pass_fail_criteria']
 	 test.status = form.cleaned_data['status']
 	 test.identifier = form.cleaned_data['identifier']
-         test.product = Product.objects.get(id = session_info['active_product'])
+         test.product = session_info['active_product']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          test.save()

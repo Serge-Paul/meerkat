@@ -24,7 +24,8 @@ class ReleaseForm(forms.Form):
 def view_all_releases(request):
    session_info = get_session_info(request)
 
-   release_list = Release.objects.all().order_by('-id')
+   release_list = Release.objects.filter(product = session_info['active_product']).order_by('-id')
+
    return render_to_response('releases/view_all_releases.html', {'session_info': session_info, 'user' : request.user, 'release_list': release_list})
 
 
@@ -46,8 +47,8 @@ def create_release(request):
 	 release.market = form.cleaned_data['market']
 	 release.notes = form.cleaned_data['notes']
 	 release.goals = form.cleaned_data['goals']
-         release.product = Product.objects.get(id = session_info['active_product'])
-
+         release.product = session_info['active_product']
+ 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          release.save()
          

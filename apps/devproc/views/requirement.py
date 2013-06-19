@@ -25,7 +25,8 @@ class RequirementForm(forms.Form):
 def view_all_reqmts(request): 
    session_info = get_session_info(request)
 
-   reqmt_list = Requirement.objects.all().order_by('-id') 
+   reqmt_list = Requirement.objects.filter(product = session_info['active_product']).order_by('-id')
+
    return render_to_response('requirements/view_all_reqmts.html', {'session_info': session_info, 'user' : request.user, 'reqmt_list': reqmt_list})
 
 
@@ -51,7 +52,7 @@ def create_reqmt(request):
 	 reqmt.identifier = form.cleaned_data['identifier']
 	 reqmt.source = form.cleaned_data['source']
 	 reqmt.notes = form.cleaned_data['notes']
-         reqmt.product = Product.objects.get(id = session_info['active_product'])
+         reqmt.product= session_info['active_product']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          reqmt.save()

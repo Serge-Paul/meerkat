@@ -32,6 +32,20 @@ Name: {{ team.name }}
 Description:<br/> {{ team.description }}
 </p>
 
+<p>
+Products:<br/>
+{% if team.products.all.0 %}   <!-- this is manyToMany field -->
+   {% for product in team.products.all %}
+     <a href="/products/{{ product.id }}/">{{ product.name }}</a><br/>
+    {% endfor %}
+{% else %}
+None
+{% endif %}
+
+
+</p>
+
+
 {% endblock %}
 
 {% block right_col %}
