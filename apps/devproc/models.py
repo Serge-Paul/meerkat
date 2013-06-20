@@ -3,58 +3,59 @@ from datetime import datetime
 from django.contrib.auth.models import User
 
 # CHOICES = (('display_text', 'database_text'), )
+# database_text is shown in select menus
 
 APPROVAL_STATUS_CHOICES = (
-   ('Approved', 'approved'),
-   ('Rejected', 'rejected'),
-   ('Pending', 'pending'),
+   ('Approved', 'Approved'),
+   ('Rejected', 'Rejected'),
+   ('Pending', 'Pending'),
 )
 
 PRIORITY_CHOICES = (
-   ('Low', 'low'),
-   ('Medium', 'medium'),
-   ('High', 'high'),
-   ('Critical', 'critical'),
+   ('Low', 'Low'),
+   ('Medium', 'Medium'),
+   ('High', 'High'),
+   ('Critical', 'Critical'),
 )
 
 TEST_STATUS_CHOICES = (
-   ('Pass', 'pass'),
-   ('Fail', 'fail'),
-   ('Pending', 'pending'),
+   ('Pass', 'Pass'),
+   ('Fail', 'Fail'),
+   ('Pending', 'Pending'),
 )
 
 BUG_STATUS_CHOICES = (
-   ('Open', 'open'),
-   ('Closed', 'closed'),
-   ('Deferred', 'deferred'),
+   ('Open', 'Open'),
+   ('Closed', 'Closed'),
+   ('Deferred', 'Deferred'),
 )
 
 PROBABILITY_CHOICES = (
-   ('Very Low', 'very_low'),
-   ('Low', 'low'),
-   ('Medium', 'medium'),
-   ('High', 'high'),
-   ('Very High', 'very_high'),
+   ('Very Low', 'Very Low'),
+   ('Low', 'Low'),
+   ('Medium', 'Medium'),
+   ('High', 'High'),
+   ('Very High', 'Very High'),
 )
 
 RISK_CHOICES = (
-   ('Open', 'open'),
-   ('Resolved', 'resolved'),
+   ('Open', 'Open'),
+   ('Resolved', 'Resolved'),
 )
 
 SOURCE_CHOICES = (
-   ('Customer', 'customer'),
-   ('Internal', 'internal'),
+   ('Customer', 'Customer'),
+   ('Internal', 'Internal'),
 ) 
 
 RESPONSIBILITY_CHOICES = (
-   ('Use Cases','usecase'),
-   ('Requirements','reqmt'),
-   ('Design','component'),
-   ('Features','feature'),
-   ('Tests','test'),
-   ('Bugs','bug'),
-   ('Beta Tests','betatest'),
+   ('Use Cases','Use Cases'),
+   ('Requirements','Requirements'),
+   ('Design','Design'),
+   ('Features','Features'),
+   ('Tests','Tests'),
+   ('Bugs','Bugs'),
+   ('Beta Tests','Beta Tests'),
 )
 
 
@@ -113,6 +114,7 @@ class Requirement(models.Model):
    notes = models.TextField(max_length=1028, blank=True, null=True)
    #attachments
    product = models.ForeignKey('Product')
+   responsible_engineer = models.ManyToManyField('Member', blank=True, null=True)
 
    def __unicode__(self):
       return self.title

@@ -10,7 +10,7 @@ Risks
 {% block content %}
 <h1>Risks</h1>
 
-<p>To add a new risk, go to the page for the feature, design component, or bug and click the 'add risk' link.
+<p>To add a new risk, go to the page for the <a href="/features/">feature</a>, <a href="/components/">design component</a>, or <a href="/bugs/">bug</a> and click the 'add risk' link.
 </p>
 
 {% if risk_list %}
@@ -20,7 +20,7 @@ Risks
 {% endfor %}
 </ul>
 {% else %}
-<p>No risks are available.</p>
+<p>There are no risks for the {{ session_info.active_product.name }} product.</p>
 {% endif %}
 {% endblock %}
 

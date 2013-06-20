@@ -19,7 +19,7 @@ class RequirementForm(forms.Form):
    identifier = forms.CharField(max_length=200)
    source = forms.ChoiceField(choices=SOURCE_CHOICES)
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
-
+   responsible_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), label="Product Manager or Engineer", required=False)
 
 @login_required
 def view_all_reqmts(request): 
@@ -60,6 +60,9 @@ def create_reqmt(request):
          if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
             reqmt.category = form.cleaned_data['category'].all() # ManyToMany
         
+         if form.cleaned_data['responsible_engineer']: 
+            reqmt.responsible_engineer = form.cleaned_data['responsible_engineer'].all() 
+
          reqmt.save()
 
          return redirect('apps.devproc.views.requirement.view_reqmt', reqmt_id = reqmt.id)
@@ -111,6 +114,9 @@ def edit_reqmt(request, reqmt_id):
          if form.cleaned_data['category']: #This field is optional, so need if stmt just in case item is not selected
             reqmt.category = form.cleaned_data['category'].all() # ManyToMany
 
+         if form.cleaned_data['responsible_engineer']: 
+            reqmt.responsible_engineer = form.cleaned_data['responsible_engineer'].all()
+
          reqmt.save()
 
          return redirect('apps.devproc.views.requirement.view_reqmt', reqmt_id = reqmt.id)
@@ -133,6 +139,7 @@ def edit_reqmt(request, reqmt_id):
                  'source' : reqmt.source,
                  'notes' : reqmt.notes,
                  'category' : reqmt.category.all(),
+                 'responsible_engineer': reqmt.responsible_engineer.all()
                  }
 
       form = RequirementForm(initial=defaults)

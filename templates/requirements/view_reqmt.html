@@ -123,6 +123,23 @@ Use Case:
 {{ reqmt.notes }}
 </p>
 
+
+<p>Product Manager or Engineer:<br/>
+{% if reqmt.responsible_engineer.all.0 %}
+
+   {% for engineer in reqmt.responsible_engineer.all %}
+
+      <a href="/members/{{ engineer.id }}/">{{ engineer.first_name }} {{ engineer.last_name }}</a>, {{ engineer.title }}
+      <br/>
+   {% endfor %}
+
+{% else %}
+
+   None
+
+{% endif %}
+<p>
+
 {% endblock %}
 
 <!-- *** IF NO REQMTS *** -->

@@ -5,7 +5,7 @@ from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
 from apps.devproc.utils import *
-
+from itertools import chain
 
 class RiskForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -23,7 +23,16 @@ class RiskForm(forms.Form):
 def view_all_risks(request):
    session_info = get_session_info(request)
 
-   risk_list = Risk.objects.all().order_by('-id')
+   feature_risk_list = Risk.objects.filter(feature__product = session_info['active_product'].id).order_by('-id')
+   component_risk_list = Risk.objects.filter(component__product = session_info['active_product'].id).order_by('-id')
+   test_bug_risk_list = Risk.objects.filter(bug__test__product = session_info['active_product'].id).order_by('-id')
+   betatest_bug_risk_list = Risk.objects.filter(bug__betatest__release__product = session_info['active_product'].id).order_by('-id')
+
+   risk_list = sorted(
+    chain(feature_risk_list, component_risk_list, test_bug_risk_list, betatest_bug_risk_list),
+    key=lambda instance: instance.id)
+
+
    return render_to_response('risks/view_all_risks.html', {'session_info': session_info, 'user' : request.user, 'risk_list': risk_list})
 
 

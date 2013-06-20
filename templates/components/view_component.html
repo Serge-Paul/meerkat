@@ -74,7 +74,7 @@ Categories:
 
 
 <p>
-Responsible Engineers:
+Design Engineers:
 {% if component.responsible_engineer.all.0 %}   <!-- this is manyToMany field -->
    {% for member in component.responsible_engineer.all %}
       <br/>
@@ -108,7 +108,7 @@ Attributes:
 
 
 <p>
-Use Cases:
+Supporting Use Cases:
 {% if component.usecases.all.0 %}   <!-- this is manyToMany field -->
    {% for usecase in component.usecases.all %}
       <br/>
@@ -120,7 +120,7 @@ Use Cases:
 <p>
 
 <p>
-Requirements:
+Supporting Requirements:
 {% if component.requirements.all.0 %}   <!-- this is manyToMany field -->
    {% for reqmt in component.requirements.all %}
       <br/>

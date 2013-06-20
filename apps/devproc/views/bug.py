@@ -5,7 +5,7 @@ from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
 from apps.devproc.utils import *
-
+from itertools import chain
 
 class BugForm(forms.Form):
    title = forms.CharField(max_length=200, label="Bug Title")
@@ -21,8 +21,14 @@ class BugForm(forms.Form):
 @login_required
 def view_all_bugs(request):
    session_info = get_session_info(request)
+   
+   test_bug_list = Bug.objects.filter(test__product = session_info['active_product'].id).order_by('-id')
+   betatest_bug_list = Bug.objects.filter(betatest__release__product = session_info['active_product'].id).order_by('-id')   
+   
+   bug_list = sorted(
+    chain(test_bug_list, betatest_bug_list),
+    key=lambda instance: instance.id)
 
-   bug_list = Bug.objects.all().order_by('-id')
    return render_to_response('bugs/view_all_bugs.html', {'session_info': session_info, 'user' : request.user, 'bug_list': bug_list})
 
 @login_required
