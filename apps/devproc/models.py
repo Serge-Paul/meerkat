@@ -129,6 +129,7 @@ class UseCase(models.Model):
    source = models.CharField(max_length=128, choices=SOURCE_CHOICES)
    notes = models.TextField(max_length=1028, blank=True, null=True)
    product = models.ForeignKey('Product')
+   responsible_engineer = models.ManyToManyField('Member', blank=True, null=True)
    #attachments
 
    def __unicode__(self):

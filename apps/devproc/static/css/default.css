@@ -46,6 +46,15 @@ a:hover {
   width: 45%;
 }
 
+.editForm div.leftCol {
+   margin-bottom: 0px;
+}
+
+.editForm div.rightCol {
+   margin-bottom: 0px;
+}
+
+
 .leftPadding {
   padding-left: 15px;
 }
