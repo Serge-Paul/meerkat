@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{% block heading %} {% endblock %}</h1>
+
+<div class = "left">
+{% block main_links %}
+{% endblock main_links %}
+</div>
+
+
+<p>
+{% block sub_heading %} {% endblock %}
+</p>
+
+<div class = "right">
+{% block sub_links %}
+{% endblock sub_links %}
+</div>
+
+
+{% block form_header %}
+{% endblock %}
+
+<div class ="editForm">
+
+<div class = "leftCol">
+{% block left_col %}
+{% endblock left_col%}
+</div>
+
+<div class = "rightCol">
+{% block right_col %}
+{% endblock right_col %}
+</div>
+
+</div>
+
+<div class ="clear">
+<hr/>
+
+<div class = "right">
+{% block form_submit %}
+{% endblock %}
+</div>
+
+</div>
+{% endblock content %}
