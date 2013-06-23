@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+ {% extends "edit_template.html" %}
 
 {% block title %}
 
@@ -15,21 +15,26 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
 
 {% if mode == 'create' %}
-<h1>Add customer</h1>
+Add customer
 {% endif %}
 
 {% if mode == 'edit' %}
-<h1>Edit customer</h1>
+<Edit customer
 {% endif %}
 
+{% endblock heading %}
 
+{% block sub_heading %}
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
+{% endblock sub_heading %}
+
+{% block form_header %}
 
 {% if mode == 'create' %}
 <form id="add-customer-form" action="/customers/add/" method="post" enctype="multipart/form-data">
@@ -39,6 +44,9 @@
 <form id="edit-customer-form" action="/customers/{{ customer.id }}/edit/" method="post" enctype="multipart/form-data">
 {% endif %}
 
+{% endblock form_header %}
+
+{% block left_col %}
 
       <label for="first_name">{{ form.first_name.label }}</label>
       <div class="field">{{ form.first_name }}</div>
@@ -50,6 +58,9 @@
       <div class="errors">{{ form.last_name.errors.0 }}</div>
       <br/>
 
+{% endblock left_col %}
+{% block right_col %}
+
       <label for="organization">{{ form.organization.label }}</label>
       <div class="field">{{ form.organization }}</div>
       <div class="errors">{{ form.organization.errors.0 }}</div>
@@ -60,12 +71,18 @@
       <div class="errors">{{ form.location.errors.0 }}</div>
       <br/>
 
+{% endblock right_col %}
+
+{% block form_submit %}
+
 {% if mode == 'create' %}
-<input type="submit" value="Add" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
+
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
+
 {% endif %}
 
 {% csrf_token %}

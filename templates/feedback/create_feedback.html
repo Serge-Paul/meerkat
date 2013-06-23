@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "edit_template.html" %}
 
 {% block title %}
 
@@ -15,17 +15,19 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
 
 {% if mode == 'create' %}
-<h1>Submit Feedback</h1>
+Submit Feedback
 {% endif %}
 
 {% if mode == 'edit' %}
-<h1>Edit Feedback</h1>
+Edit Feedback
 {% endif %}
 
+{% endblock heading %}
 
+{% block sub_heading %}
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
@@ -33,6 +35,10 @@
 
 <p> Feature: <a href="/features/{{ feature.id }}/">{{ feature.title }}</a>
 </p>
+{% endblock sub_heading %}
+
+
+{% block form_header %}
 
 {% if mode == 'create' %}
 <form id="add-feedback-form" action="/feedback/add/{{ feature.id }}/" method="post" enctype="multipart/form-data">
@@ -41,6 +47,10 @@
 {% if mode == 'edit' %}
 <form id="edit-feedback-form" action="/feedback/{{ feedback.id }}/edit/" method="post" enctype="multipart/form-data">
 {% endif %}
+
+{% endblock form_header %}
+
+{% block left_col %}
 
       <label for="betatest">{{ form.betatest.label }}</label>
       <div class="field">{{ form.betatest }}</div>
@@ -55,18 +65,26 @@
       <div class="errors">{{ form.customer.errors.0 }}</div>
       <br/>
 
+{% endblock left_col %}
+{% block right_col %}
+
       <label for="feedback">{{ form.feedback.label }}</label>
       <div class="field">{{ form.feedback }}</div>
       <div class="errors">{{ form.feedback.errors.0 }}</div>
       <br/>
 
+{% endblock right_col %}
+
+{% block form_submit %}
 
 {% if mode == 'create' %}
-<input type="submit" value="Add" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
+
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
+
 {% endif %}
 
 
@@ -75,4 +93,3 @@
 </form>
 
 {% endblock %}
-

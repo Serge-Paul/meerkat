@@ -1,5 +1,4 @@
-
-{% extends "base.html" %}
+{% extends "edit_template.html" %}
 
 {% block title %}
 {% if mode == 'create' %}
@@ -16,21 +15,26 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
 
 {% if mode == 'create' %}
-<h1>Add team</h1>
+Add team
 {% endif %}
 
 {% if mode == 'edit' %}
-<h1>Edit team</h1>
+Edit team
 {% endif %}
 
+{% endblock heading %}
+
+{% block sub_heading %}
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
+{% endblock sub_heading %}
 
+{% block form_header %}
 
 {% if mode == 'create' %}
 <form id="add-team-form" action="/teams/add/" method="post" enctype="multipart/form-data">
@@ -39,6 +43,10 @@
 {% if mode == 'edit' %}
 <form id="edit-team-form" action="/teams/{{ team.id }}/edit/" method="post" enctype="multipart/form-data">
 {% endif %} 
+
+{% endblock form_header %}
+
+{% block left_col %}
 
       <label for="team_name">{{ form.team_name.label }}</label>
       <div class="field">{{ form.team_name }}</div>
@@ -56,6 +64,8 @@ with a unique product and release</p>
       <div class="field">{{ form.responsibility }}</div>
       <div class="errors">{{ form.responsibility.errors.0 }}</div>
       
+{% endblock left_col %}
+{% block right_col %}
 
 <p>Select the product release for this responsibility:</p> 
 
@@ -70,13 +80,16 @@ with a unique product and release</p>
       <div class="errors">{{ form.release.errors.0 }}</div>
       <br/>
 
+{% endblock right_col %}
+
+{% block form_submit %}
 
 {% if mode == 'create' %}
-<input type="submit" value="Add" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
 
 
 {% endif %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "edit_template.html" %}
 
 {% block title %}
 
@@ -16,23 +16,27 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
 
 {% if mode == 'create' %}
-<h1>Add bug</h1>
+Add bug
 {% endif %}
 
 {% if mode == 'edit' %}
-<h1>Edit bug</h1>
+Edit bug
 {% endif %}
 
+{% endblock heading %}
 
+
+{% block sub_heading %}
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
+{% endblock sub_heading %}
 
-
+{% block form_header %}
 {% if type = 'test' %}
 
 <p>Test: <a href="/tests/{{ test.id }}">{{ test.title }}</a>
@@ -67,6 +71,10 @@
 
 {% endif %}
 
+{% endblock form_header %}
+
+{% block left_col %}
+
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>
       <div class="errors">{{ form.title.errors.0 }}</div>
@@ -97,6 +105,9 @@
       <div class="errors">{{ form.release.errors.0 }}</div>
       <br/>
 
+{% endblock left_col %}
+{% block right_col %}
+
       <label for="test">{{ form.test.label }}</label>
       <div class="field">{{ form.test }}</div>
       <div class="errors">{{ form.test.errors.0 }}</div>
@@ -122,12 +133,18 @@
       <div class="field">{{ form.betatest }}</div>
       <div class="errors">{{ form.betatest.errors.0 }}</div>
 
+{% endblock right_col %}
+
+{% block form_submit %}
+
 {% if mode == 'create' %}
-<input type="submit" value="Add" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
+
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save" class = "blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
+
 {% endif %}
 
 
@@ -136,4 +153,3 @@
 </form>
 
 {% endblock %}
-

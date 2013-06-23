@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "edit_template.html" %}
 
 {% block title %}
 
@@ -15,21 +15,26 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
 
 {% if mode == 'create' %}
-<h1>Add Release</h1>
+Add Release
 {% endif %}
 
 {% if mode == 'edit' %}
-<h1>Edit Release</h1>
+Edit Release
 {% endif %}
 
+{% endblock heading %}
 
+{% block sub_heading %}
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
+{% endblock sub_heading %}
+
+{% block form_header %}
 
 {% if mode == 'create' %}
 <form id="add-release-form" action="/releases/add/" method="post" enctype="multipart/form-data">
@@ -38,6 +43,10 @@
 {% if mode == 'edit' %}
 <form id="edit-release-form" action="/releases/{{ release.id }}/edit/" method="post" enctype="multipart/form-data">
 {% endif %}
+
+{% endblock form_header %}
+
+{% block left_col %}
 
       <label for="name">{{ form.name.label }}</label>
       <div class="field">{{ form.name }}</div>
@@ -59,6 +68,9 @@
       <div class="errors">{{ form.market.errors.0 }}</div>
       <br/>
 
+{% endblock left_col %}
+{% block right_col %}
+
       <label for="notes">{{ form.notes.label }}</label>
       <div class="field">{{ form.notes }}</div>
       <div class="errors">{{ form.notes.errors.0 }}</div>
@@ -79,13 +91,19 @@
       <div class="errors">{{ form.betatest_engineer.errors.0 }}</div>
       <br/>
 
+{% endblock right_col %}
+
+{% block form_submit %}
+
 {% if mode == 'create' %}
-<input type="submit" value="Add" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
+
 <br/>*Note: Adding a new release will automatically generate a beta test for that release.
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
+
 {% endif %}
 
 {% csrf_token %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "edit_template.html" %}
 
 {% block title %}
 {% if mode == 'create' %}
@@ -14,22 +14,26 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
 
 {% if mode == 'create' %}
-<h1>Add {{ component.title }} Attribute</h1>
+Add {{ component.title }} Attribute
 {% endif %}
 
 {% if mode == 'edit' %}
-<h1>Edit {{ component.title }} Attribute</h1>
+Edit {{ component.title }} Attribute
 {% endif %}
 
+{% endblock heading %}
+
+{% block sub_heading %}
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
+{% endblock sub_heading %}
 
-
+{% block form_header %}
 {% if mode == 'create' %}
 <form id="add-attribute-form" action="/attributes/add/{{ component.id }}/" method="post" enctype="multipart/form-data">
 {% endif %}
@@ -38,22 +42,35 @@
 <form id="edit-attribute-form" action="/attributes/{{ attribute.id }}/edit/" method="post" enctype="multipart/form-data">
 {% endif %}
 
+{% endblock %}
+
+{% block left_col %}
+
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>
       <div class="errors">{{ form.title.errors.0 }}</div>
       <br/>
+
+{% endblock left_col %}
+{% block right_col %}
 
       <label for="description">{{ form.description.label }}</label>
       <div class="field">{{ form.description }}</div>
       <div class="errors">{{ form.description.errors.0 }}</div>
       <br/>
 
+{% endblock right_col %}
+
+{% block form_submit %}
+
 {% if mode == 'create' %}
-<input type="submit" value="Add" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
+
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
+
 {% endif %}
 
 

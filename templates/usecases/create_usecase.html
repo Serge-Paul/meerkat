@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "edit_template.html" %}
 
 {% block title %}
 
@@ -15,21 +15,26 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
 
 {% if mode == 'create' %}
-<h1>Add Use Case</h1>
+Add Use Case
 {% endif %}
 
 {% if mode == 'edit' %}
-<h1>Edit Use Case</h1>
+Edit Use Case
 {% endif %}
 
+{% endblock heading %}
 
+{% block sub_heading %}
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
+{% endblock sub_heading %}
+
+{% block form_header %}
 
 {% if mode == 'create' %}
 <form id="add-usecase-form" action="/usecases/add/" method="post" enctype="multipart/form-data">
@@ -38,6 +43,10 @@
 {% if mode == 'edit' %}
 <form id="edit-usecase-form" action="/usecases/{{ usecase.id }}/edit/" method="post" enctype="multipart/form-data">
 {% endif %}
+
+{% endblock form_header %}
+
+{% block left_col %}
 
       <label for="identifier">{{ form.identifier.label }}</label>
       <div class="field">{{ form.identifier }}</div>
@@ -59,6 +68,9 @@
       <div class="errors">{{ form.source.errors.0 }}</div>
       <br/>
 
+{% endblock left_col %}
+{% block right_col %}
+
       <label for="responsible_engineer">{{ form.responsible_engineer.label }}</label>
       <div class="field">{{ form.responsible_engineer }}</div>
       <div class="errors">{{ form.responsible_engineer.errors.0 }}</div>
@@ -79,12 +91,18 @@
       <div class="errors">{{ form.notes.errors.0 }}</div>
       <br/>
 
+{% endblock right_col %}
+
+{% block form_submit %}
+
 {% if mode == 'create' %}
-<input type="submit" value="Add" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
+
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
+
 {% endif %}
 
 
@@ -93,5 +111,4 @@
 </form>
 
 {% endblock %}
-
 

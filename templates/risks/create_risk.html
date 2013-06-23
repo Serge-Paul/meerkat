@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "edit_template.html" %}
 
 {% block title %}
 
@@ -15,21 +15,26 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
 
 {% if mode == 'create' %}
-<h1>Add Risk</h1>
+Add Risk
 {% endif %}
 
 {% if mode == 'edit' %}
-<h1>Edit Risk</h1>
+Edit Risk
 {% endif %}
 
+{% endblock heading %}
 
+{% block sub_heading %}
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
+{% endblock sub_heading %}
+
+{% block form_header %}
 
 {% if mode == 'create' %}
 
@@ -84,6 +89,9 @@ Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
 
 {% endif %} <!-- end if mode = edit -->
 
+{% endblock form_header %}
+
+{% block left_col %}
 
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>
@@ -110,6 +118,9 @@ Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
       <div class="errors">{{ form.probability.errors.0 }}</div>
       <br/>
 
+{% endblock left_col %}
+{% block right_col %}
+
       <label for="severity">{{ form.severity.label }}</label>
       <div class="field">{{ form.severity }}</div>
       <div class="errors">{{ form.severity.errors.0 }}</div>
@@ -130,12 +141,18 @@ Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
       <div class="errors">{{ form.approval_status.errors.0 }}</div>
       <br/>
 
+{% endblock right_col %}
+
+{% block form_submit %}
+
 {% if mode == 'create' %}
-<input type="submit" value="Add" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
+
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
+
 {% endif %}
 
 

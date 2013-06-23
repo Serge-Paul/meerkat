@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "edit_template.html" %}
 
 {% block title %}
 
@@ -15,23 +15,29 @@
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
 
 {% if mode == 'create' %}
-<h1>Add Team Member</h1>
+Add Team Member
 {% endif %}
 
 {% if mode == 'edit' %}
-<h1>Edit Team Member</h1>
+Edit Team Member
 {% endif %}
 
+{% endblock heading %}
 
+{% block sub_heading %}
 {% if message %}
   <div class="errors"> {{ message }}</div>
 {% endif %}
 <br/>
 
 <p>Team: <a href="/teams/{{ team.id }}/">{{ team.name }}</a>
+{% endblock sub_heading %}
+
+
+{% block form_header %}
 
 {% if mode == 'create' %}
 <form id="add-member-form" action="/members/{{ team.id }}/add/" method="post" enctype="multipart/form-data">
@@ -40,6 +46,10 @@
 {% if mode == 'edit' %}
 <form id="edit-member-form" action="/members/{{ member.id }}/edit/" method="post" enctype="multipart/form-data">
 {% endif %}
+
+{% endblock form_header %}
+
+{% block left_col %}
 
 <p>*Need to implement allowing user to choose existing member</p>
 
@@ -58,6 +68,9 @@
       <div class="errors">{{ form.last_name.errors.0 }}</div>
       <br/>
 
+{% endblock left_col %}
+{% block right_col %}
+
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>
       <div class="errors">{{ form.title.errors.0 }}</div>
@@ -68,13 +81,18 @@
       <div class="errors">{{ form.is_manager.errors.0 }}</div>
       <br/>
 
+{% endblock right_col %}
+
+{% block form_submit %}
 
 {% if mode == 'create' %}
-<input type="submit" value="Add" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
+
 {% endif %}
 
 {% if mode == 'edit' %}
-<input type="submit" value="Save" class ="blueButton">
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
+
 {% endif %}
 
 
