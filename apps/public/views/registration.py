@@ -77,7 +77,7 @@ def account_registration(request):
 
   else:
     if request.user.is_authenticated():
-      return redirect('apps.devproc.views.public.index')
+      return redirect('apps.devproc.views.dashboard.view_dashboard')
     else:
 
       form = RegistrationForm()
