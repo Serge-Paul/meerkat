@@ -63,7 +63,6 @@ def create_milestone(request):
          return redirect('apps.devproc.views.milestone.view_milestone', milestone_id = milestone.id)
 
       else: #if form is not valid
-         Milestone.objects.get(id = milestone_id)
          
          return render_to_response('milestones/create_milestone.html', {'session_info': session_info, 'user' : request.user, 'form':form, 'message': 'Error creating milestone. Please try again.', 'mode': 'create'}, context_instance=RequestContext(request))
 
