@@ -17,7 +17,7 @@
 <p>
 Release: <a href="/releases/{{ release.id }}/"> {{ release.name }}</a>
 <br/>
-Date: {{ release.release_date }}
+Release date: {{ release.release_date|date:"D, M j, o"  }}
 <br/>
 Goals/Themes: {{ release.goals }}
 <br/>

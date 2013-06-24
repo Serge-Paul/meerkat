@@ -1,4 +1,5 @@
 {% extends "edit_template.html" %}
+{% load field_attrs %}
 
 {% block title %}
 
@@ -10,10 +11,26 @@
     Edit Milestone
 {% endif %}
 
-{% endblock %}
+{% endblock title %}
+
 
 {% block headtags %}
-{% endblock %}
+
+<link rel="stylesheet" type="text/css" href="/static/jquery/css/ui-lightness/jquery-ui-1.10.3.custom.css"/>
+<script type="text/javascript" src="/static/jquery/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/static/jquery/js/jquery-ui-1.10.3.custom.js"></script>
+<script type="text/javascript" src="/static/jquery/js/jquery-ui-1.10.3.custom.min.js"></script>
+
+<script>
+$(function() {
+$( "#id_end_date" ).datepicker();
+$( "#datepicker" ).datepicker();
+
+});
+</script>
+
+{% endblock headtags %}
+
 
 {% block heading %}
 
@@ -22,7 +39,7 @@ Add Milestone
 {% endif %}
 
 {% if mode == 'edit' %}
-<Edit Milestone
+Edit Milestone
 {% endif %}
 
 {% endblock heading %}
@@ -64,7 +81,7 @@ Add Milestone
       <br/>
 
       <label for="start_date">{{ form.start_date.label }}</label>
-      <div class="field">{{ form.start_date }}</div>
+      <div class="field">{{ form.start_date|attr:"id=datepicker" }}</div>
       <div class="errors">{{ form.start_date.errors.0 }}</div>
       <br/>
 

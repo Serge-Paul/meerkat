@@ -41,7 +41,7 @@ Test description:
 </p>
 
 <p>
-Features:
+Supporting Features:
 {% if test.features.all.0 %}   <!-- this is manyToMany field -->
    {% for feature in test.features.all %}
       <br/>
@@ -101,6 +101,11 @@ Implementation description:
 None
 {% endif %}
 </p>
+
+<p>Notes:<br/>
+{{ test.notes }}
+</p>
+
 
 {% endblock %}
 

@@ -28,6 +28,7 @@ BUG_STATUS_CHOICES = (
    ('Open', 'Open'),
    ('Closed', 'Closed'),
    ('Deferred', 'Deferred'),
+   ('Duplicate', 'Duplicate'),
 )
 
 PROBABILITY_CHOICES = (
@@ -181,6 +182,8 @@ class Feature(models.Model):
    notes = models.TextField(max_length=1028, blank=True, null=True) 
    component = models.ManyToManyField('Component', blank=True, null=True)
    product = models.ForeignKey('Product')
+   start_date = models.DateTimeField(default=datetime.now)
+   end_date = models.DateTimeField()
 
    def __unicode__(self):
       return self.title
@@ -198,6 +201,7 @@ class Test(models.Model):
    identifier = models.CharField(max_length=200)
    #attachments
    product = models.ForeignKey('Product')
+   notes = models.TextField(max_length=1028, blank=True, null=True)
 
    def __unicode__(self):
       return self.title

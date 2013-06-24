@@ -13,7 +13,7 @@ class ReleaseForm(forms.Form):
    pass_fail_criteria = forms.CharField(max_length=1028, required=False)
    market = forms.CharField(max_length=200, required=False)
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
-   release_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Release Engineer") 
+   release_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Release Manager") 
    goals = forms.CharField(max_length=1028, required=False, label="Goals/Theme")
 
    #this field is for betatest object that is created automatically when creating a new release

@@ -36,7 +36,7 @@ Feature title: {{ feature.title }}
 
 
 <p>
-Design description:<br/>
+Feature description:<br/>
 {{ feature.design_description }}
 </p>
 
@@ -72,7 +72,7 @@ Categories:
 </p>
 
 <p>
-Use Cases:
+Supporting Use Cases:
 {% if feature.usecases.all.0 %}   <!-- this is manyToMany field -->
    {% for usecase in feature.usecases.all %}
       <br/>
@@ -88,7 +88,7 @@ Use Cases:
 {% block right_col %}
 
 <p>
-Requirements:
+Supporting Requirements:
 {% if feature.requirements.all.0 %}   <!-- this is manyToMany field -->
    {% for reqmt in feature.requirements.all %}
       <br/>
@@ -100,7 +100,7 @@ Requirements:
 </p>
 
 <p>
-Design Components:
+Supporting Design Components:
 {% if feature.component.all.0 %}   <!-- this is manyToMany field -->
    {% for component in feature.component.all %}
       <br/>
@@ -123,7 +123,7 @@ None
 </p>
 
 <p>
-Responsible Engineers:
+Development Engineers:
 {% if feature.responsible_engineer.all.0 %}   <!-- this is manyToMany field -->
    {% for member in feature.responsible_engineer.all %}
       <br/>
@@ -132,6 +132,14 @@ Responsible Engineers:
 {% else %}
    None
 {% endif %}
+</p>
+
+<p>
+Development start date: {{ feature.start_date|date:"D, M j, o" }}
+</p>
+
+<p>
+Development end date: {{ feature.end_date|date:"D, M j, o" }} 
 </p>
 
 <p>Notes:<br/>

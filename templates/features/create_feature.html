@@ -10,11 +10,24 @@
     Edit Feature
 {% endif %}
 
-{% endblock %}
+{% endblock title %}
 
 {% block headtags %}
-{% endblock %}
 
+<link rel="stylesheet" type="text/css" href="/static/jquery/css/ui-lightness/jquery-ui-1.10.3.custom.css"/>
+<script type="text/javascript" src="/static/jquery/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/static/jquery/js/jquery-ui-1.10.3.custom.js"></script>
+<script type="text/javascript" src="/static/jquery/js/jquery-ui-1.10.3.custom.min.js"></script>
+
+<script>
+$(function() {
+$( "#id_end_date" ).datepicker();
+$( "#id_start_date" ).datepicker();
+
+});
+</script>
+
+{% endblock headtags %}
 
 {% block heading %}
 {% if mode == 'create' %}
@@ -48,9 +61,19 @@ Edit feature
 {% endblock %}
 
 {% block left_col %}
+      <label for="identifier">{{ form.identifier.label }}</label>
+      <div class="field">{{ form.identifier }}</div>
+      <div class="errors">{{ form.identifier.errors.0 }}</div>
+      <br/>
+
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>
       <div class="errors">{{ form.title.errors.0 }}</div>
+      <br/>
+
+      <label for="release">{{ form.release.label }}</label>
+      <div class="field">{{ form.release }}</div>
+      <div class="errors">{{ form.release.errors.0 }}</div>
       <br/>
 
       <label for="design_description">{{ form.design_description.label }}</label>
@@ -63,20 +86,17 @@ Edit feature
       <div class="errors">{{ form.implementation_description.errors.0 }}</div>
       <br/>
 
-      <label for="category">{{ form.category.label }}</label>
-      <div class="field">{{ form.category }}</div>
-      <div class="errors">{{ form.category.errors.0 }}</div>
-      <br/>
 
       <label for="responsible_engineer">{{ form.responsible_engineer.label }}</label>
       <div class="field">{{ form.responsible_engineer }}</div>
       <div class="errors">{{ form.responsible_engineer.errors.0 }}</div>
       <br/>
 
-      <label for="release">{{ form.release.label }}</label>
-      <div class="field">{{ form.release }}</div>
-      <div class="errors">{{ form.release.errors.0 }}</div>
+      <label for="category">{{ form.category.label }}</label>
+      <div class="field">{{ form.category }}</div>
+      <div class="errors">{{ form.category.errors.0 }}</div>
       <br/>
+
 
 {% endblock left_col %}
 {% block right_col %}
@@ -96,9 +116,19 @@ Edit feature
       <div class="errors">{{ form.requirements.errors.0 }}</div>
       <br/>
 
-      <label for="identifier">{{ form.identifier.label }}</label>
-      <div class="field">{{ form.identifier }}</div>
-      <div class="errors">{{ form.identifier.errors.0 }}</div>
+      <label for="component">{{ form.component.label }}</label>
+      <div class="field">{{ form.component }}</div>
+      <div class="errors">{{ form.component.errors.0 }}</div>
+      <br/>
+
+      <label for="start_date">{{ form.start_date.label }}</label>
+      <div class="field">{{ form.start_date }}</div>
+      <div class="errors">{{ form.start_date.errors.0 }}</div>
+      <br/>
+
+      <label for="end_date">{{ form.end_date.label }}</label>
+      <div class="field">{{ form.end_date }}</div>
+      <div class="errors">{{ form.end_date.errors.0 }}</div>
       <br/>
 
       <label for="notes">{{ form.notes.label }}</label>
@@ -106,10 +136,7 @@ Edit feature
       <div class="errors">{{ form.notes.errors.0 }}</div>
       <br/>
 
-      <label for="component">{{ form.component.label }}</label>
-      <div class="field">{{ form.component }}</div>
-      <div class="errors">{{ form.component.errors.0 }}</div>
-      <br/>
+
 {% endblock right_col %}
 
 

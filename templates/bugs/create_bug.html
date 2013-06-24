@@ -75,6 +75,11 @@ Edit bug
 
 {% block left_col %}
 
+      <label for="identifier">{{ form.identifier.label }}</label>
+      <div class="field">{{ form.identifier }}</div>
+      <div class="errors">{{ form.identifier.errors.0 }}</div>
+      <br/>
+
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>
       <div class="errors">{{ form.title.errors.0 }}</div>
@@ -95,27 +100,22 @@ Edit bug
       <div class="errors">{{ form.severity.errors.0 }}</div>
       <br/>
 
+{% endblock left_col %}
+{% block right_col %}
+
       <label for="status">{{ form.status.label }}</label>
       <div class="field">{{ form.status }}</div>
       <div class="errors">{{ form.status.errors.0 }}</div>
       <br/>
-<p>Don't really need to select release for betatest bug, because it's automatically associated with that specific betatest</p>
+
       <label for="release">{{ form.release.label }}</label>
       <div class="field">{{ form.release }}</div>
       <div class="errors">{{ form.release.errors.0 }}</div>
       <br/>
 
-{% endblock left_col %}
-{% block right_col %}
-
       <label for="test">{{ form.test.label }}</label>
       <div class="field">{{ form.test }}</div>
       <div class="errors">{{ form.test.errors.0 }}</div>
-      <br/>
-
-      <label for="identifier">{{ form.identifier.label }}</label>
-      <div class="field">{{ form.identifier }}</div>
-      <div class="errors">{{ form.identifier.errors.0 }}</div>
       <br/>
 
       <label for="category">{{ form.category.label }}</label>

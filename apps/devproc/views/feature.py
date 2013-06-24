@@ -9,18 +9,20 @@ from apps.devproc.utils import *
 
 class FeatureForm(forms.Form):
    title = forms.CharField(max_length=200)
-   design_description = forms.CharField(max_length=1028, widget=forms.Textarea) 
+   design_description = forms.CharField(max_length=1028, widget=forms.Textarea, label="Feature Description") 
    implementation_description = forms.CharField(max_length=1028, widget=forms.Textarea) 
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
-   responsible_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False) 
+   responsible_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Development Engineer") 
    release = forms.ModelChoiceField(queryset=Release.objects.all(), required=True) 
    approval_status = forms.ChoiceField(choices=APPROVAL_STATUS_CHOICES)
-   usecases = forms.ModelMultipleChoiceField(queryset=UseCase.objects.all(), required=False) 
-   requirements = forms.ModelMultipleChoiceField(queryset=Requirement.objects.all(), required=False) 
+   usecases = forms.ModelMultipleChoiceField(queryset=UseCase.objects.all(), required=False, label="Supporting Use Cases") 
+   requirements = forms.ModelMultipleChoiceField(queryset=Requirement.objects.all(), required=False, label ="Supporting Requirements") 
+   start_date = forms.DateField(label="Development start date")
+   end_date = forms.DateField(label="Development end date")
    identifier = forms.CharField(max_length=200)
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False) 
-   component = forms.ModelMultipleChoiceField(queryset=Component.objects.all(), required=False) 
-
+   component = forms.ModelMultipleChoiceField(queryset=Component.objects.all(), required=False, label="Supporting Design Components") 
+   
 
 @login_required
 def view_all_features(request):
@@ -52,6 +54,8 @@ def create_feature(request):
 	 feature.identifier = form.cleaned_data['identifier']
 	 feature.notes = form.cleaned_data['notes']
          feature.product = session_info['active_product']
+         feature.start_date  = form.cleaned_data['start_date']
+         feature.end_date  = form.cleaned_data['end_date']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          feature.save()
@@ -114,7 +118,8 @@ def edit_feature(request, feature_id):
          feature.approval_status = form.cleaned_data['approval_status']
          feature.identifier = form.cleaned_data['identifier']
          feature.notes = form.cleaned_data['notes']
-
+         feature.start_date  = form.cleaned_data['start_date']
+         feature.end_date  = form.cleaned_data['end_date']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          feature.save()
@@ -157,6 +162,8 @@ def edit_feature(request, feature_id):
                  'usecases' : feature.usecases.all(),
                  'requirements' : feature.requirements.all(),
                  'component' : feature.component.all(),
+                 'start_date': feature.start_date,
+                 'end_date': feature.end_date, 
                  }
 
       form = FeatureForm(initial=defaults)

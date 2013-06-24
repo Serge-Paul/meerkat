@@ -12,12 +12,12 @@ class TestForm(forms.Form):
    test_description = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
    implementation_description = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False)
-   features = forms.ModelMultipleChoiceField(queryset=Feature.objects.all(), required=False)
-   responsible_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False) 
+   features = forms.ModelMultipleChoiceField(queryset=Feature.objects.all(), required=False, label="Supporting Features")
+   responsible_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Test Engineer") 
    pass_fail_criteria = forms.CharField(max_length=1028, required=False)
    status = forms.ChoiceField(choices=TEST_STATUS_CHOICES)
    identifier = forms.CharField(max_length=200)
-  
+   notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
 
 @login_required
 def view_all_tests(request):
@@ -47,6 +47,7 @@ def create_test(request):
 	 test.status = form.cleaned_data['status']
 	 test.identifier = form.cleaned_data['identifier']
          test.product = session_info['active_product']
+         test.notes = form.cleaned_data['notes']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          test.save()
@@ -101,6 +102,7 @@ def edit_test(request, test_id):
          test.pass_fail_criteria = form.cleaned_data['pass_fail_criteria']
          test.status = form.cleaned_data['status']
          test.identifier = form.cleaned_data['identifier']
+         test.notes = form.cleaned_data['notes']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          test.save()
@@ -134,6 +136,7 @@ def edit_test(request, test_id):
                  'category' : test.category.all(),
                  'features' : test.features.all(),
                  'responsible_engineer' : test.responsible_engineer.all(),
+                 'notes': test.notes,
                  }
 
       form = TestForm(initial=defaults)

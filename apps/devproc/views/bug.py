@@ -10,7 +10,7 @@ from itertools import chain
 class BugForm(forms.Form):
    title = forms.CharField(max_length=200, label="Bug Title")
    description = forms.CharField(max_length=1028, widget=forms.Textarea)  
-   features = forms.ModelMultipleChoiceField(queryset=Feature.objects.all(), required=False) 
+   features = forms.ModelMultipleChoiceField(queryset=Feature.objects.all(), required=False, label="Related Features") 
    severity = forms.ChoiceField(choices=PRIORITY_CHOICES)
    status = forms.ChoiceField(choices=BUG_STATUS_CHOICES)
    release = forms.ModelChoiceField(queryset=Release.objects.all(), required=False) 

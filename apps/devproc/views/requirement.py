@@ -12,7 +12,7 @@ class RequirementForm(forms.Form):
    description = forms.CharField(max_length=1028, widget=forms.Textarea)
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
    parent = forms.ModelChoiceField(queryset=Requirement.objects.all(), required=False) #need to prevent chosing current reqmt as parent
-   use_case = forms.ModelChoiceField(queryset=UseCase.objects.all(), required=False)
+   use_case = forms.ModelChoiceField(queryset=UseCase.objects.all(), required=False, label="Supporting Use Case")
    priority = forms.ChoiceField(choices=PRIORITY_CHOICES)
    release = forms.ModelChoiceField(queryset=Release.objects.all(), required=False)
    approval_status = forms.ChoiceField(choices=APPROVAL_STATUS_CHOICES)
