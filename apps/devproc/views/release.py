@@ -11,13 +11,11 @@ class ReleaseForm(forms.Form):
    name = forms.CharField(max_length=200)
    release_date = forms.DateField()
    pass_fail_criteria = forms.CharField(max_length=1028, required=False)
-   market = forms.CharField(max_length=200, required=False)
+   market = forms.CharField(max_length=200, required=False, label="Target Market")
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
    release_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Release Manager") 
    goals = forms.CharField(max_length=1028, required=False, label="Goals/Theme")
-
-   #this field is for betatest object that is created automatically when creating a new release
-   betatest_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Beta Test Engineer")
+   product_manager = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Product Manager")
 
 
 @login_required
@@ -54,7 +52,10 @@ def create_release(request):
          
          if form.cleaned_data['release_engineer']:
             release.responsible_engineer = form.cleaned_data['release_engineer'].all() # ManyToMany
-        
+
+         if form.cleaned_data['product_manager']:
+            release.product_manager = form.cleaned_data['product_manager'].all() # ManyToMany
+
          release.save()
 
          # Automatically create betatest object whenever create new release
@@ -64,10 +65,6 @@ def create_release(request):
          betatest.release = release
          betatest.save()
 
-         if form.cleaned_data['betatest_engineer']:
-            betatest.responsible_engineer = form.cleaned_data['betatest_engineer'].all()
-
-         betatest.save()
 
          return redirect('apps.devproc.views.release.view_release', release_id = release.id)
 
@@ -122,12 +119,11 @@ def edit_release(request, release_id):
          if form.cleaned_data['release_engineer']:
             release.responsible_engineer = form.cleaned_data['release_engineer'].all() # ManyToMany
 
+         if form.cleaned_data['product_manager']:
+            release.product_manager = form.cleaned_data['product_manager'].all() # ManyToMany
+
          release.save()
 
-         if form.cleaned_data['betatest_engineer']:
-            betatest.responsible_engineer = form.cleaned_data['betatest_engineer'].all()
-
-         betatest.save()
 
          return redirect('apps.devproc.views.release.view_release', release_id = release.id)
 
@@ -145,7 +141,7 @@ def edit_release(request, release_id):
                  'notes' : release.notes,
                  'goals' : release.goals,
                  'release_engineer' : release.responsible_engineer.all(),
-                 'betatest_engineer' : betatest.responsible_engineer.all(),               
+                 'product_manager' : release.product_manager.all(),               
                  }
 
       form = ReleaseForm(initial=defaults)

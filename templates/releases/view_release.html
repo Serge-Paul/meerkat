@@ -39,7 +39,7 @@ Targe Market: {{ release.market }}
 
 
 <p>
-Release date: {{ release.release_date }}
+Release date: {{ release.release_date|date:"D, M j, o" }}
 </p>
 
 <p>
@@ -106,6 +106,20 @@ Milestones:
 
 
 <p>
+Product Manager:
+{% if release.product_manager %}
+   {% for member in release.product_manager.all %}
+      <br/>
+      <a href="/members/{{ member.id }}/">{{ member.first_name }} {{ member.last_name }}</a>, {{ member.title }}
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+
+</p>
+
+
+<p>
 Release Manager:
 {% if release.responsible_engineer %}
    {% for member in release.responsible_engineer.all %}
@@ -115,7 +129,6 @@ Release Manager:
 {% else %}
    None
 {% endif %}
-
 
 </p>
 

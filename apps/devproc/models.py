@@ -61,11 +61,15 @@ RESPONSIBILITY_CHOICES = (
 
 
 class UserProfile(models.Model): 
+
+   def profile_photo_path(instance, filename):
+     return os.path.join("profile_photo", instance.uuid, filename)
+
    user = models.OneToOneField(User) # user object has firstname, lastname, and email
    title = models.CharField(max_length=200, blank=True, null=True)
    team = models.ManyToManyField('Team')
    is_manager = models.BooleanField(default=False)
-   #photo
+   photo = models.FileField(upload_to=profile_photo_path, blank=True, null=True)
    #permissions
    company = models.ForeignKey('Company')
 
@@ -263,9 +267,10 @@ class Release(models.Model):
    #marketing_documents
    #press_release_documents
    notes = models.TextField(max_length=1028, blank=True, null=True)
-   responsible_engineer = models.ManyToManyField('Member', blank=True, null=True)
+   responsible_engineer = models.ManyToManyField('Member', blank=True, null=True, related_name='responsible_engineer')
    goals = models.CharField(max_length=1028, blank=True, null=True)
    product = models.ForeignKey('Product')
+   product_manager = models.ManyToManyField('Member', blank=True, null=True, related_name='product_manager')
 
    def __unicode__(self):
       return self.name

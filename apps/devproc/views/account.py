@@ -12,7 +12,7 @@ class AccountForm(forms.Form):
    last_name = forms.CharField(label="Last name", max_length=256)
    username = forms.CharField(label="Username", max_length=256)
    email = forms.EmailField(label="Email")
-
+   photo = forms.FileField()
 
 @login_required
 def view_account(request):
@@ -27,7 +27,7 @@ def edit_account(request):
 
    if request.method == 'POST':
   
-      form = AccountForm(request.POST)
+      form = AccountForm(request.POST, request.FILES)
   
       # Do when form is submitted
       if form.is_valid():
@@ -36,7 +36,8 @@ def edit_account(request):
          request.user.last_name = form.cleaned_data['last_name']
          request.user.username = form.cleaned_data['username']
          request.user.email = form.cleaned_data['email']
-      
+         request.user.profile.photo = request.FILES['photo']    
+  
          request.user.save()
 
          return redirect('apps.devproc.views.account.view_account')
