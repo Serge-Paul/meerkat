@@ -36,9 +36,19 @@ def edit_account(request):
          request.user.last_name = form.cleaned_data['last_name']
          request.user.username = form.cleaned_data['username']
          request.user.email = form.cleaned_data['email']
-         request.user.profile.photo = request.FILES['photo']    
-  
+         #request.user.profile.photo = form.cleaned_data['photo']    
+         file = request.FILES['photo'] 
+
+         request.user.profile.photo = file
+
+         form.save()         
+
+         request.user.profile.save()    
          request.user.save()
+
+         print ('PROFILE: %s', request.user.profile.photo)
+         print('REQUEST: %s', request.FILES['photo'])          
+         print('FILE: %s', file)
 
          return redirect('apps.devproc.views.account.view_account')
     

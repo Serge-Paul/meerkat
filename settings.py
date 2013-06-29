@@ -36,7 +36,8 @@ DATABASES = {
 
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'apps/devproc/static')
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'apps/devproc/site_media')
+#MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'apps/devproc/site_media')
+MEDIA_ROOT = os.path.abspath("apps/devproc/site_media")
 MEDIA_URL = '/site_media/'
 
 

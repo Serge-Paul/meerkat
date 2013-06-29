@@ -69,7 +69,8 @@ class UserProfile(models.Model):
    title = models.CharField(max_length=200, blank=True, null=True)
    team = models.ManyToManyField('Team')
    is_manager = models.BooleanField(default=False)
-   photo = models.FileField(upload_to=profile_photo_path, blank=True, null=True)
+   #photo = models.FileField(upload_to=profile_photo_path, blank=True, null=True)
+   photo = models.FileField(upload_to='profile')
    #permissions
    company = models.ForeignKey('Company')
 
