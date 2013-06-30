@@ -25,23 +25,36 @@ Account Profile
 {% block left_col %}
 
 
-{{ user.profile.photo }}
+<img src="{{ MEDIA_URL }}{{ user.profile.photo }}" width="150" class="leftImg">
 
 
 <p>
-Name: {{ user.first_name }} {{ user.last_name }}
+{{ user.first_name }} {{ user.last_name }}
 </p>
 
 <p>
 Username: {{ user.username }}
 </p>
 
-{% endblock %}
-
-{% block right_col %}
 <p>
 Email: {{ user.email }}
 </p>
+
+{% endblock %}
+
+{% block right_col %}
+
+
+
+
+
+
+
+
+
+
+
+
 
 {% endblock %}
 

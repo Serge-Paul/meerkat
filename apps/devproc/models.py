@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -63,14 +64,13 @@ RESPONSIBILITY_CHOICES = (
 class UserProfile(models.Model): 
 
    def profile_photo_path(instance, filename):
-     return os.path.join("profile_photo", instance.uuid, filename)
+     return os.path.join('profile_photos', 'company_' + str(instance.company.id), filename)
 
    user = models.OneToOneField(User) # user object has firstname, lastname, and email
    title = models.CharField(max_length=200, blank=True, null=True)
    team = models.ManyToManyField('Team')
    is_manager = models.BooleanField(default=False)
-   #photo = models.FileField(upload_to=profile_photo_path, blank=True, null=True)
-   photo = models.FileField(upload_to='profile')
+   photo = models.FileField(upload_to=profile_photo_path, default='default_profile_photo.png')
    #permissions
    company = models.ForeignKey('Company')
 

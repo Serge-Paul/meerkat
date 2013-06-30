@@ -38,6 +38,11 @@ a:hover {
   overflow:auto;
 }
 
+.leftImg {
+  float: left;
+  margin-right: 50px;
+}
+
 .leftCol {
   float:left;
   width: 40%;

@@ -18,8 +18,8 @@ class AccountForm(forms.Form):
 def view_account(request):
    session_info = get_session_info(request)
 
-   return render_to_response('account/view_account.html', {'session_info': session_info, 'user' : request.user})
-
+   return render_to_response('account/view_account.html', {'session_info': session_info, 'user' : request.user}, context_instance=RequestContext(request))
+  
 
 @login_required
 def edit_account(request):
@@ -36,19 +36,13 @@ def edit_account(request):
          request.user.last_name = form.cleaned_data['last_name']
          request.user.username = form.cleaned_data['username']
          request.user.email = form.cleaned_data['email']
-         #request.user.profile.photo = form.cleaned_data['photo']    
+ 
          file = request.FILES['photo'] 
 
-         request.user.profile.photo = file
-
-         form.save()         
+         request.user.profile.photo.save(file.name, file, save=True)
 
          request.user.profile.save()    
          request.user.save()
-
-         print ('PROFILE: %s', request.user.profile.photo)
-         print('REQUEST: %s', request.FILES['photo'])          
-         print('FILE: %s', file)
 
          return redirect('apps.devproc.views.account.view_account')
     
