@@ -53,12 +53,33 @@ Release:
 </p>
 
 <p>
-Source: {{ reqmt.source }}
+Description: {{ reqmt.description }}
 </p>
 
 <p>
-Description: {{ reqmt.description }}
+Source: {{ reqmt.source }}
 </p>
+
+<p>Product Manager or Engineer:<br/>
+{% if reqmt.responsible_engineer.all.0 %}
+
+   {% for engineer in reqmt.responsible_engineer.all %}
+
+      <a href="/members/{{ engineer.id }}/">{{ engineer.first_name }} {{ engineer.last_name }}</a>, {{ engineer.title }}
+      <br/>
+   {% endfor %}
+
+{% else %}
+
+   None
+
+{% endif %}
+<p>
+
+{% endblock %}
+
+{% block right_col %}
+
 
 <p>
 Categories: 
@@ -79,19 +100,6 @@ Categories:
 
 </p>
 
-{% endblock %}
-
-{% block right_col %}
-
-<p>
-Priority: {{ reqmt.priority }}
-</p>
-
-<p>
-Approval Status: {{ reqmt.approval_status }}
-</p>
-
-
 <p>
 Parent Requirement:
 {% if reqmt.parent %}
@@ -106,7 +114,7 @@ Parent Requirement:
 </p>
 
 <p>
-Supporting Use Cases: 
+Supporting Use Case:
 {% if reqmt.use_case %}
 
    <a href="/usecases/{{ reqmt.use_case.id }}/">{{ reqmt.use_case }}</a>
@@ -119,26 +127,20 @@ Supporting Use Cases:
 
 </p>
 
+<p>
+Priority: {{ reqmt.priority }}
+</p>
+
+<p>
+Approval Status: {{ reqmt.approval_status }}
+</p>
+
+
 <p>Notes:<br/>
 {{ reqmt.notes }}
 </p>
 
 
-<p>Product Manager or Engineer:<br/>
-{% if reqmt.responsible_engineer.all.0 %}
-
-   {% for engineer in reqmt.responsible_engineer.all %}
-
-      <a href="/members/{{ engineer.id }}/">{{ engineer.first_name }} {{ engineer.last_name }}</a>, {{ engineer.title }}
-      <br/>
-   {% endfor %}
-
-{% else %}
-
-   None
-
-{% endif %}
-<p>
 
 {% endblock %}
 

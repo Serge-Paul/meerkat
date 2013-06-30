@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "edit_template.html" %}
 
 {% block title %}
 Edit Account
@@ -7,18 +7,26 @@ Edit Account
 {% block headtags %}
 {% endblock %}
 
-{% block content %}
+{% block heading %}
+Edit Account Profile
+{% endblock heading %}
 
-<h1>Edit Account Profile</h1>
 
+{% block sub_heading %}
 
 {% if message %}
   <div class="errors"> {{ message }}</div>
   <br/>
 {% endif %}
+{% endblock sub_heading %}
 
+{% block form_header %}
 
 <form id="edit-account-form" action="/account/edit/" method="post" enctype="multipart/form-data">
+
+{% endblock form_header %}
+
+{% block left_col %}
 
       <label for="first_name">{{ form.first_name.label }}</label>
       <div class="field">{{ form.first_name }}</div>
@@ -37,6 +45,8 @@ Edit Account
       <div class="errors">{{ form.username.errors.0 }}</div>
       <br/>
 
+{% endblock left_col %}
+{% block right_col %}
 
       <label for="email">{{ form.email.label }}</label>
       <div class="field">{{ form.email }}</div>
@@ -51,8 +61,11 @@ Edit Account
 
 <br/>
 
-<input type="submit" value="Save" class ="blueButton">
+{% endblock right_col %}
 
+{% block form_submit %}
+
+<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
 {% csrf_token %}
 
 </form>

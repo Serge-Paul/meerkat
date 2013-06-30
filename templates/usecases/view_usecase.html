@@ -25,11 +25,12 @@ Use Case
 
 {% block left_col %}
 <p>
-Title: {{ usecase.title }}
+Use Case ID: {{ usecase.identifier }}
 </p>
 
+
 <p>
-Use Case ID: {{ usecase.identifier }}
+Title: {{ usecase.title }}
 </p>
 
 <p>
@@ -44,29 +45,6 @@ Source:
 {% endblock %}
 
 {% block right_col %}
-<p>
-Categories:
-{% if usecase.category.all.0 %}   <!-- this is manyToMany field -->
-   {% for category in usecase.category.all %}
-    
-   {{ category }} /  
-    
-   {% endfor %}
-{% else %}
-   None
-{% endif %}
-</p>
-
-<p>
-Target Market/User: {{ usecase.target_market }}
-</p>
-
-<p>
-Notes: <br/>
-{{ usecase.notes }}
-</p>
-
-
 <p>Product Manager or Engineer:<br/>
 {% if usecase.responsible_engineer.all.0 %}
 
@@ -83,6 +61,29 @@ Notes: <br/>
 {% endif %}
 <p>
 
+
+<p>
+Target Market: {{ usecase.target_market }}
+</p>
+
+<p>
+Categories:
+{% if usecase.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in usecase.category.all %}
+    
+   {{ category }} /  
+    
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+<p>
+Notes: <br/>
+{{ usecase.notes }}
+</p>
 
 {% endblock %}
 

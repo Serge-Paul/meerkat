@@ -30,11 +30,11 @@ Release
 
 {% block left_col %}
 <p>
-Release name: {{ release.name }}
+Name: {{ release.name }}
 </p>
 
 <p>
-Targe Market: {{ release.market }}
+Target Market: {{ release.market }}
 </p>
 
 
@@ -43,7 +43,7 @@ Release date: {{ release.release_date|date:"D, M j, o" }}
 </p>
 
 <p>
-Goals/Theme: 
+Goals/Themes: 
 {% if release.goals %}
    {{ release.goals }}
 {% else %}

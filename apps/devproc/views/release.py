@@ -8,13 +8,13 @@ from apps.devproc.utils import *
 
 
 class ReleaseForm(forms.Form):
-   name = forms.CharField(max_length=200)
+   name = forms.CharField(max_length=200, label="Name")
    release_date = forms.DateField()
-   pass_fail_criteria = forms.CharField(max_length=1028, required=False)
+   pass_fail_criteria = forms.CharField(max_length=1028, required=False, label="Pass/fail criteria")
    market = forms.CharField(max_length=200, required=False, label="Target Market")
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
    release_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Release Manager") 
-   goals = forms.CharField(max_length=1028, required=False, label="Goals/Theme")
+   goals = forms.CharField(max_length=1028, required=False, label="Goals/Themes")
    product_manager = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Product Manager")
 
 

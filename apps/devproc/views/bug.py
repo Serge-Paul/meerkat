@@ -8,7 +8,7 @@ from apps.devproc.utils import *
 from itertools import chain
 
 class BugForm(forms.Form):
-   title = forms.CharField(max_length=200, label="Bug Title")
+   title = forms.CharField(max_length=200, label="Title")
    description = forms.CharField(max_length=1028, widget=forms.Textarea)  
    features = forms.ModelMultipleChoiceField(queryset=Feature.objects.all(), required=False, label="Related Features") 
    severity = forms.ChoiceField(choices=PRIORITY_CHOICES)

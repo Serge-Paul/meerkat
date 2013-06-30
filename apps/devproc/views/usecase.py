@@ -11,7 +11,7 @@ class UseCaseForm(forms.Form):
    title = forms.CharField(max_length=200)
    description = forms.CharField(max_length=1028, widget=forms.Textarea)
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
-   target_market = forms.CharField(max_length=200, required=False)
+   target_market = forms.CharField(max_length=200, required=False, label="Target Market")
    identifier = forms.CharField(max_length=200)
    source = forms.ChoiceField(choices=SOURCE_CHOICES)
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
