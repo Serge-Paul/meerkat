@@ -12,7 +12,7 @@ class AccountForm(forms.Form):
    last_name = forms.CharField(label="Last name", max_length=256)
    username = forms.CharField(label="Username", max_length=256)
    email = forms.EmailField(label="Email")
-   photo = forms.FileField()
+   photo = forms.FileField(required=False)
 
 @login_required
 def view_account(request):
@@ -36,12 +36,19 @@ def edit_account(request):
          request.user.last_name = form.cleaned_data['last_name']
          request.user.username = form.cleaned_data['username']
          request.user.email = form.cleaned_data['email']
- 
-         file = request.FILES['photo'] 
 
-         request.user.profile.photo.save(file.name, file, save=True)
+         print 'FILE: '+ request.user.profile.photo.name
 
-         request.user.profile.save()    
+         if 'photo' in request.FILES:
+           #delete existing file if it isn't the default file
+           if request.user.profile.photo.name != 'default_profile_photo.png':
+             request.user.profile.photo.storage.delete(request.user.profile.photo.path)
+           #save new new file
+           file = request.FILES['photo'] 
+           request.user.profile.photo.save(file.name, file, save=True)
+
+         request.user.profile.save() 
+   
          request.user.save()
 
          return redirect('apps.devproc.views.account.view_account')

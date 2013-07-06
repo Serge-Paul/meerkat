@@ -9,7 +9,7 @@ from apps.devproc.utils import *
 
 class TeamForm(forms.Form):
    #session_info = get_session_info(request)
-
+   logo = forms.FileField(required=False)
    team_name = forms.CharField(max_length=250) 
    description= forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
    responsibility = forms.ChoiceField(choices=RESPONSIBILITY_CHOICES)
@@ -32,7 +32,7 @@ def create_team(request):
 
    if request.method == 'POST':
 
-      form = TeamForm(request.POST)
+      form = TeamForm(request.POST, request.FILES)
 
       # Do when form is submitted
       if form.is_valid():
@@ -45,6 +45,14 @@ def create_team(request):
 
          team.products = form.cleaned_data['products'].all()
          team.save()
+
+         if 'logo' in request.FILES:
+           #delete existing file
+           team.logo.storage.delete(team.logo.path)
+           #save new new file
+           file = request.FILES['logo']
+           team.logo.save(file.name, file, save=True)
+           team.save()
 
          responsibility = Responsibility()
          responsibility.release = form.cleaned_data['release']
@@ -71,7 +79,7 @@ def view_team(request, team_id):
    members = Member.objects.filter(team = team_id)
    responsibilities = Responsibility.objects.filter(team = team_id)
 
-   return render_to_response('teams/view_team.html', {'session_info': session_info, 'user' : request.user, 'team': team, 'members': members, 'responsibilities': responsibilities})
+   return render_to_response('teams/view_team.html', {'session_info': session_info, 'user' : request.user, 'team': team, 'members': members, 'responsibilities': responsibilities}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -83,7 +91,7 @@ def edit_team(request, team_id):
 
    if request.method == 'POST':
   
-      form = TeamForm(request.POST)
+      form = TeamForm(request.POST, request.FILES)
   
       # Do when form is submitted
       if form.is_valid():
@@ -92,6 +100,15 @@ def edit_team(request, team_id):
          team.description = form.cleaned_data['description']
          team.products = form.cleaned_data['products'].all()
          team.save()
+
+         if 'logo' in request.FILES:
+           #delete existing file
+           team.logo.storage.delete(team.logo.path)
+           #save new new file
+           file = request.FILES['logo']
+           team.logo.save(file.name, file, save=True)
+           team.save()
+
 
          responsibility.release = form.cleaned_data['release']
          responsibility.responsibility = form.cleaned_data['responsibility']

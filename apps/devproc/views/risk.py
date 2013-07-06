@@ -11,13 +11,11 @@ class RiskForm(forms.Form):
    title = forms.CharField(max_length=200)
    description = forms.CharField(max_length=1028, widget=forms.Textarea)
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(),required=False)
-   release = forms.ModelChoiceField(queryset=Release.objects.all(), required=False)
    probability = forms.ChoiceField(choices=PROBABILITY_CHOICES)
    severity = forms.ChoiceField(choices=PRIORITY_CHOICES)
    status = forms.ChoiceField(choices=RISK_CHOICES)
    identifier = forms.CharField(max_length=200)
-   approval_status = forms.ChoiceField(choices=APPROVAL_STATUS_CHOICES)
-
+   notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
 
 @login_required
 def view_all_risks(request):
@@ -60,12 +58,11 @@ def create_risk(request, obj_id, type):
          risk = Risk()
          risk.title = form.cleaned_data['title']
          risk.description  = form.cleaned_data['description']
-         risk.release = form.cleaned_data['release']
          risk.probability = form.cleaned_data['probability']
          risk.severity = form.cleaned_data['severity']
          risk.status = form.cleaned_data['status']
          risk.identifier = form.cleaned_data['identifier']
-         risk.approval_status = form.cleaned_data['approval_status']         
+         risk.notes = form.cleaned_data['notes']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          risk.save()
@@ -144,12 +141,11 @@ def edit_risk(request, risk_id):
 
          risk.title = form.cleaned_data['title']
          risk.description  = form.cleaned_data['description']
-         risk.release = form.cleaned_data['release']
          risk.probability = form.cleaned_data['probability']
          risk.severity = form.cleaned_data['severity']
          risk.status = form.cleaned_data['status']
          risk.identifier = form.cleaned_data['identifier']
-         risk.approval_status = form.cleaned_data['approval_status']
+         risk.notes = form.cleaned_data['notes']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          risk.save()
@@ -170,13 +166,12 @@ def edit_risk(request, risk_id):
       defaults = {
                  'title' : risk.title,
                  'description' : risk.description,
-                 'release' : risk.release,
                  'probability' : risk.probability,
                  'severity' : risk.severity,
                  'status' : risk.status,
                  'identifier' : risk.identifier,
-                 'approval_status' : risk.approval_status,
                  'category' : risk.category.all(),
+                 'notes' : risk.notes,
                  }
 
       form = RiskForm(initial=defaults)

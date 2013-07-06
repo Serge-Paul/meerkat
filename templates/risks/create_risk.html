@@ -93,6 +93,11 @@ Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
 
 {% block left_col %}
 
+      <label for="identifier">{{ form.identifier.label }}</label>
+      <div class="field">{{ form.identifier }}</div>
+      <div class="errors">{{ form.identifier.errors.0 }}</div>
+      <br/>
+
       <label for="title">{{ form.title.label }}</label>
       <div class="field">{{ form.title }}</div>
       <div class="errors">{{ form.title.errors.0 }}</div>
@@ -108,18 +113,15 @@ Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
       <div class="errors">{{ form.category.errors.0 }}</div>
       <br/>
 
-      <label for="release">{{ form.release.label }}</label>
-      <div class="field">{{ form.release }}</div>
-      <div class="errors">{{ form.release.errors.0 }}</div>
-      <br/>
+
+{% endblock left_col %}
+{% block right_col %}
+
 
       <label for="probability">{{ form.probability.label }}</label>
       <div class="field">{{ form.probability }}</div>
       <div class="errors">{{ form.probability.errors.0 }}</div>
       <br/>
-
-{% endblock left_col %}
-{% block right_col %}
 
       <label for="severity">{{ form.severity.label }}</label>
       <div class="field">{{ form.severity }}</div>
@@ -131,15 +133,11 @@ Bug: <a href="/bugs/{{ obj.id }}/">{{ obj.title }}</a>
       <div class="errors">{{ form.status.errors.0 }}</div>
       <br/>
 
-      <label for="identifier">{{ form.identifier.label }}</label>
-      <div class="field">{{ form.identifier }}</div>
-      <div class="errors">{{ form.identifier.errors.0 }}</div>
+      <label for="notes">{{ form.notes.label }}</label>
+      <div class="field">{{ form.notes }}</div>
+      <div class="errors">{{ form.notes.errors.0 }}</div>
       <br/>
 
-      <label for="approval_status">{{ form.approval_status.label }}</label>
-      <div class="field">{{ form.approval_status }}</div>
-      <div class="errors">{{ form.approval_status.errors.0 }}</div>
-      <br/>
 
 {% endblock right_col %}
 

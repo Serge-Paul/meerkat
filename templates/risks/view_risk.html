@@ -32,14 +32,6 @@ To add a new risk, go to the page for the feature, design component, or bug and 
 {% endblock %}
 
 {% block left_col %}
-<p>
-Title: {{ risk.title }}
-</p>
-
-<p>
-Risk ID: {{ risk.identifier }}
-<p>
-
 
 {% if feature %}
 <p>
@@ -63,22 +55,33 @@ Related Bug:
 {% endif %}
 
 <p>
-Status: {{ risk.status }} &nbsp;&nbsp;&nbsp;&nbsp; Approval Status: {{ risk.approval_status}}
-<p>
-
-<p>
-Probability: {{ risk.probability }}  &nbsp;&nbsp; Severity: {{ risk.severity }}
+Risk ID: {{ risk.identifier }}
 </p>
 
-
 <p>
-Release:
-{% if risk.release %} <!-- this is foreign key field -->
-   <a href="/releases/{{ risk.release.id }}/">{{ risk.release }}</a>
-{% else %}
-   None
+Release: 
+{% if component %}
+<a href="/releases/{{ component.release.id }}/">{{ component.release.name }}</a>
+
+{% elif feature %}
+<a href="/features/{{ feature.release.id }}/">{{ feature.release.name }}</a>
+
+{% elif bug %}
+<a href="/bugs/{{ bug.release.id }}/">{{ bug.release.name }}</a>
+
 {% endif %}
 </p>
+
+<p>
+Title: {{ risk.title }}
+</p>
+
+<p>
+Description: {{ risk.description }}
+</p>
+
+{% endblock %}
+{% block right_col %}
 
 <p>
 Categories:
@@ -93,13 +96,22 @@ Categories:
 {% endif %}
 </p>
 
-{% endblock %}
-
-{% block right_col %}
 <p>
-Description: {{ risk.description }}
+Probability: {{ risk.probability }}
 </p>
 
+<p>
+Severity: {{ risk.severity }}
+</p>
+
+<p>
+Status: {{ risk.status }}
+<p>
+
+
+<p>Notes:<br/>
+{{ risk.notes }}
+</p>
 
 {% endblock %}
 

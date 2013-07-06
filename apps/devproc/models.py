@@ -70,7 +70,7 @@ class UserProfile(models.Model):
    title = models.CharField(max_length=200, blank=True, null=True)
    team = models.ManyToManyField('Team')
    is_manager = models.BooleanField(default=False)
-   photo = models.FileField(upload_to=profile_photo_path, default='default_profile_photo.png')
+   photo = models.FileField(upload_to=profile_photo_path, default='default_profile_photo.png',blank=True, null=True)
    #permissions
    company = models.ForeignKey('Company')
 
@@ -83,8 +83,13 @@ User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 
 class Company(models.Model):
+
+   def company_logo_path(instance, filename):
+     return os.path.join('company_logos', 'company_' + str(instance.company.id), filename)
+
    name = models.CharField(max_length=200)
    admin = models.ForeignKey(User)
+   logo = models.FileField(upload_to=company_logo_path, default='default_company_logo.png')
 
    def __unicode__(self):
       return self.name
@@ -225,6 +230,7 @@ class Bug(models.Model):
    #attachments
    resolution = models.TextField(max_length=1028, blank=True, null=True)
    betatest = models.ForeignKey('BetaTest', blank=True, null=True)
+   notes = models.TextField(max_length=1028, blank=True, null=True)
 
    def __unicode__(self):
       return self.title
@@ -281,16 +287,15 @@ class Risk(models.Model):
    title = models.CharField(max_length=200)
    description = models.TextField(max_length=1028)
    category = models.ManyToManyField('Category', blank=True, null=True)
-   release = models.ForeignKey('Release', blank=True, null=True)
    probability = models.CharField(max_length=128, choices=PROBABILITY_CHOICES)
    severity = models.CharField(max_length=128, choices=PRIORITY_CHOICES)
    status = models.CharField(max_length=128, choices=RISK_CHOICES)
    identifier = models.CharField(max_length=200)
    #attachment
-   approval_status = models.CharField(max_length=128, choices=APPROVAL_STATUS_CHOICES)
    feature = models.ForeignKey('Feature', blank=True, null=True)
    bug = models.ForeignKey('Bug', blank=True, null=True)
    component = models.ForeignKey('Component', blank=True, null=True)
+   notes = models.TextField(max_length=1028, blank=True, null=True)
 
    def __unicode__(self):
       return self.title
@@ -306,9 +311,13 @@ class Responsibility(models.Model):
 
 
 class Team(models.Model):
+
+   def team_logo_path(instance, filename):
+     return os.path.join('team_logos', 'team_' + str(instance.id), filename)
+
    #manager = models.ForeignKey('Member')
    name = models.CharField(max_length=200)
-   #logo
+   logo = models.FileField(upload_to=team_logo_path, default='default_team_logo.png',blank=True, null=True)
    description = models.TextField(max_length=1028, blank=True, null=True)
    company = models.ForeignKey('Company')
    products = models.ManyToManyField('Product')

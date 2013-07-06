@@ -100,9 +100,6 @@ Edit bug
       <div class="errors">{{ form.severity.errors.0 }}</div>
       <br/>
 
-{% endblock left_col %}
-{% block right_col %}
-
       <label for="status">{{ form.status.label }}</label>
       <div class="field">{{ form.status }}</div>
       <div class="errors">{{ form.status.errors.0 }}</div>
@@ -111,12 +108,10 @@ Edit bug
       <label for="release">{{ form.release.label }}</label>
       <div class="field">{{ form.release }}</div>
       <div class="errors">{{ form.release.errors.0 }}</div>
-      <br/>
+      <br/>    
 
-      <label for="test">{{ form.test.label }}</label>
-      <div class="field">{{ form.test }}</div>
-      <div class="errors">{{ form.test.errors.0 }}</div>
-      <br/>
+{% endblock left_col %}
+{% block right_col %}
 
       <label for="category">{{ form.category.label }}</label>
       <div class="field">{{ form.category }}</div>
@@ -128,10 +123,11 @@ Edit bug
       <div class="errors">{{ form.resolution.errors.0 }}</div>
       <br/>
   
-      <br/> 
-      <label for="betatest">{{ form.betatest.label }}</label>
-      <div class="field">{{ form.betatest }}</div>
-      <div class="errors">{{ form.betatest.errors.0 }}</div>
+      <label for="notes">{{ form.notes.label }}</label>
+      <div class="field">{{ form.notes }}</div>
+      <div class="errors">{{ form.notes.errors.0 }}</div>
+      <br/>
+
 
 {% endblock right_col %}
 

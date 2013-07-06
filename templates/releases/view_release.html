@@ -34,18 +34,30 @@ Name: {{ release.name }}
 </p>
 
 <p>
-Target Market: {{ release.market }}
+Release date: {{ release.release_date|date:"D, M j, o" }}
 </p>
 
 
 <p>
-Release date: {{ release.release_date|date:"D, M j, o" }}
+Target market: {{ release.market }}
 </p>
 
 <p>
 Goals/Themes: 
 {% if release.goals %}
    {{ release.goals }}
+{% else %}
+   None
+{% endif %}
+</p>
+
+<p>
+Milestones:
+{% if milestones %}
+   {% for milestone in milestones.all %}
+      <br/>
+      <a href="/milestones/{{ milestone.id }}/">{{ milestone.title }}</a>
+   {% endfor %}
 {% else %}
    None
 {% endif %}
@@ -66,21 +78,9 @@ Features:
 <p>
 Risks:
 {% if risks %}               
-   {% for risk in risks.all %}
+   {% for risk in risks %}
       <br/>
       <a href="/risks/{{ risk.id }}/">{{ risk.title }}</a>
-   {% endfor %}
-{% else %}
-   None
-{% endif %}
-</p>
-
-<p>
-Bugs:
-{% if bugs %}   
-   {% for bug in bugs.all %}
-      <br/>
-      <a href="/bugs/{{ bug.id }}/">{{ bug.title }}</a>
    {% endfor %}
 {% else %}
    None
@@ -93,11 +93,11 @@ Bugs:
 
 
 <p>
-Milestones:
-{% if milestones %}   
-   {% for milestone in milestones.all %}
+Bugs:
+{% if bugs %}   
+   {% for bug in bugs.all %}
       <br/>
-      <a href="/milestones/{{ milestone.id }}/">{{ milestone.title }}</a>
+      <a href="/bugs/{{ bug.id }}/">{{ bug.title }}</a>
    {% endfor %}
 {% else %}
    None

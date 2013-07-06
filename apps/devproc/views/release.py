@@ -5,13 +5,13 @@ from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
 from apps.devproc.utils import *
-
+from itertools import chain
 
 class ReleaseForm(forms.Form):
    name = forms.CharField(max_length=200, label="Name")
    release_date = forms.DateField()
    pass_fail_criteria = forms.CharField(max_length=1028, required=False, label="Pass/fail criteria")
-   market = forms.CharField(max_length=200, required=False, label="Target Market")
+   market = forms.CharField(max_length=200, required=False, label="Target market")
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
    release_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Release Manager") 
    goals = forms.CharField(max_length=1028, required=False, label="Goals/Themes")
@@ -83,7 +83,15 @@ def view_release(request, release_id):
 
    release = Release.objects.get(id = release_id)
    features = Feature.objects.filter(release = release_id)
-   risks = Risk.objects.filter(release = release_id)
+
+   bug_risks = Risk.objects.filter(bug__release = release_id)
+   feature_risks = Risk.objects.filter(feature__release = release_id)
+   component_risks = Risk.objects.filter(component__release = release_id)
+
+   risks = sorted(
+    chain(bug_risks, feature_risks, component_risks),
+    key=lambda instance: instance.id)
+
    bugs = Bug.objects.filter(release = release_id)
    milestones = Milestone.objects.filter(release = release_id)
 

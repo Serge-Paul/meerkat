@@ -10,13 +10,14 @@ from itertools import chain
 class BugForm(forms.Form):
    title = forms.CharField(max_length=200, label="Title")
    description = forms.CharField(max_length=1028, widget=forms.Textarea)  
-   features = forms.ModelMultipleChoiceField(queryset=Feature.objects.all(), required=False, label="Related Features") 
+   features = forms.ModelMultipleChoiceField(queryset=Feature.objects.all(), required=False, label="Impacted Features") 
    severity = forms.ChoiceField(choices=PRIORITY_CHOICES)
    status = forms.ChoiceField(choices=BUG_STATUS_CHOICES)
    release = forms.ModelChoiceField(queryset=Release.objects.all(), required=False) 
    identifier = forms.CharField(max_length=200)
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
    resolution = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
+   notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)
 
 @login_required
 def view_all_bugs(request):
@@ -57,6 +58,7 @@ def create_bug(request, test_id, type):
    	 bug.release = form.cleaned_data['release']
          bug.identifier = form.cleaned_data['identifier']
  	 bug.resolution = form.cleaned_data['resolution']
+         bug.notes = form.cleaned_data['notes']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          bug.save()
@@ -122,6 +124,7 @@ def edit_bug(request, bug_id):
          bug.release = form.cleaned_data['release']
          bug.identifier = form.cleaned_data['identifier']
          bug.resolution = form.cleaned_data['resolution']
+         bug.notes = form.cleaned_data['notes']
 
 # Have to save because instance needs to have a primary key value before a many-to-many relationship can be used.
          bug.save()
@@ -150,7 +153,8 @@ def edit_bug(request, bug_id):
                  'identifier' : bug.identifier,
                  'resolution' : bug.resolution,
                  'features' : bug.features.all(),
-                 'category' : bug.category.all(),                
+                 'category' : bug.category.all(),
+                 'notes' : bug.notes,                
 		 }
 
       form = BugForm(initial=defaults)

@@ -9,7 +9,7 @@ from apps.devproc.utils import *
 
 class FeatureForm(forms.Form):
    title = forms.CharField(max_length=200)
-   design_description = forms.CharField(max_length=1028, widget=forms.Textarea, label="Feature Description") 
+   design_description = forms.CharField(max_length=1028, widget=forms.Textarea, label="Feature description") 
    implementation_description = forms.CharField(max_length=1028, widget=forms.Textarea) 
    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False) 
    responsible_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), required=False, label="Development Engineer") 

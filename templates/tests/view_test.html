@@ -21,7 +21,7 @@ Test
 {% block sub_links %}
 <a href="/tests/{{ test.id }}/edit/">Edit</a> |
 <a href="/tests/{{ test.id }}/delete/">Delete</a>
- | <a href="/bugs/add/test/{{ test.id }}">Add a new bug for this test</a>
+ | <a href="/bugs/add/test/{{ test.id }}">Add Bug</a>
 {% endblock %}
 
 {% block left_col %}
@@ -30,7 +30,11 @@ Title: {{ test.title }}
 </p>
 
 <p>
-Status: {{ test.status }} &nbsp; &nbsp;  Pass/Fail Criteria: {{ test.pass_fail_criteria }}
+Status: {{ test.status }} 
+</p>
+
+<p>
+Pass/fail criteria: {{ test.pass_fail_criteria }}
 </p>
 
 
@@ -41,7 +45,7 @@ Test description:
 </p>
 
 <p>
-Supporting Features:
+Features tested:
 {% if test.features.all.0 %}   <!-- this is manyToMany field -->
    {% for feature in test.features.all %}
       <br/>

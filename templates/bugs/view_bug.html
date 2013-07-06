@@ -24,16 +24,15 @@ To add a new bug, go to the test or beta test, and click the 'add bug' link.
 {% block sub_links %}
 <a href="/bugs/{{ bug.id }}/edit/">Edit</a>
  | <a href="/bugs/{{ bug.id }}/delete/">Delete</a>
- | <a href="/risks/add/bug/{{ bug.id }}/">Add a risk for this bug</a>
+ | <a href="/risks/add/bug/{{ bug.id }}/">Add Risk</a>
 {% endblock sub_links %}
 
 {% block left_col %}
-<p>
-Title: {{ bug.title }}
+<p>Bug ID: {{ bug.identifier }}
 </p>
 
-
-<p>Bug ID: {{ bug.identifier }}
+<p>
+Title: {{ bug.title }}
 </p>
 
 <p>
@@ -41,43 +40,9 @@ Description:
 <br/>{{ bug.description }}
 </p>
 
-<p>
-Severity: {{ bug.severity }}
-</p>
 
 <p>
-Bug status: {{ bug.status }}
-</p>
-
-<p>
-Release:
-{% if bug.release %} <!-- this is foreign key field -->
-   <a href="/releases/{{ bug.release.id }}/">{{ bug.release }}</a>
-{% else %}
-   None
-{% endif %}
-</p>
-
-
-<p>
-Categories:
-{% if bug.category.all.0 %}   <!-- this is manyToMany field -->
-   {% for category in bug.category.all %}
-
-       {{ category }} /
-
-   {% endfor %}
-{% else %}
-   None
-{% endif %}
-</p>
-
-{% endblock left_col %}
-
-{% block right_col %}
-
-<p>
-Related Features:
+Impacted Features:
 {% if bug.features.all.0 %}   <!-- this is manyToMany field -->
    {% for feature in bug.features.all %}
       <br/>
@@ -102,6 +67,40 @@ Beta Test: <a href="/betatests/{{ bug.betatest.id }}/">Beta {{ bug.betatest }}</
 </p>
 {% endif %}
 
+<p>
+Severity: {{ bug.severity }}
+</p>
+
+<p>
+Bug status: {{ bug.status }}
+</p>
+
+{% endblock left_col %}
+{% block right_col %}
+
+<p>
+Release:
+{% if bug.release %} <!-- this is foreign key field -->
+   <a href="/releases/{{ bug.release.id }}/">{{ bug.release }}</a>
+{% else %}
+   None
+{% endif %}
+</p>
+
+
+<p>
+Categories:
+{% if bug.category.all.0 %}   <!-- this is manyToMany field -->
+   {% for category in bug.category.all %}
+
+       {{ category }} /
+
+   {% endfor %}
+{% else %}
+   None
+{% endif %}
+</p>
+
 
 <p>Risks:
 {% if risks %}
@@ -118,6 +117,11 @@ None
 <p>
 Resolution:
 <br/>{{ bug.resolution }}
+</p>
+
+
+<p>Notes:<br/>
+{{ bug.notes }}
 </p>
 
 {% endblock right_col %}
