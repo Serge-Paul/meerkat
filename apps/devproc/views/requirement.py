@@ -5,7 +5,8 @@ from django import forms
 from django.template import Context, RequestContext
 from django.contrib.auth.decorators import login_required
 from apps.devproc.utils import *
-
+from multiuploader.forms import MultiUploadForm
+from multiuploader.forms import MultiuploaderField
 
 class RequirementForm(forms.Form):
    title = forms.CharField(max_length=200)
@@ -20,6 +21,10 @@ class RequirementForm(forms.Form):
    source = forms.ChoiceField(choices=SOURCE_CHOICES)
    notes = forms.CharField(max_length=1028, widget=forms.Textarea, required=False)  
    responsible_engineer = forms.ModelMultipleChoiceField(queryset=Member.objects.all(), label="Product Manager or Engineer", required=False)
+   #uploadedFiles = MultiuploaderField(required=False)
+   file1 = forms.CharField(max_length=200, widget=forms.HiddenInput(), required=False)
+   file1_url = forms.CharField(max_length=200, widget=forms.HiddenInput(), required=False)
+   file1_delete_url = forms.CharField(max_length=200, widget=forms.HiddenInput(), required=False)
 
 @login_required
 def view_all_reqmts(request): 
@@ -36,11 +41,18 @@ def create_reqmt(request):
 
    if request.method == 'POST':
 
-      form = RequirementForm(request.POST)
+      form = RequirementForm(request.POST, request.FILES)
+      uploadForm = MultiUploadForm(request.POST, request.FILES)
+
+      #print dir(uploadForm.files.items)
+
 
       # Do when form is submitted
       if form.is_valid():
 
+         #print form.cleaned_data['uploadedFiles']
+         #print request.FILES['uploadedFiles']
+ 
          reqmt = Requirement()
          reqmt.title = form.cleaned_data['title']
          reqmt.description = form.cleaned_data['description']
@@ -73,15 +85,20 @@ def create_reqmt(request):
 
    else: #code for just initially displaying form
       form = RequirementForm()
-      return render_to_response('requirements/create_reqmt.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
+      uploadForm = MultiUploadForm()
+
+      return render_to_response('requirements/create_reqmt.html', {'upload_form': uploadForm, 'session_info': session_info, 'user' : request.user, 'form': form, 'mode': 'create'},  context_instance=RequestContext(request))
 
 
 @login_required
 def view_reqmt(request, reqmt_id):
    session_info = get_session_info(request)
 
+   #get all files attached to this requirement
+   attachments = FileAttachment.objects.filter(requirement = reqmt_id)
+
    reqmt = Requirement.objects.get(id = reqmt_id)
-   return render_to_response('requirements/view_reqmt.html', {'session_info': session_info, 'user' : request.user, 'reqmt': reqmt})
+   return render_to_response('requirements/view_reqmt.html', {'session_info': session_info, 'user' : request.user, 'reqmt': reqmt, 'attachments': attachments})
 
 
 @login_required
@@ -119,6 +136,19 @@ def edit_reqmt(request, reqmt_id):
 
          reqmt.save()
 
+         if form.cleaned_data['file1']:
+	    file1 = FileAttachment()
+             #UPDATING THE FILE NAME IS NOT WORKING. WHEN DISPLAY FILE THE NAME IS THE SAME AS THE PATH
+             #cant' change file.path because it's read only, so setting file = url instead of file.path = url
+            #file1.file.name = form.cleaned_data['file1']
+            file1.file = form.cleaned_data['file1_url']
+            file1.company = request.user.profile.company 
+            file1.filename = form.cleaned_data['file1']
+            #file1.url = form.cleaned_data['file1_url'] 
+            #file1.delete_url = form.cleaned_data['file1_delete_url']
+            file1.requirement = reqmt
+            file1.save()
+        
          return redirect('apps.devproc.views.requirement.view_reqmt', reqmt_id = reqmt.id)
 
       else: #if form is not valid
@@ -144,7 +174,10 @@ def edit_reqmt(request, reqmt_id):
 
       form = RequirementForm(initial=defaults)
 
-      return render_to_response('requirements/create_reqmt.html', {'session_info': session_info, 'user' : request.user, 'form': form, 'reqmt': reqmt, 'mode': 'edit'},  context_instance=RequestContext(request))
+      #get all files attached to this requirement
+      attachments = FileAttachment.objects.filter(requirement = reqmt_id)
+
+      return render_to_response('requirements/create_reqmt.html', {'attachments': attachments, 'session_info': session_info, 'user' : request.user, 'form': form, 'reqmt': reqmt, 'mode': 'edit'},  context_instance=RequestContext(request))
 
 
 

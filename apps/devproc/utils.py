@@ -4,6 +4,22 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.http import HttpResponse
+from django.utils import simplejson
+
+def delete_file(request):
+   if request.method == 'POST':
+        data = {}
+        file_path = request.POST['file_path']
+
+        attachment = FileAttachment.objects.filter(url = file_path)
+     
+        #attachment.file.storage.delete(attachment.file.path)
+
+        data['message'] = "The file has been deleted: " + attachment.filename
+
+        return HttpResponse(simplejson.dumps(data), mimetype="application/json")
+       
 
 
 def get_session_info(request):

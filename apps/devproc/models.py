@@ -61,10 +61,22 @@ RESPONSIBILITY_CHOICES = (
 )
 
 
+class FileAttachment(models.Model):
+
+   def attachment_path(instance, filename):
+     return os.path.join('uploaded_attachments', 'companyID_' + str(instance.company.id), 'userID_' + str(instance.id) + '_' + filename)
+
+   filename = models.CharField(max_length=200)
+   url = models.URLField()
+   delete_url = models.URLField()
+   requirement = models.ForeignKey('Requirement', blank=True, null=True)
+   file = models.FileField(upload_to=attachment_path, default='default_profile_photo.png',blank=True, null=True)
+   company = models.ForeignKey('Company')
+
 class UserProfile(models.Model): 
 
    def profile_photo_path(instance, filename):
-     return os.path.join('profile_photos', 'company_' + str(instance.company.id), filename)
+     return os.path.join('profile_photos', 'companyID_' + str(instance.company.id), 'userID_' + str(instance.id) + '_' + filename)
 
    user = models.OneToOneField(User) # user object has firstname, lastname, and email
    title = models.CharField(max_length=200, blank=True, null=True)
@@ -85,7 +97,7 @@ User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 class Company(models.Model):
 
    def company_logo_path(instance, filename):
-     return os.path.join('company_logos', 'company_' + str(instance.company.id), filename)
+     return os.path.join('company_logos', 'companyID_' + str(instance.id), 'companyID_' + str(instance.id) + filename)
 
    name = models.CharField(max_length=200)
    admin = models.ForeignKey(User)
@@ -313,7 +325,8 @@ class Responsibility(models.Model):
 class Team(models.Model):
 
    def team_logo_path(instance, filename):
-     return os.path.join('team_logos', 'team_' + str(instance.id), filename)
+     return os.path.join('team_logos', 'companyID_' + str(instance.company.id), 'teamID_' + str(instance.id) + '_' + filename)
+
 
    #manager = models.ForeignKey('Member')
    name = models.CharField(max_length=200)

@@ -21,6 +21,15 @@ if settings.DEBUG:
     (r'^site_media/(.*)$', 'django.views.static.serve', {'document_root': os.path.join(os.path.dirname(__file__), 'apps/devproc/site_media')}),
    ) 
 
+
+urlpatterns += patterns('',
+  url(r'^uploads/', include('multiuploader.urls')),
+)
+
+urlpatterns += patterns('apps.devproc.utils',
+  url(r'^delete/attachment/$', 'delete_file'),
+)
+
 urlpatterns += patterns('apps.public.views.auth',
   url(r'^accounts/login/$', 'process_login'),
   url(r'^accounts/logout/$', 'process_logout'),

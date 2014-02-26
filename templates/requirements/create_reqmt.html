@@ -1,4 +1,5 @@
 {% extends "edit_template.html" %}
+{% load multiuploader %}
 
 {% block title %}
 
@@ -13,6 +14,106 @@
 {% endblock %}
 
 {% block headtags %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+// NEED TO PUT URL AND DELETE URL IN HIDDEN FIELDS FOR FILES 1-5
+//NEED TO SAVE IN file attachment MODEL
+//NEED TO SHOW LINKS TO FILES ON VIEW PAGE
+//NEED TO SHOW LINKS TO DELETE FILES ON EDIT PAGE
+
+// below only works on hover and not on click, because form is submitted onclick before hidden field is updated
+$('#submitBTN').hover(function() {
+     $('.filelink').each(function(){
+   
+        $('#id_file1').val($(this).text());
+        $('#id_file1_url').val($(this).attr('href'));
+        $('#id_file1_delete_url').val('/uploads/multiuploader_delete/' + $(this).attr('id') + '/');
+ 
+      //  alert($('#id_file1_delete_url').val());
+
+     });
+});
+
+
+// delete file button functionality
+$('.deleteButton').click(function(){
+    var dataString = 'file_path=' + $(this).attr('data-url')
+    //alert(dataString)
+    $.ajax({
+        type: "POST",
+        url: "/delete/attachment/",
+        data: dataString,
+        success: function(data) {
+            alert(data['message']);
+        }   
+     }); 
+     return false;   
+});
+
+
+
+
+
+$('form[action="/uploads/multiuploader/"]').change(function() {
+//alert('Handler for .change() called.');
+
+//e.preventDefault();
+
+//alert($('.filelink').text() + ': ' + $('.filelink').attr('href'));
+
+// ONLICK OF FORM SAVE BUTTON, PUT THE TEXT FOR THE FILE UPLOADS IN HIDDEN FIELDS
+// AND PUT THE URLS FOR THE FILE UPLOADS IN HIDDEN FIELDS
+// SO CAN SAVE FILE NAMES AND FILE URLS IN THE MODEL WHEN THE FORM POST DATA IS RETURNED TO THE VIEW
+//USE THIS TO DO
+//  $('.filelink').text() TO GET FILE NAME 
+//  $('.filelink').attr('href')); TO GET FILE URL
+// NEED TO FIGURE OUT HOW TO LOOP THROUGH ALL OF THE LINKS TO GET ALL OF THE FILE NAMES AND ALL OF THE URLS
+
+
+//this is posting form and then getting return data which doesn't have the files.
+// Need to execute this when form Posts after file upload and get data at that time
+//but attaching this to form submit event is not working. Form submit event is not fired
+//because it's only fired when click button or click link or hit enter
+// or not binding to the form submit event
+//only form change event is fired, but then this trys to grab data AFTER form is submitted by reposting again
+//perhaps modify source code somehow to put data in hidden field??
+// or modify source code to fire submit event?
+/*
+$.ajax({
+        async: true,
+        type: "POST",
+        url: "/uploads/multiuploader/",
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
+            $.each(data, function (i, object) {
+
+               // alert(i);
+        
+               // alert("inside ajax");
+
+                $.each(object, function(key, element) {
+                   alert('key: ' + key + '\n' + 'value: ' + element);
+                });
+
+             
+            });
+
+        },
+        error: function () {
+            alert("There was an error loading the feed");
+        }
+    });
+*/
+
+});
+
+});
+
+</script>
+
 {% endblock %}
 
 {% block heading %}
@@ -113,24 +214,64 @@ Edit Requirement
       <div class="errors">{{ form.notes.errors.0 }}</div>
       <br/>
 
+Attachments:
+<br/>
+{% if attachments %}
+
+   {% for attachment in attachments %}
+
+     <a href="{{ attachment.file }}">{{ attachment.filename }}</a>
+
+      <button data-url="{{ attachment.file }}"  class="deleteButton" role="button" title="Delete">
+<span class="ui-button-icon-primary ui-icon ui-icon-trash"></span>
+<span class="ui-button-text">Delete</span></button>
+
+  {% endfor %}
+
+{% else %}
+
+   None
+
+{% endif %}
+
+
+
+
 {% endblock right_col %}
 
 {% block form_submit %}
 
+{{ form.file1 }}
+{{ form.file1_url }}
+{{ form.file1_delete_url }}
+
+
+ {{ form.uploadedFiles }} {{ form.uploadedFiles.errors }}
+
+<p>
+    {% multiuploader_noscript upload_form.uploadedFiles.html_name %}
+
+</p>
+
+
+<br/>
+
 {% if mode == 'create' %}
-<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
+<a id = "submitBTN" href="#" onclick="document.forms[0].submit();" class="blueButton right">Add</a>
 
 {% endif %}
 
 {% if mode == 'edit' %}
-<a href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
+<a id = "submitBTN" href="#" onclick="document.forms[0].submit();" class="blueButton right">Save</a>
 
 {% endif %}
-
 
 {% csrf_token %}
 
 </form>
+
+{% multiuploader_form form_type="default" template="multiuploader/multiuploader_form.html" js_prefix="jQuery" send_button_selector="input[name=_edit]" wrapper_element_id="fileUploads" lock_while_uploading=True %}
+
 
 {% endblock %}
 

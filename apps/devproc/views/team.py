@@ -47,8 +47,9 @@ def create_team(request):
          team.save()
 
          if 'logo' in request.FILES:
-           #delete existing file
-           team.logo.storage.delete(team.logo.path)
+           #delete existing file if it isn't the default file
+           if team.logo.name != 'default_team_logo.png':
+             team.logo.storage.delete(team.logo.path)
            #save new new file
            file = request.FILES['logo']
            team.logo.save(file.name, file, save=True)
@@ -102,13 +103,13 @@ def edit_team(request, team_id):
          team.save()
 
          if 'logo' in request.FILES:
-           #delete existing file
-           team.logo.storage.delete(team.logo.path)
+           #delete existing file if it isn't the default file
+           if team.logo.name != 'default_team_logo.png':
+             team.logo.storage.delete(team.logo.path)
            #save new new file
            file = request.FILES['logo']
            team.logo.save(file.name, file, save=True)
            team.save()
-
 
          responsibility.release = form.cleaned_data['release']
          responsibility.responsibility = form.cleaned_data['responsibility']

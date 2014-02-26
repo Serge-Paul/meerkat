@@ -141,6 +141,26 @@ Approval Status: {{ reqmt.approval_status }}
 </p>
 
 
+Attachments:
+<br/>
+{% if attachments %}
+
+   {% for attachment in attachments %}
+
+     <a href="{{ attachment.file }}">{{ attachment.filename }}</a>
+      
+      <br/>
+   {% endfor %}
+
+{% else %}
+
+   None
+
+{% endif %}
+
+</p>
+
+
 
 {% endblock %}
 

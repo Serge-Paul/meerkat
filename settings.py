@@ -27,7 +27,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'meerkat',                      # Or path to database file if using sqlite3.
         'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': 'Tvn15-wind',                  # Not used with sqlite3.
+        'PASSWORD': 'meerkatdev',                  # Not used with sqlite3.
         'HOST': 'www.meerkatdev.com',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -62,7 +62,6 @@ USE_TZ = True
 # Example: "/home/media/media.lawrence.com/media/"
 
 #MEDIA_ROOT =  os.path.join(SITE_ROOT, 'site_media')
-#MEDIA_ROOT = os.path.abspath("apps/devproc/site_media")
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'apps/devproc/site_media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -148,6 +147,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'south',
+    'multiuploader',
     'apps.devproc',
     'apps.public',
 )
@@ -182,4 +182,95 @@ LOGGING = {
 }
 
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+'django.contrib.auth.context_processors.auth',
+'django.core.context_processors.debug',
+'django.core.context_processors.i18n',
+'django.core.context_processors.media',
+'django.core.context_processors.static',
+'django.core.context_processors.tz',
+'django.contrib.messages.context_processors.messages',
+'django.core.context_processors.request',
+'multiuploader.context_processors.booleans',
+)
+
+   # 'django.core.context_processors.request',
+
+#MULTIUPLOADER_FILES_FOLDER = 'multiuploader' #media location where to store files
+MULTIUPLOADER_FILES_FOLDER = os.path.join(os.path.dirname(__file__), 'apps/devproc/site_media/uploaded_attachments')
+
+MULTIUPLOADER_FILE_EXPIRATION_TIME = 3600 # time when the file is expired (and it can be cleaned with clean_files command).
+
+MULTIUPLOADER_FORMS_SETTINGS = {
+'default': {
+    'FILE_TYPES' : ["txt","zip","jpg","jpeg","flv","png"],
+    'CONTENT_TYPES' : [
+            'image/jpeg',
+            'image/png',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.ms-powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/vnd.oasis.opendocument.text',
+            'application/vnd.oasis.opendocument.spreadsheet',
+            'application/vnd.oasis.opendocument.presentation',
+            'text/plain',
+            'text/rtf',
+                ],
+    'MAX_FILE_SIZE': 10485760,
+    'MAX_FILE_NUMBER':5,
+    'AUTO_UPLOAD': True,
+},
+'images':{
+    'FILE_TYPES' : ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'tiff', 'ico' ],
+    'CONTENT_TYPES' : [
+        'image/gif',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png',
+        'image/svg+xml',
+        'image/tiff',
+        'image/vnd.microsoft.icon',
+        'image/vnd.wap.wbmp',
+        ],
+    'MAX_FILE_SIZE': 10485760,
+    'MAX_FILE_NUMBER':5,
+    'AUTO_UPLOAD': True,
+},
+'video':{
+    'FILE_TYPES' : ['flv', 'mpg', 'mpeg', 'mp4' ,'avi', 'mkv', 'ogg', 'wmv', 'mov', 'webm' ],
+    'CONTENT_TYPES' : [
+        'video/mpeg',
+        'video/mp4',
+        'video/ogg',
+        'video/quicktime',
+        'video/webm',
+        'video/x-ms-wmv',
+        'video/x-flv',
+        ],
+    'MAX_FILE_SIZE': 10485760,
+    'MAX_FILE_NUMBER':5,
+    'AUTO_UPLOAD': True,
+},
+'audio':{
+    'FILE_TYPES' : ['mp3', 'mp4', 'ogg', 'wma', 'wax', 'wav', 'webm' ],
+    'CONTENT_TYPES' : [
+        'audio/basic',
+        'audio/L24',
+        'audio/mp4',
+        'audio/mpeg',
+        'audio/ogg',
+        'audio/vorbis',
+        'audio/x-ms-wma',
+        'audio/x-ms-wax',
+        'audio/vnd.rn-realaudio',
+        'audio/vnd.wave',
+        'audio/webm'
+        ],
+    'MAX_FILE_SIZE': 10485760,
+    'MAX_FILE_NUMBER':5,
+    'AUTO_UPLOAD': True,
+}}
 
