@@ -12,7 +12,7 @@ TEMPLATE_DEBUG = DEBUG
 
 EMAIL_HOST = 'smtpout.secureserver.net'
 EMAIL_HOST_USER = 'info@meerkatdev.com'
-EMAIL_HOST_PASSWORD = 'tnnt32906'
+EMAIL_HOST_PASSWORD = 'meerkatdev'
 DEFAULT_FROM_EMAIL = 'Meerkat <info@meerkatdev.com>'
 
 
