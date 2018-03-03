@@ -15,6 +15,7 @@ Meerkat include everything that a product manager needs to document, track, and 
 - product features
 - road map and key milestones
 - releases
+- customer feedback
 - bugs
 - beta testing
 - team members
